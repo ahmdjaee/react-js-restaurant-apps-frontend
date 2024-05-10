@@ -1,8 +1,12 @@
 import logo from './../../../assets/restaurant.svg'
+import { Link } from 'react-router-dom'
 
-function Logo() {
+
+function Logo({ home }) {
     return (
-        <img src={logo} className='cursor-pointer' alt="Logo Restaurant" />
+        <Link to={home}>
+            <img src={logo} className='cursor-pointer' alt="Logo Restaurant" />
+        </Link>
     )
 }
 

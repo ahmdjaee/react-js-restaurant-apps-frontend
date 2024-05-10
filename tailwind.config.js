@@ -17,10 +17,24 @@ export default {
       height: {
         '84': '22rem',
       },
+      width: {
+        '84': '22rem',
+        '88': '24rem',
+      },
+      animation: {
+        'spin-slow': 'spin 15s linear infinite',
+      },
+      backgroundImage: {
+        'about-us' : "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
+      }
+      ,
       container: {
         center: true,
         screens: {
-          lg: "1124px",
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1200px',
         }
       }
     },

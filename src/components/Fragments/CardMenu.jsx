@@ -1,13 +1,9 @@
-import dish from "../../assets/dish-1.svg"
-
-function CardMenu() {
+function CardMenu({image, title, price}) {
     return (
-        <div className="bg-white h-84 w-72 rounded-tr-xl rounded-bl-xl rounded-br-4xl rounded-tl-4xl text-center mt-24 cursor-pointer">
-            <div className="relative -top-28 flex flex-col justify-center px-5">
-                <img className="object-cover" src={dish} alt="" />
-                <h1 className="font-semibold text-xl my-8">Lumpia with sauce</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia accusantium</p>
-            </div>
+        <div className="flex flex-col items-center text-center cursor-pointer">
+            <img src={image} alt="" />
+            <p className="font-bold mt-4">{title}</p>
+            <p className="font-semibold my-4">{price}</p>
         </div>
     )
 }

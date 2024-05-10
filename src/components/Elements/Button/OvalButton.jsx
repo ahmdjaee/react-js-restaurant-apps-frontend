@@ -1,8 +1,11 @@
-function OvalButton({ text }) {
+function OvalButton({ text, style, type }) {
+    const dark = "bg-dark hover:bg-dark/90"
+    const primary = "bg-primary hover:bg-primary/90"
+    
     return (
-        <button className="
+        <button className={` ${style}
         text-white font-semibold rounded-br-xl rounded-tr-md rounded-tl-xl rounded-bl-md   
-        px-6 py-4 bg-primary shadow-lg hover:bg-primary/90" >
+        px-6 py-4 ${type === "dark" ? dark : primary} shadow-lg "`} >
             {text}
         </button>
     )
