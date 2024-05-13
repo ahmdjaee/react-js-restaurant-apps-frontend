@@ -1,6 +1,6 @@
 function Spacer({ modifier }) {
     return (
-        <div className={modifier}></div>
+        <div className={`${modifier}`}></div>
     )
 }
-export default { Spacer }
+export default Spacer 

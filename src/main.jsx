@@ -10,6 +10,7 @@ import Home from './components/Layouts/Home.jsx';
 import Menu from './components/Layouts/Menu.jsx';
 import About from './components/Layouts/About.jsx';
 import Contact from './components/Layouts/Contact.jsx';
+import Detail from './components/Layouts/Detail.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/menus",
         element: <Menu />,
+      },
+      {
+        path: "/menus/detail",
+        element: <Detail />,
       },
       {
         path: "/events",

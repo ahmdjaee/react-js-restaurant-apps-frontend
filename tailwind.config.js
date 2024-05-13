@@ -1,11 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+module.exports = withMT({
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+      },
       colors: {
         'primary': '#EA6D27',
         'dark': '#101A24',
@@ -23,11 +28,13 @@ export default {
       },
       animation: {
         'spin-slow': 'spin 15s linear infinite',
+        'right-slide-in': 'right-slide-in 1s ease-in-out',
+        'left-slide-in': 'left-slide-in 1s ease-in-out',
+        'bottom-slide-in': 'bottom-slide-in 1s ease-out',
       },
       backgroundImage: {
-        'about-us' : "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
-      }
-      ,
+        'about-us': "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
+      },
       container: {
         center: true,
         screens: {
@@ -36,9 +43,18 @@ export default {
           lg: '1024px',
           xl: '1200px',
         }
-      }
+      },
+      keyframes: {
+        'right-slide-in': {
+          '0%': { transform: 'translateX(40%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'left-slide-in': {
+          '0%': { transform: 'translateX(-40%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
     },
   },
   plugins: [],
-}
-
+})
