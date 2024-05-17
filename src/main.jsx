@@ -11,11 +11,16 @@ import Menu from './components/Layouts/Menu.jsx';
 import About from './components/Layouts/About.jsx';
 import Contact from './components/Layouts/Contact.jsx';
 import Detail from './components/Layouts/Detail.jsx';
+import Cart from './components/Layouts/Cart.jsx';
+import Login from './pages/login.jsx';
+import ErrorPageNotFound from './pages/errors.jsx';
+import Register from './pages/register.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPageNotFound/>,
     children: [
       {
         path: "/",
@@ -41,8 +46,20 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+      {
+        path: "/carts",
+        element: <Cart />
+      }
     ],
   },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

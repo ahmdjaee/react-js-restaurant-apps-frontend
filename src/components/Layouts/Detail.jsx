@@ -2,7 +2,6 @@ import { React, useState } from "react";
 import { Input, Button } from "@material-tailwind/react";
 import TextCurrency from "../Elements/Text/TextCurrency";
 
-
 function Detail() {
     const [quantity, setQuantity] = useState(1);
     const onChange = ({ target }) => setQuantity(target.value);
@@ -31,7 +30,7 @@ function Detail() {
                     <TextCurrency color={"text-gray-900"} style="absolute text-sm right-[17rem] top-[0.6rem]" text={subTotal} />
                     <Button
                         size="sm"
-                        disabled={!quantity}
+                        disabled={true}
                         className=" rounded bg-dark w-96"
                     >
                         Add To Cart

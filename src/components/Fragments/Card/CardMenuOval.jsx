@@ -1,4 +1,4 @@
-import dish from "../../assets/dish-1.svg"
+import dish from "../../../assets/dish-1.svg"
 
 function CardMenuOval() {
     return (

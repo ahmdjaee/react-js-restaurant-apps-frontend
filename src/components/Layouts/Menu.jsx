@@ -1,4 +1,4 @@
-import CardMenu from "../Fragments/CardMenu"
+import CardMenu from "../Fragments/Card/CardMenu"
 import dish2 from "../../assets/dish-2.svg"
 
 function Menu() {

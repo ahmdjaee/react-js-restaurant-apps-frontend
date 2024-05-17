@@ -5,38 +5,23 @@ import Chef from "./../../assets/chef-1.svg"
 import Facebook from "./../../assets/facebook.svg"
 import Twitter from "./../../assets/twitter.svg"
 import Instagram from "./../../assets/instagram.svg"
-import CardMenuOval from "../Fragments/CardMenuOval"
-import CardCustomer from "../Fragments/CardCustomer"
+import CardMenuOval from "../Fragments/Card/CardMenuOval"
+import CardCustomer from "../Fragments/Card/CardCustomer"
 import Check from "./../../assets/check.svg"
 import Footer from "../Fragments/Footer"
 import Modal from "../Fragments/Modal/Modal"
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import ModalContent from "../Fragments/Modal/ModalContent"
-import Spacer from "../Elements/Spacer/Spacer"
-import { Button } from "@material-tailwind/react"
+import BookingForm from "../Fragments/Form/BookingForm"
+
 function Home() {
     const [showModal, setShowModal] = useState(false)
 
     return (
         <>
-            <Modal showModal={showModal} children={
-                <>
-                    <ModalContent />
-                    <Spacer modifier="h-[16.5rem]" />
-                    <div className="flex justify-end gap-5 item-center">
-                        <Button
-                            variant="outlined"
-                            color="red"
-                            onClick={() => setShowModal(false)}
-                        >Cancel</Button>
-                        <Button
-                            color="text-primary"
-                            className="bg-primary"
-                        >Save Changes</Button>
-                    </div>
-                </>
-            } />
+            <Modal showModal={showModal} >
+                <BookingForm onCancel={() => setShowModal(false)} />
+            </Modal>
 
             <section className="container flex items-center pt-8 pb-16">
                 <div className="me-44 animate-left-slide-in">
