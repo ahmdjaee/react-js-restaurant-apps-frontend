@@ -11,6 +11,7 @@ function Detail() {
 
     return (
         <div className="container flex items-center">
+            <a className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" href="/">&#x2B9C; Back</a>
             <img className="w-1/2" src="https://d2vuyvo9qdtgo9.cloudfront.net/foods/February2024/Ds1IINpwAliKBeubG3QM.webp" alt="" />
             <div className="w-1/2">
                 <h1 className="text-5xl font-semibold">Lorem ipsum dolor sit amet</h1>
@@ -30,7 +31,7 @@ function Detail() {
                     <TextCurrency color={"text-gray-900"} style="absolute text-sm right-[17rem] top-[0.6rem]" text={subTotal} />
                     <Button
                         size="sm"
-                        disabled={true}
+                        disabled={false}
                         className=" rounded bg-dark w-96"
                     >
                         Add To Cart
