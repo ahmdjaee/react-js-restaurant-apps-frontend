@@ -11,7 +11,7 @@ function Detail() {
 
     return (
         <div className="container flex items-center">
-            <a className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" href="/">&#x2B9C; Back</a>
+            <a className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" href="/menus">&#x2B9C; Menu</a>
             <img className="w-1/2" src="https://d2vuyvo9qdtgo9.cloudfront.net/foods/February2024/Ds1IINpwAliKBeubG3QM.webp" alt="" />
             <div className="w-1/2">
                 <h1 className="text-5xl font-semibold">Lorem ipsum dolor sit amet</h1>

@@ -1,18 +1,25 @@
+
+import Spacer from "../Elements/Spacer/Spacer"
 import CardCart from "../Fragments/Card/CardCart"
+import CardReservation from "../Fragments/Card/CardReservation"
 function Cart() {
     return (
-        <section className="h-screen bg-gray-200 pt-5">
+        <section className="overflow-auto bg-gray-200 py-5">
             <div className="container flex gap-10">
                 <div>
-                    <CardCart />
-                    <CardCart />
-                    <CardCart />
-                    <CardCart />
+                    {Array.from({ length: 5 }, (_, i) => (
+                        <>
+                            <CardCart key={i} />
+                            <Spacer modifier={"h-2"} />
+                        </>
+                    ))}
                 </div>
-                <div className="w-[28rem] bg-white rounded-lg h-52"></div>
+                <CardReservation />
             </div>
         </section>
     )
 }
 
 export default Cart
+
+

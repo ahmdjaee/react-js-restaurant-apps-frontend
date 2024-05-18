@@ -7,7 +7,7 @@ export default function BookingForm({ onCancel }) {
             <div className="grid grid-cols-2 gap-x-5">
                 <div className="flex flex-col">
                     <Typography variant="h6">Your name</Typography>
-                    <Input value={"Ahmad jaelani"} className=" !border-t-blue-gray-200 focus:!border-t-gray-900" labelProps={{
+                    <Input value={"Ahmad Jaelani"} readOnly={true} className=" !border-t-blue-gray-200 focus:!border-t-gray-900" labelProps={{
                         className: "before:content-none after:content-none",
                     }} />
                     <Typography variant="h6" className="mt-3">How many people will you order for?</Typography>
