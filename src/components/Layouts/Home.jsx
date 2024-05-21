@@ -1,18 +1,18 @@
+import { useState } from "react"
+import { Link } from "react-router-dom"
 import OvalButton from "../Elements/Button/OvalButton"
-import HeroImage from "./../../assets/hero.svg"
-import HeroImage2 from "./../../assets/hero2.svg"
+import CardCustomer from "../Fragments/Card/CardCustomer"
+import CardMenuOval from "../Fragments/Card/CardMenuOval"
+import Footer from "../Fragments/Footer"
+import BookingForm from "../Fragments/Form/BookingForm"
+import Modal from "../Fragments/Modal/Modal"
+import Check from "./../../assets/check.svg"
 import Chef from "./../../assets/chef-1.svg"
 import Facebook from "./../../assets/facebook.svg"
-import Twitter from "./../../assets/twitter.svg"
+import HeroImage from "./../../assets/hero.svg"
+import HeroImage2 from "./../../assets/hero2.svg"
 import Instagram from "./../../assets/instagram.svg"
-import CardMenuOval from "../Fragments/Card/CardMenuOval"
-import CardCustomer from "../Fragments/Card/CardCustomer"
-import Check from "./../../assets/check.svg"
-import Footer from "../Fragments/Footer"
-import Modal from "../Fragments/Modal/Modal"
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import BookingForm from "../Fragments/Form/BookingForm"
+import Twitter from "./../../assets/twitter.svg"
 
 function Home() {
     const [showModal, setShowModal] = useState(false)
@@ -24,20 +24,20 @@ function Home() {
             </Modal>
 
             <section className="container flex items-center pt-8 pb-16">
-                <div className="me-44 animate-left-slide-in">
+                <div className="w-2/5 animate-left-slide-in">
                     <h1 className="text-5xl font-semibold">We provide the best food for you</h1>
                     <p className="text-base my-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     <Link to={"/menus"}><OvalButton text="Menu" type="dark" style="me-5" /></Link>
 
                     <OvalButton text="Book A table" onClick={() => setShowModal(true)} />
                     <div className="flex gap-4 mt-20">
-                        <img src={Facebook} alt="" srcset="" />
-                        <img src={Instagram} alt="" srcset="" />
-                        <img src={Twitter} alt="" srcset="" />
+                        <img src={Facebook} alt="" />
+                        <img src={Instagram} alt="" />
+                        <img src={Twitter} alt="" />
                     </div>
                 </div>
                 <img
-                    className="w-2/4 animate-right-slide-in"
+                    className="w-2/4 min-h-[36rem] animate-right-slide-in"
                     src={HeroImage}
                     alt=""
                 />

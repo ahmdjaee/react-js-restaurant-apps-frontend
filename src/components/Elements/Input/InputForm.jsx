@@ -1,13 +1,14 @@
 import { Input, Typography } from "@material-tailwind/react";
 import propType from "prop-types";
-import {useState} from "react";
+import { useState } from "react";
 import TextError from "../Text/TextError";
 
 export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children }) {
     const [showPassword, setShowPassword] = useState(false)
+
     return (
         <div>
-            <Typography variant="h6" color="blue-gray" className="mb-3">
+            <Typography variant="h6" color="blue-gray" className="mb-2">
                 {title}
             </Typography>
             <Input
@@ -17,16 +18,16 @@ export default function InputForm({ title, type, placeholder, value, onChange, e
                 value={value}
                 onChange={onChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
-                icon={type === "password" && <i class="fas fa-eye cursor-pointer" aria-hidden="true" onClick={() => {
+                icon={type === "password" && <i className="fas fa-eye cursor-pointer" aria-hidden="true" onClick={() => {
                     setShowPassword(!showPassword)
                 }}></i>}
                 labelProps={{
                     className: "before:content-none after:content-none",
                 }}
             />
-            {errorsText && <TextError text={errorsText} />}
+            {errorsText && errorsText.map((error, index) => <TextError key={index} text={error} />)}
             {children}
-        </div>
+        </div >
     )
 }
 
@@ -36,7 +37,7 @@ InputForm.propTypes = {
     placeholder: propType.string,
     value: propType.string,
     onChange: propType.func,
-    errorsText: propType.string,
+    errorsText: propType.array,
     children: propType.node
 }
 

@@ -13,7 +13,11 @@ async function register(data) {
         if (response.status === 404) {
             throw new Error("Error " + response.status + " " + response.statusText);
         }
-        return response.json();
+
+        return {
+            data: await response.json(),
+            code: response.status
+        };
     } catch (error) {
         console.log(error.message);
     }
@@ -22,7 +26,7 @@ async function register(data) {
 
 async function login(data) {
     try {
-        const response = await fetch(Api.BASE_URL + "/ussers/login", {
+        const response = await fetch(Api.BASE_URL + "/users/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

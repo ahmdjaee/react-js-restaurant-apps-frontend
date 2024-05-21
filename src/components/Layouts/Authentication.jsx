@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types';
+
+
 function Authentication({ children }) {
     return (
         <div className="relative container flex justify-center h-screen">
@@ -7,4 +10,9 @@ function Authentication({ children }) {
     )
 }
 
+Authentication.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
 export default Authentication
+

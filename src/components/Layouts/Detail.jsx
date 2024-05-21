@@ -1,5 +1,5 @@
-import { React, useState } from "react";
-import { Input, Button } from "@material-tailwind/react";
+import { Button, Input } from "@material-tailwind/react";
+import { useState } from "react";
 import TextCurrency from "../Elements/Text/TextCurrency";
 
 function Detail() {

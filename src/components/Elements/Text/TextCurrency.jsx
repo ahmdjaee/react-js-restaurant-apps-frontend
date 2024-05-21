@@ -1,4 +1,4 @@
-function TextCurrency({ text = "", style ="", fontWeight = "", color = ""}) {
+function TextCurrency({ text, style, fontWeight, color }) {
 
     let Idr = new Intl.NumberFormat('in-ID', {
         style: 'currency',

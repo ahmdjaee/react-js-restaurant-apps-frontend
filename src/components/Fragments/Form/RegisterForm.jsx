@@ -6,24 +6,27 @@ import {
 import { useState } from "react";
 import { register } from "../../../services/UserService";
 import InputForm from "../../Elements/Input/InputForm";
+import CircularProgress from "../../Elements/Indicator/CircularProgress";
 
-function RegisterForm() {
+export default function RegisterForm() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [alert, setAlert] = useState(false)
     const [errors, setErrors] = useState({})
+    const [loading, setLoading] = useState(false)
 
     async function onRegister() {
         const response = await register({ name, email, password })
+        setLoading(true)
 
-        const errors = response.errors;
-        if (errors) {
-            setErrors(errors)
+        if (response.code === 400) {
+            setErrors(response.data.errors)
+            setLoading(false)
         }
 
-        const success = response.data;
-        if (success) {
+        if (response.code === 201) {
+            setLoading(false)
             setAlert(true)
             setTimeout(() => {
                 setAlert(false)
@@ -35,6 +38,7 @@ function RegisterForm() {
 
     return (
         <>
+            {loading && <CircularProgress />}
             {alert && <div
                 className="absolute bottom-8 right-0 animate-right-slide-in block w-1/4 text-center p-4 mb-4 text-base leading-5 text-white bg-green-500 rounded-lg opacity-100 font-regular">
                 Successfully registered
@@ -63,6 +67,7 @@ function RegisterForm() {
                             onChange={(e) => setEmail(e.target.value)}
                             errorsText={errors.email}
                         />
+                        {console.log(errors.email)}
                         <InputForm
                             title="Password"
                             type="password"
@@ -71,7 +76,7 @@ function RegisterForm() {
                             onChange={(e) => setPassword(e.target.value)}
                             errorsText={errors.password}
                         >
-                            {errors.password == null && <p className="text-xs mt-2">&#9888; Password min 8 characters</p>}
+                            {errors.password == null && <p className="text-xs absolute">&#9888; Password min 8 characters</p>}
                         </InputForm>
                     </div>
                     <Checkbox
@@ -92,7 +97,10 @@ function RegisterForm() {
                         }
                         containerProps={{ className: "-ml-2.5" }}
                     />
-                    <Button disabled={!name || !email || !password} className="mt-6" fullWidth onClick={onRegister}>
+                    <Button
+                        disabled={!name || !email || !password}
+                        className="mt-6" fullWidth
+                        onClick={onRegister}>
                         Register
                     </Button>
                     <Typography color="gray" className="mt-4 text-center font-normal">
@@ -104,5 +112,3 @@ function RegisterForm() {
         </>
     )
 }
-
-export default RegisterForm

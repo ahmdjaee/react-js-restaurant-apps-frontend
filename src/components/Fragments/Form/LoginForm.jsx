@@ -5,40 +5,58 @@ import {
     Input,
     Typography,
 } from "@material-tailwind/react";
+import InputForm from "../../Elements/Input/InputForm";
+import { useState } from "react";
+import { login } from "../../../services/UserService";
+import { CookiesProvider, useCookies } from "react-cookie";
 
-function LoginForm(onLogin = () => { }, onSubmit) {
+function LoginForm() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [errors, setErrors] = useState({})
+    const [cookies, setCookie] = useCookies(['X-LGN-TOKEN'])
+
+    async function onLogin() {
+        const response = await login({ email, password })
+
+        const errors = response.errors
+        if (errors) {
+            setErrors(errors)
+        }
+
+        const success = response.data
+        if (success) {
+            setCookie('X-LGN-TOKEN', success.token, { path: '/' })
+            setCookie('X-NAME', success.name, { path: '/' })
+            window.location.href = "/";
+        }
+
+    }
     return (
         <Card color="transparent" className="m-auto" shadow={false}>
             <Typography variant="h4" color="blue-gray">
                 Login
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-                Welcome back.
+                Use the account you registered earlier
             </Typography>
-            <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                <div className="mb-1 flex flex-col gap-6">
-                    <Typography variant="h6" color="blue-gray" className="-mb-3">
-                        Your Email
-                    </Typography>
-                    <Input
-                        size="lg"
+            <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <div className="mb-5 flex flex-col gap-6">
+                    <InputForm
+                        title="Your Email"
+                        type="email"
                         placeholder="name@mail.com"
-                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                            className: "before:content-none after:content-none",
-                        }}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        errorsText={errors.email}
                     />
-                    <Typography variant="h6" color="blue-gray" className="-mb-3">
-                        Password
-                    </Typography>
-                    <Input
+                    <InputForm
+                        title="Password"
                         type="password"
-                        size="lg"
                         placeholder="********"
-                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                            className: "before:content-none after:content-none",
-                        }}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        errorsText={errors.password}
                     />
                 </div>
                 <Checkbox
@@ -59,7 +77,10 @@ function LoginForm(onLogin = () => { }, onSubmit) {
                     }
                     containerProps={{ className: "-ml-2.5" }}
                 />
-                <Button className="mt-6" fullWidth onClick={onLogin}>
+                <Button
+                    className="mt-6"
+                    fullWidth
+                    onClick={onLogin}>
                     Login
                 </Button>
                 <Typography color="gray" className="mt-4 text-center font-normal">
