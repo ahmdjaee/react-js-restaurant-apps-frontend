@@ -17,7 +17,24 @@ async function getMenu(controller) {
     } catch (error) {
         console.log(error.message)
     }
+}
+async function getMenuDetail(id, controller) {
+    try {
+        const response = await fetch(BASE_URL + "/menus/" + id, {
+            signal: controller.signal,
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
 
+        if (response.status === 404) {
+            throw new Error(response.json());
+        }
+
+        return response.json();
+    } catch (error) {
+        console.log(error.message)
+    }
 }
 
-export { getMenu }
+export { getMenu, getMenuDetail }

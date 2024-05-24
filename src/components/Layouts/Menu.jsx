@@ -2,6 +2,7 @@ import CardMenu from "../Fragments/Card/CardMenu"
 import dish2 from "../../assets/dish-2.svg"
 import { useEffect, useState } from "react"
 import { getMenu } from "../../services/MenuService"
+
 function Menu() {
     const [menus, setMenus] = useState([])
     const [loading, setLoading] = useState(false)
@@ -41,10 +42,10 @@ function Menu() {
                 </>
                 : <>
                     {CartMenuLayout("Makanan", menus.filter(menu => menu.category.name === "Makanan").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link="/menus/detail" />
+                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}/detail`} />
                     }))}
                     {CartMenuLayout("Minuman", menus.filter(menu => menu.category.name === "Minuman").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link="/menus/detail" />
+                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}/detail`} />
                     }))}
                 </>
             }

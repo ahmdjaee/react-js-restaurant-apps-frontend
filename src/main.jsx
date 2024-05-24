@@ -10,7 +10,7 @@ import Home from './components/Layouts/Home.jsx';
 import Menu from './components/Layouts/Menu.jsx';
 import About from './components/Layouts/About.jsx';
 import Contact from './components/Layouts/Contact.jsx';
-import Detail from './components/Layouts/Detail.jsx';
+import Detail, { loader as menuLoader } from './components/Layouts/Detail.jsx';
 import Cart from './components/Layouts/Cart.jsx';
 import Login from './pages/login.jsx';
 import ErrorPageNotFound from './pages/errors.jsx';
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPageNotFound/>,
+    errorElement: <ErrorPageNotFound />,
     children: [
       {
         path: "/",
@@ -31,8 +31,9 @@ const router = createBrowserRouter([
         element: <Menu />,
       },
       {
-        path: "/menus/detail",
+        path: "/menus/:id/detail",
         element: <Detail />,
+        loader: menuLoader
       },
       {
         path: "/events",

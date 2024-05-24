@@ -1,4 +1,4 @@
-import { BASE_URL } from "./Api.js";
+import { BASE_URL, token } from "./Api.js";
 
 async function register(data) {
     try {
@@ -45,6 +45,22 @@ async function login(data) {
 
 }
 
-export { register, login }
+async function logout() {
+    try {
+        const response = await fetch(BASE_URL + "/users/logout",
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            }
+        );
+        return response.json();
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+export { register, login, logout }
 
 

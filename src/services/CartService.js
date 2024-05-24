@@ -19,4 +19,26 @@ async function getCartItem(controller) {
     }
 }
 
+async function addCartItem(data, controller) {
+    try {
+        const response = await fetch(BASE_URL + "/carts", {
+            method: "POST",
+            signal: controller.signal,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.status === 404) {
+            throw new Error("Error " + response.status + " " + response.statusText);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 export { getCartItem }

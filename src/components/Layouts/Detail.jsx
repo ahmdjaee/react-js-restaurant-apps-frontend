@@ -1,22 +1,33 @@
 import { Button, Input } from "@material-tailwind/react";
 import { useState } from "react";
 import TextCurrency from "../Elements/Text/TextCurrency";
+import { getMenuDetail } from "../../services/MenuService";
+import { useLoaderData } from "react-router-dom";
+
+export async function loader({ params }) {
+    const controller = new AbortController();
+    const menu = await getMenuDetail(params.id, controller);
+    const data = menu.data
+    return { data };
+}
 
 function Detail() {
+    const { data } = useLoaderData();
+
     const [quantity, setQuantity] = useState(1);
     const onChange = ({ target }) => setQuantity(target.value);
-    const subTotal = quantity * 15_000
+    const subTotal = quantity * data.price
 
     if (quantity < 1) setQuantity(1)
 
     return (
-        <div className="container flex items-center">
+        <div className="container flex items-center pt-14">
             <a className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" href="/menus">&#x2B9C; Menu</a>
-            <img className="w-1/2" src="https://d2vuyvo9qdtgo9.cloudfront.net/foods/February2024/Ds1IINpwAliKBeubG3QM.webp" alt="" />
+            <img className="w-1/2 max-h-96" src={data.image} alt="" />
             <div className="w-1/2">
-                <h1 className="text-5xl font-semibold">Lorem ipsum dolor sit amet</h1>
-                <p className="text-base my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <TextCurrency fontWeight={"font-bold"} text={15_000} />
+                <h1 className="text-5xl font-semibold">{data.name}</h1>
+                <p className="text-base my-4">{data.description}</p>
+                <TextCurrency fontWeight={"font-bold"} text={data.price} />
                 <div className="relative flex w-full gap-5 max-w-[30rem] mt-5">
                     <Input
                         type="number"

@@ -18,4 +18,6 @@ async function getTable(controller) {
         console.log(error);
     }
 }
+
+
 export { getTable }
