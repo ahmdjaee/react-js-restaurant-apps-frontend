@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import dish3 from "../../assets/dish-3.svg"
 
 function About() {

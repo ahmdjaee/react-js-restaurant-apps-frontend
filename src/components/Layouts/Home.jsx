@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import OvalButton from "../Elements/Button/OvalButton"
 import CardCustomer from "../Fragments/Card/CardCustomer"
@@ -13,14 +13,24 @@ import HeroImage from "./../../assets/hero.svg"
 import HeroImage2 from "./../../assets/hero2.svg"
 import Instagram from "./../../assets/instagram.svg"
 import Twitter from "./../../assets/twitter.svg"
+import { getTable } from "../../services/TableService"
 
 function Home() {
     const [showModal, setShowModal] = useState(false)
+    const [data, setData] = useState([]);
+    const controller = new AbortController();
 
+    async function fetchTable() {
+        const response = await getTable(controller)
+
+        if (response.data) {
+            setData(response.data)
+        }
+    }
     return (
         <>
-            <Modal showModal={showModal} >
-                <BookingForm onCancel={() => setShowModal(false)} />
+            <Modal onKeyDown={() => setShowModal(false)} showModal={showModal} >
+                <BookingForm tables={data} onCancel={() => setShowModal(false)} />
             </Modal>
 
             <section className="container flex items-center pt-8 pb-16">
@@ -29,7 +39,10 @@ function Home() {
                     <p className="text-base my-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     <Link to={"/menus"}><OvalButton text="Menu" type="dark" style="me-5" /></Link>
 
-                    <OvalButton text="Book A table" onClick={() => setShowModal(true)} />
+                    <OvalButton text="Book A table" onClick={() => {
+                        setShowModal(true)
+                        fetchTable()
+                    }} />
                     <div className="flex gap-4 mt-20">
                         <img src={Facebook} alt="" />
                         <img src={Instagram} alt="" />

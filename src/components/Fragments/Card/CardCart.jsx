@@ -1,10 +1,11 @@
-export default function CardCart() {
+export default function CardCart({ image, title, description, quantity }) {
     return (
-        <div className="bg-white w-full rounded-lg h-40 mx-auto p-5 flex">
-            <img className="" src="https://d2vuyvo9qdtgo9.cloudfront.net/foods/February2024/Ds1IINpwAliKBeubG3QM.webp" alt="" />
-            <div className="mx-5 text-ellipsis">
-                <p className="text-smn font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quod nesciunt ex.</p>
-                <p className="text-sm">Lorem ipsum dolor sit amet</p>
+        <div className="bg-white flex-grow rounded-lg h-40 p-5 flex">
+            <img className="w-36 object-cover" src={image} alt="" />
+            <div className="mx-5 text-ellipsis flex-grow flex flex-col">
+                <p className=" font-semibold">{title}</p>
+                <p className="text-sm flex-grow">{description}</p>
+                <p className="font-semibold text-sm text-end">Quantity : {quantity}</p>
             </div>
         </div>
     )

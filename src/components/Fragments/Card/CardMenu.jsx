@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom"
-import TextCurrency from "../../Elements/Text/TextCurrency"
+import { Link } from "react-router-dom";
+import TextCurrency from "../../Elements/Text/TextCurrency";
+import PropTypes from 'prop-types';
+
 function CardMenu({ image, title, price, link }) {
     return (
         <Link to={link}>
@@ -12,4 +14,10 @@ function CardMenu({ image, title, price, link }) {
     )
 }
 
+CardMenu.propTypes = {
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    link: PropTypes.string.isRequired,
+};
 export default CardMenu

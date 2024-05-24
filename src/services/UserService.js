@@ -1,8 +1,8 @@
-import Api from "./Api.js";
+import { BASE_URL } from "./Api.js";
 
 async function register(data) {
     try {
-        const response = await fetch(Api.BASE_URL + "/users/register", {
+        const response = await fetch(BASE_URL + "/users/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,7 +26,7 @@ async function register(data) {
 
 async function login(data) {
     try {
-        const response = await fetch(Api.BASE_URL + "/users/login", {
+        const response = await fetch(BASE_URL + "/users/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

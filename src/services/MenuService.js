@@ -1,9 +1,12 @@
-import Api from "./Api.js";
+import { BASE_URL } from "./Api.js";
 
 async function getMenu(controller) {
     try {
-        const response = await fetch(Api.BASE_URL + "/menus",{
-            signal : controller.signal
+        const response = await fetch(BASE_URL + "/menus", {
+            signal: controller.signal,
+            headers: {
+                "Content-Type": "application/json",
+            }
         });
 
         if (response.status === 404) {

@@ -2,33 +2,27 @@ import {
     Button,
     Card,
     Checkbox,
-    Input,
     Typography,
 } from "@material-tailwind/react";
 import InputForm from "../../Elements/Input/InputForm";
 import { useState } from "react";
 import { login } from "../../../services/UserService";
-import { CookiesProvider, useCookies } from "react-cookie";
 
 function LoginForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errors, setErrors] = useState({})
-    const [cookies, setCookie] = useCookies(['X-LGN-TOKEN'])
-
     async function onLogin() {
         const response = await login({ email, password })
 
-        const errors = response.errors
-        if (errors) {
-            setErrors(errors)
+        if (response.errors) {
+            setErrors(response.errors)
         }
 
-        const success = response.data
-        if (success) {
-            setCookie('X-LGN-TOKEN', success.token, { path: '/' })
-            setCookie('X-NAME', success.name, { path: '/' })
+        if (response.data) {
             window.location.href = "/";
+            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("user", JSON.stringify(response.data))
         }
 
     }
