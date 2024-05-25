@@ -33,7 +33,7 @@ function Home() {
                 <BookingForm tables={data} onCancel={() => setShowModal(false)} />
             </Modal>
 
-            <section className="container flex items-center pt-8 pb-16">
+            <section className="container justify-between flex items-center pt-8 pb-16">
                 <div className="w-2/5 animate-left-slide-in">
                     <h1 className="text-5xl font-semibold">We provide the best food for you</h1>
                     <p className="text-base my-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>

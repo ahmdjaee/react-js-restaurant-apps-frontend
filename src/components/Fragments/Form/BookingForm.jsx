@@ -71,7 +71,6 @@ export default function BookingForm({ onCancel, tables }) {
                 >Cancel</Button>
 
                 <Button
-                    color="text-primary"
                     className="bg-primary w-40"
                     type="submit"
                     disabled={false}

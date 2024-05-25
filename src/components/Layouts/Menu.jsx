@@ -42,10 +42,10 @@ function Menu() {
                 </>
                 : <>
                     {CartMenuLayout("Makanan", menus.filter(menu => menu.category.name === "Makanan").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}/detail`} />
+                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}`} />
                     }))}
                     {CartMenuLayout("Minuman", menus.filter(menu => menu.category.name === "Minuman").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}/detail`} />
+                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}`} />
                     }))}
                 </>
             }

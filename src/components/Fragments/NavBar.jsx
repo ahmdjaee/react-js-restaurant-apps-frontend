@@ -15,11 +15,14 @@ import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { logout } from '../../services/UserService';
+import { Badge } from '@mui/joy';
+import { getCartItem } from '../../services/CartService';
 
 function NavBar() {
     const user = JSON.parse(localStorage.getItem("user"))
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
+    const [totalQuantity, setTotalQuantity] = React.useState(0);
     const toggleDrawer = (inOpen) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -27,6 +30,18 @@ function NavBar() {
 
         setOpen(inOpen);
     };
+
+    // React.useEffect(() => {
+    //     async function fetchData() {
+    //         const controller = new AbortController();
+    //         const response = await getCartItem(controller);
+
+    //         const totalQuantity = response.data.reduce((total, cart) => total + cart.quantity, 0);
+
+    //         setTotalQuantity(totalQuantity)
+    //     }
+    //     fetchData();
+    // }, []);
 
     const handleLogout = async () => {
         localStorage.removeItem("user")
@@ -41,8 +56,12 @@ function NavBar() {
             <nav className="container py-6 flex items-center justify-between">
                 <Logo home={"/"} />
                 <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
-                <div className="flex gap-10 items-center">
-                    <Link to={"/carts"}><i className="fa-solid fa-shopping-cart fa-xl" ></i></Link>
+                <div className="flex gap-12 items-center">
+                    <Link to={"/carts"}>
+                        <Badge color='neutral' variant='soft' size='sm' badgeContent={totalQuantity} badgeInset="-50%">
+                            <i className="fa-solid fa-shopping-cart fa-xl " ></i>
+                        </Badge>
+                    </Link>
                     {user
                         ? <p className="font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
@@ -81,7 +100,6 @@ function NavBar() {
             <Modal open={openDialog} onClose={() => setOpenDialog(false)}>
                 <ModalDialog variant="outlined" role="alertdialog">
                     <DialogTitle>
-                        {/* <WarningRoundedIcon /> */}
                         Confirmation
                     </DialogTitle>
                     <Divider />
@@ -89,7 +107,7 @@ function NavBar() {
                         Some data will be lost. Are you sure want to logout?
                     </DialogContent>
                     <DialogActions>
-                        <Button variant="solid" color="red" onClick={handleLogout}>
+                        <Button color="red" onClick={handleLogout}>
                             Logout
                         </Button>
                         <Button variant="text" color="black" onClick={() => setOpenDialog(false)}>

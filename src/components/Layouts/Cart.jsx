@@ -3,10 +3,21 @@ import Spacer from "../Elements/Spacer/Spacer"
 import CardCart from "../Fragments/Card/CardCart"
 import CardReservation from "../Fragments/Card/CardReservation"
 import { getCartItem } from "../../services/CartService"
+import {
+    Button,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Divider,
+    Modal,
+    ModalDialog
+} from "@mui/joy"
+
 function Cart() {
 
     const [carts, setCarts] = useState([])
     const [loading, setLoading] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
 
     useEffect(() => {
         const controller = new AbortController();
@@ -26,28 +37,56 @@ function Cart() {
     }, [])
 
     return (
-        <section className="h-full bg-gray-200 py-5">
-            <div className="container pb-5 flex gap-10">
-                <div className="w-full h-screen ">
+        <section className="bg-gray-200 flex-grow py-5">
+            <div className="container h-full pb-5 flex gap-10">
+                <div className="flex-grow h-min">
                     {loading
                         ? Array.from({ length: 4 }, (_, i) => (
-                            <div className="w-full " >
+                            <div key={i} className="w-full " >
                                 <div className="bg-white flex-grow rounded-lg h-40 p-5 flex ">
                                     <div className="w-36 bg-gray-200 animate-pulse" />
-                                    <div className="h-4 bg-gray-200 flex-grow mx-5"></div>
+                                    <div className="h-4 bg-gray-200 flex-grow mx-5" />
                                 </div>
                                 <Spacer modifier={"h-2"} />
                             </div>
                         ))
                         : carts.map((cart) => (
-                            <div className="w-full" key={cart.id}>
-                                <CardCart image={cart.menu.image} title={cart.menu.name} description={cart.menu.description} quantity={cart.quantity} />
+                            <div className=" h-min" key={cart.id}>
+                                <CardCart
+                                    id={cart.menu.id}
+                                    image={cart.menu.image}
+                                    title={cart.menu.name}
+                                    description={cart.menu.description}
+                                    quantity={cart.quantity}
+                                    price={cart.menu.price}
+                                    onDelete={() => setOpenDialog(true)}
+                                />
                                 <Spacer modifier={"h-2"} />
                             </div>
                         ))}
                 </div>
                 <CardReservation />
             </div>
+
+            <Modal open={openDialog} onClose={() => setOpenDialog(false)}>
+                <ModalDialog variant="outlined" role="alertdialog">
+                    <DialogTitle>
+                        Confirmation
+                    </DialogTitle>
+                    <Divider />
+                    <DialogContent >
+                        Are you sure want to delete this data?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="solid" color="danger" onClick={() => { }}>
+                            Delete
+                        </Button>
+                        <Button variant="text" color="black" onClick={() => setOpenDialog(false)}>
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </ModalDialog>
+            </Modal>
         </section>
     )
 }

@@ -35,10 +35,10 @@ async function addCartItem(data, controller) {
             throw new Error("Error " + response.status + " " + response.statusText);
         }
 
-        return response.json();
+        return response;
     } catch (error) {
         console.log(error.message)
     }
 }
 
-export { getCartItem }
+export { getCartItem, addCartItem }

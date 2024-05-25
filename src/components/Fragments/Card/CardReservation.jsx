@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react"
 export default function CardReservation() {
     const reservation = JSON.parse(sessionStorage.getItem("reservation"))
     return (
-        <div className="w-[32rem] bg-white rounded-lg h-min px-5 py-7">
+        <div className="w-[22rem] bg-white rounded-lg h-min px-5 py-7">
             {reservation
                 ? <>
                     {AfterReservation(reservation)}

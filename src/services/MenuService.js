@@ -18,10 +18,9 @@ async function getMenu(controller) {
         console.log(error.message)
     }
 }
-async function getMenuDetail(id, controller) {
+async function getMenuDetail(id) {
     try {
         const response = await fetch(BASE_URL + "/menus/" + id, {
-            signal: controller.signal,
             headers: {
                 "Content-Type": "application/json",
             }

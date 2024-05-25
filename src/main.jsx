@@ -31,9 +31,10 @@ const router = createBrowserRouter([
         element: <Menu />,
       },
       {
-        path: "/menus/:id/detail",
+        path: "/menus/:id",
         element: <Detail />,
-        loader: menuLoader
+        loader: menuLoader,
+        
       },
       {
         path: "/events",
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/carts",
-        element: <Cart />
+        element: <Cart />,
       }
     ],
   },

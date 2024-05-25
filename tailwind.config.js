@@ -30,6 +30,7 @@ export default withMT({
       animation: {
         'spin-slow': 'spin 15s linear infinite',
         'right-slide-in': 'right-slide-in 1s ease-in-out',
+        'right-slide-in-fast': 'right-slide-in 0.3s ease-in-out',
         'left-slide-in': 'left-slide-in 1s ease-in-out',
         'bottom-slide-in': 'bottom-slide-in 1s ease-out',
       },
