@@ -1,4 +1,3 @@
-import NavBar from "../../components/Fragments/NavBar";
 
 export default function Order() {
     return (

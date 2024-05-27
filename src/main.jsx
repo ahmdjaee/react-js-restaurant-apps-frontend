@@ -6,11 +6,11 @@ import {
 } from "react-router-dom";
 import './index.css'
 import Root from './pages/root.jsx'
-import Home from './pages/home/Home.jsx';
+import Home from './pages/home/home.jsx';
 import Menu from './pages/menus/menus.jsx';
-import About from './pages/about/About.jsx';
-import Contact from './pages/contact/Contact.jsx';
-import Detail, { loader as menuLoader } from './pages/menus/Detail.jsx';
+import About from './pages/about/about.jsx';
+import Contact from './pages/contact/contact.jsx';
+import Detail, { loader as menuLoader } from './pages/menus/detail.jsx';
 import Cart from './pages/carts/carts.jsx';
 import Login from './pages/login/login.jsx';
 import ErrorPageNotFound from './pages/errors/errors.jsx';

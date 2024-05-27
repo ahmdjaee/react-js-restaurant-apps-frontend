@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import OvalButton from "../../components/Elements/Button/OvalButton"
 import CardCustomer from "../../components/Fragments/Card/CardCustomer"
@@ -15,7 +15,7 @@ import Instagram from "./../../assets/instagram.svg"
 import Twitter from "./../../assets/twitter.svg"
 import { getTable } from "../../services/TableService"
 
-function Home() {
+export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
     const controller = new AbortController();
@@ -131,5 +131,3 @@ function Home() {
     )
 
 }
-
-export default Home
