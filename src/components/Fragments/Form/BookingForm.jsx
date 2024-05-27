@@ -23,7 +23,7 @@ export default function BookingForm({ onCancel, tables }) {
                 <Chip
                     color={getChipColor(item.status)}
                     onClick={function () { }}
-                    variant="solid"
+                    variant="outlined"
                     sx={{
                         ml: 'auto',
                         fontSize: "12px",
