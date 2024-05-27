@@ -1,11 +1,39 @@
 import { Button, Typography, Textarea, Input } from "@material-tailwind/react";
-import { Select, Option } from "@mui/joy";
+import { Select, Option, Chip, Box } from "@mui/joy";
 
+function getChipColor(text) {
+    switch (text) {
+        case "available":
+            return "success";
+        case "booked":
+            return "warning";
+        default:
+            return "danger";
+    }
+}
 export default function BookingForm({ onCancel, tables }) {
 
     const listTable = tables
-        .filter(item => item.status === "available")
-        .map(item => <Option className="font-semibold" value={item.id} key={item.id}>{item.no} ✅</Option>);
+        .map(item =>
+        (
+            <Option className="font-semibold" value={item.id} key={item.id}>
+                <Box component="span" sx={{ display: 'block' }}>
+                    <p className="font-semibold">T{item.no}</p>
+                </Box>
+                <Chip
+                    color={getChipColor(item.status)}
+                    onClick={function () { }}
+                    variant="solid"
+                    sx={{
+                        ml: 'auto',
+                        fontSize: "12px",
+                        paddingX: "10px",
+                    }}
+                >
+                    {item.status}
+                </Chip>
+            </Option>)
+        );
 
 
     function onSubmit(event) {
@@ -36,7 +64,7 @@ export default function BookingForm({ onCancel, tables }) {
                         ))}
                     </Select>
                     <Typography variant="h6" className="mt-3">Select an available table </Typography>
-                    <Select name="table" placeholder="Select options">
+                    <Select name="table" placeholder="Select table">
                         {listTable}
                     </Select>
                     <div className="flex">
@@ -59,7 +87,7 @@ export default function BookingForm({ onCancel, tables }) {
                         <li className="text-yellow-500">&#11200; <span className="text-black">Booked</span></li>
                         <li className="text-deep-purple-600">&#11200; <span className="text-black">Used</span></li>
                     </ul>
-                    <div className="card w-50 h-60 bg-gray-100">Denah table</div>
+                    <img src="" alt="" />
                 </div>
 
             </div>

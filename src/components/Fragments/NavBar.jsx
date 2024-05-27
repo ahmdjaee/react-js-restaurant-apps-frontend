@@ -75,16 +75,17 @@ function NavBar({ children, navLink = true }) {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        {/* {['Order', 'Starred', 'Send email', 'Drafts'].map((text) => (
-                            <ListItem key={text}>
-                                <ListItemButton>{text}</ListItemButton>
-                            </ListItem>
-                        ))} */}
-                        <Link to={"/transactions"}>
-                            <ListItem >
-                                <ListItemButton>Transaction</ListItemButton>
-                            </ListItem>
-                        </Link>
+                        {[
+                            ['Profile', '/profile'],
+                            ['Transaction', '/transactions'],
+                        ].map(([title, url]) => (
+                            <Link key={title} to={url}>
+                                <ListItem >
+                                    <ListItemButton>{title}</ListItemButton>
+                                </ListItem>
+                            </Link>
+                        ))
+                        }
                     </List>
                     <Divider />
                     <List>

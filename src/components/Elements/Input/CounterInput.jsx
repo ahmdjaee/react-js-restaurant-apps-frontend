@@ -6,7 +6,7 @@ export default function CounterInput({ value = 1, onChange }) {
 
     const decrement = () => {
         setQuantity(prevValue => prevValue - 1);
-        onChange && onChange(quantity - 1);
+        if (quantity > 1) onChange && onChange(quantity - 1);
     };
 
     const increment = () => {
@@ -29,7 +29,7 @@ export default function CounterInput({ value = 1, onChange }) {
                     readOnly
                     onChange={(e) => {
                         setQuantity(e.target.value)
-                        onChange && onChange(e.target.value)
+                        onChange(e.target.value)
                     }}
                 />
                 <button onClick={increment} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer" data-action="increment">

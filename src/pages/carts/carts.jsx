@@ -16,19 +16,20 @@ import CustomSnackbar from "../../components/Elements/Indicator/CustomSnackbar"
 import useCarts from "../../hooks/carts/useCartItem"
 import { updateCartItem } from "../../services/Axios"
 
+export 
 function Cart() {
 
     const [carts, loading] = useCarts();
     const [openDialog, setOpenDialog] = useState(false)
     const [success, setSuccess] = useState(false)
     const [id, setId] = useState(null)
-    const [quantity, setQuantity] = useState(null)
+    const [quantity, setQuantity] = useState(1)
     const [delayedQuantity, setDelayedQuantity] = useState(quantity)
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setQuantity(delayedQuantity)
-        }, 1000);
+        }, 200);
 
         return () => clearTimeout(timer)
     }, [delayedQuantity])
@@ -53,25 +54,25 @@ function Cart() {
     }
 
     useEffect(() => {
-        updateCartItem(id, quantity).then(() => {
-            setSuccess(true);
-            setTimeout(() => {
-                setSuccess(false)
-            }, 1500);
-        }).catch((err) => {
-            console.log(err);
-        })
+        if (id !== null) {
+            updateCartItem(id, quantity).then(() => {
+                setSuccess(true);
+                setTimeout(() => {
+                    setSuccess(false)
+                }, 1500);
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
 
     }, [quantity])
 
-
-
     return (
         <section className="bg-gray-200 flex-grow py-5">
-            {success && <CustomSnackbar text="Successfully update item to cart" />}
+            {success && <CustomSnackbar text="Successfully update cart item" />}
             <div className="container h-full pb-5 flex gap-10">
                 <div className="flex-grow h-min">
-                    {loading 
+                    {loading
                         ? Array.from({ length: 4 }, (_, i) => (
                             <div key={i} className="w-full " >
                                 <div className="bg-white flex-grow rounded-lg h-40 p-5 flex ">
