@@ -1,19 +1,17 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 
 export default function CounterInput({ value = 1, onChange }) {
     const [quantity, setQuantity] = useState(value);
-    if (quantity < 1) setQuantity(1)
-
-    useEffect(() => {
-        onChange(quantity)
-    }, [quantity])
+    quantity < 1 && setQuantity(1)
 
     const decrement = () => {
         setQuantity(prevValue => prevValue - 1);
+        onChange && onChange(quantity - 1);
     };
 
     const increment = () => {
         setQuantity(prevValue => prevValue + 1);
+        onChange && onChange(quantity + 1);
     };
 
     return (
@@ -27,7 +25,12 @@ export default function CounterInput({ value = 1, onChange }) {
                     inputMode="numeric"
                     pattern="\d*"
                     className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-gray-700" name="custom-input-number"
-                    value={quantity} onChange={(e) => setQuantity(e.target.value)}
+                    value={quantity}
+                    readOnly
+                    onChange={(e) => {
+                        setQuantity(e.target.value)
+                        onChange && onChange(e.target.value)
+                    }}
                 />
                 <button onClick={increment} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer" data-action="increment">
                     <span className="m-auto text-2xl font-thin">+</span>

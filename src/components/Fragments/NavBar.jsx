@@ -18,11 +18,10 @@ import { logout } from '../../services/UserService';
 import { Badge } from '@mui/joy';
 import { getCartItem } from '../../services/CartService';
 
-function NavBar() {
+function NavBar({ children, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
-    const [totalQuantity, setTotalQuantity] = React.useState(0);
     const toggleDrawer = (inOpen) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -55,13 +54,12 @@ function NavBar() {
         <>
             <nav className="container py-6 flex items-center justify-between">
                 <Logo home={"/"} />
-                <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
+                {
+                    navLink && <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
+                }
+
                 <div className="flex gap-12 items-center">
-                    <Link to={"/carts"}>
-                        <Badge color='neutral' variant='soft' size='sm' badgeContent={totalQuantity} badgeInset="-50%">
-                            <i className="fa-solid fa-shopping-cart fa-xl " ></i>
-                        </Badge>
-                    </Link>
+                    {children}
                     {user
                         ? <p className="font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
@@ -77,19 +75,24 @@ function NavBar() {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
+                        {/* {['Order', 'Starred', 'Send email', 'Drafts'].map((text) => (
                             <ListItem key={text}>
                                 <ListItemButton>{text}</ListItemButton>
                             </ListItem>
-                        ))}
+                        ))} */}
+                        <Link to={"/transactions"}>
+                            <ListItem >
+                                <ListItemButton>Transaction</ListItemButton>
+                            </ListItem>
+                        </Link>
                     </List>
                     <Divider />
                     <List>
-                        {['All mail', 'Trash', 'Spam'].map((text) => (
+                        {/* {['All mail', 'Trash', 'Spam'].map((text) => (
                             <ListItem key={text}>
                                 <ListItemButton>{text}</ListItemButton>
                             </ListItem>
-                        ))}
+                        ))} */}
                         <ListItem>
                             <ListItemButton onClick={() => setOpenDialog(true)}>Logout </ListItemButton>
                         </ListItem>

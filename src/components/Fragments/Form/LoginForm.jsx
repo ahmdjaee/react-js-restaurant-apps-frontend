@@ -74,7 +74,7 @@ function LoginForm() {
                 <Button
                     className="mt-6"
                     fullWidth
-                    onClick={onLogin}>
+                    onClick={() => onLogin()}>
                     Login
                 </Button>
                 <Typography color="gray" className="mt-4 text-center font-normal">

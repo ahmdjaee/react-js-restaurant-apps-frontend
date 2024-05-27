@@ -1,5 +1,5 @@
-import LoginForm from "../components/Fragments/Form/LoginForm";
-import Authentication from "../components/Layouts/Authentication";
+import LoginForm from "../../components/Fragments/Form/LoginForm";
+import Authentication from "../../components/Layouts/Authentication";
 
 function Login() {
     return (

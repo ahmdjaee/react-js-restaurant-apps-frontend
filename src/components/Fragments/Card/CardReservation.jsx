@@ -1,4 +1,5 @@
 import { Button } from "@material-tailwind/react"
+import { Link } from "react-router-dom"
 export default function CardReservation() {
     const reservation = JSON.parse(sessionStorage.getItem("reservation"))
     return (
@@ -6,7 +7,8 @@ export default function CardReservation() {
             {reservation
                 ? <>
                     {AfterReservation(reservation)}
-                    <Button className="bg-primary my-5 w-full">Checkout</Button>
+
+                    <Link to={"/order"} ><Button className="bg-primary my-5 w-full">Checkout</Button></Link>
                 </>
                 : <>
                     <p className="text-center">No reservation</p>

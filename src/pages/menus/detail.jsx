@@ -1,11 +1,11 @@
 import { Button } from "@material-tailwind/react";
 import { useState } from "react";
-import TextCurrency from "../Elements/Text/TextCurrency";
+import TextCurrency from "../../components/Elements/Text/TextCurrency";
 import { getMenuDetail } from "../../services/MenuService";
 import { addCartItem } from "../../services/CartService";
 import { useLoaderData } from "react-router-dom";
-import CounterInput from "../Elements/Input/CounterInput";
-import CustomSnackbar from "../Elements/Indicator/CustomSnackbar";
+import CounterInput from "../../components/Elements/Input/CounterInput";
+import CustomSnackbar from "../../components/Elements/Indicator/CustomSnackbar";
 
 export async function loader({ params }) {
     const menu = await getMenuDetail(params.id);

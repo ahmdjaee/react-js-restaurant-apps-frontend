@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
-import Spacer from "../Elements/Spacer/Spacer"
-import CardCart from "../Fragments/Card/CardCart"
-import CardReservation from "../Fragments/Card/CardReservation"
-import { getCartItem } from "../../services/CartService"
+import { useState, useEffect, useDeferredValue, useCallback } from "react"
+import Spacer from "../../components/Elements/Spacer/Spacer"
+import CardCart from "../../components/Fragments/Card/CardCart"
+import CardReservation from "../../components/Fragments/Card/CardReservation"
+import { deleteCartItem } from "../../services/CartService"
 import {
     Button,
     DialogActions,
@@ -12,35 +12,66 @@ import {
     Modal,
     ModalDialog
 } from "@mui/joy"
+import CustomSnackbar from "../../components/Elements/Indicator/CustomSnackbar"
+import useCarts from "../../hooks/carts/useCartItem"
+import { updateCartItem } from "../../services/Axios"
 
 function Cart() {
 
-    const [carts, setCarts] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [carts, loading] = useCarts();
     const [openDialog, setOpenDialog] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [id, setId] = useState(null)
+    const [quantity, setQuantity] = useState(null)
+    const [delayedQuantity, setDelayedQuantity] = useState(quantity)
 
     useEffect(() => {
-        const controller = new AbortController();
+        const timer = setTimeout(() => {
+            setQuantity(delayedQuantity)
+        }, 1000);
 
-        async function fetchData() {
-            setLoading(true)
-            const response = await getCartItem(controller);
+        return () => clearTimeout(timer)
+    }, [delayedQuantity])
 
-            if (response.data !== undefined) {
-                setCarts(response.data)
-                setLoading(false)
-            }
+
+    async function onDelete() {
+        const response = await deleteCartItem(id);
+
+        if (response.errors) {
+            console.log('errorrrr');
         }
 
-        fetchData();
-        return () => controller.abort();
-    }, [])
+        if (response.data) {
+            setSuccess(true);
+            setOpenDialog(false)
+            carts.splice(carts.findIndex(cart => cart.id === id), 1)
+            setTimeout(() => {
+                setSuccess(false)
+            }, 1500);
+        }
+
+    }
+
+    useEffect(() => {
+        updateCartItem(id, quantity).then(() => {
+            setSuccess(true);
+            setTimeout(() => {
+                setSuccess(false)
+            }, 1500);
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }, [quantity])
+
+
 
     return (
         <section className="bg-gray-200 flex-grow py-5">
+            {success && <CustomSnackbar text="Successfully update item to cart" />}
             <div className="container h-full pb-5 flex gap-10">
                 <div className="flex-grow h-min">
-                    {loading
+                    {loading 
                         ? Array.from({ length: 4 }, (_, i) => (
                             <div key={i} className="w-full " >
                                 <div className="bg-white flex-grow rounded-lg h-40 p-5 flex ">
@@ -59,7 +90,14 @@ function Cart() {
                                     description={cart.menu.description}
                                     quantity={cart.quantity}
                                     price={cart.menu.price}
-                                    onDelete={() => setOpenDialog(true)}
+                                    onChangeQuantity={(e) => {
+                                        setDelayedQuantity(e)
+                                        setId(cart.id)
+                                    }}
+                                    onDelete={() => {
+                                        setOpenDialog(true)
+                                        setId(cart.id)
+                                    }}
                                 />
                                 <Spacer modifier={"h-2"} />
                             </div>
@@ -78,7 +116,7 @@ function Cart() {
                         Are you sure want to delete this data?
                     </DialogContent>
                     <DialogActions>
-                        <Button variant="solid" color="danger" onClick={() => { }}>
+                        <Button variant="solid" color="danger" onClick={onDelete}>
                             Delete
                         </Button>
                         <Button variant="text" color="black" onClick={() => setOpenDialog(false)}>

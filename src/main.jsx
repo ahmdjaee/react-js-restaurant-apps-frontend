@@ -6,15 +6,17 @@ import {
 } from "react-router-dom";
 import './index.css'
 import Root from './pages/root.jsx'
-import Home from './components/Layouts/Home.jsx';
-import Menu from './components/Layouts/Menu.jsx';
-import About from './components/Layouts/About.jsx';
-import Contact from './components/Layouts/Contact.jsx';
-import Detail, { loader as menuLoader } from './components/Layouts/Detail.jsx';
-import Cart from './components/Layouts/Cart.jsx';
-import Login from './pages/login.jsx';
-import ErrorPageNotFound from './pages/errors.jsx';
-import Register from './pages/register.jsx';
+import Home from './pages/home/Home.jsx';
+import Menu from './pages/menus/menus.jsx';
+import About from './pages/about/About.jsx';
+import Contact from './pages/contact/Contact.jsx';
+import Detail, { loader as menuLoader } from './pages/menus/Detail.jsx';
+import Cart from './pages/carts/carts.jsx';
+import Login from './pages/login/login.jsx';
+import ErrorPageNotFound from './pages/errors/errors.jsx';
+import Register from './pages/register/register.jsx';
+import Order from './pages/order/order.jsx';
+import Transaction from './pages/transactions/transactions.jsx';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
         path: "/menus/:id",
         element: <Detail />,
         loader: menuLoader,
-        
+
       },
       {
         path: "/events",
@@ -61,7 +63,16 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
-  }
+  },
+  {
+    path: "/order",
+    element: <Order />
+  },
+  {
+    path: "/transactions",
+    element: <Transaction />
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

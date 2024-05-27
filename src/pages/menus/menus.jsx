@@ -1,4 +1,4 @@
-import CardMenu from "../Fragments/Card/CardMenu"
+import CardMenu from "../../components/Fragments/Card/CardMenu"
 import dish2 from "../../assets/dish-2.svg"
 import { useEffect, useState } from "react"
 import { getMenu } from "../../services/MenuService"
