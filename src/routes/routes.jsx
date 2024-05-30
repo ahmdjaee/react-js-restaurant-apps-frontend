@@ -12,10 +12,11 @@ import ErrorPageNotFound from '../pages/errors/errors.jsx';
 import Register from '../pages/register/register.jsx';
 import Order from '../pages/order/order.jsx';
 import Transaction from '../pages/transactions/transactions.jsx';
+import Payment from "../pages/payment/payment.jsx";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route>
+        <>
             <Route path="/" element={<Root />}>
                 <Route index element={<Home />} />
                 <Route path="menus" element={<Menu />} />
@@ -29,8 +30,9 @@ export const router = createBrowserRouter(
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="order" element={<Order />} />
+            <Route path="payment" element={<Payment />} />
             <Route path="transactions" element={<Transaction />} />
             <Route path="*" element={<ErrorPageNotFound />} />
-        </Route>
+        </>
     )
 );

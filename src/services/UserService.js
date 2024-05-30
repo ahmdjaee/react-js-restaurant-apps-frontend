@@ -1,4 +1,4 @@
-import { BASE_URL, token } from "./Api.js";
+import { BASE_URL, token } from "./config.js";
 
 async function register(data) {
     try {

@@ -1,9 +1,8 @@
 import CardMenu from "../../components/Fragments/Card/CardMenu"
-import dish2 from "../../assets/dish-2.svg"
 import { useEffect, useState } from "react"
 import { getMenu } from "../../services/MenuService"
 
-function Menu() {
+export default function Menu() {
     const [menus, setMenus] = useState([])
     const [loading, setLoading] = useState(false)
 
@@ -25,7 +24,7 @@ function Menu() {
     }, [])
 
     return (
-        <div className="container flex flex-col gap-24">
+        <div className="container flex flex-col gap-5">
             {loading
                 ? <>
                     <div className="mt-10" key="Makanan">
@@ -41,12 +40,25 @@ function Menu() {
                     </div>
                 </>
                 : <>
-                    {CartMenuLayout("Makanan", menus.filter(menu => menu.category.name === "Makanan").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}`} />
-                    }))}
-                    {CartMenuLayout("Minuman", menus.filter(menu => menu.category.name === "Minuman").map((menu) => {
-                        return <CardMenu key={menu.id} title={menu.name} image={menu.image} price={menu.price} link={`/menus/${menu.id}`} />
-                    }))}
+                    <CartMenuLayout category="Makanan" children={
+                        menus.filter(menu => menu.category.name === "Makanan").map((menu) =>
+                        (
+                            <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`} />
+                        ))
+                    } />
+                    <CartMenuLayout category="Minuman" children={
+                        menus.filter(menu => menu.category.name === "Minuman").map((menu) =>
+                        (
+                            <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`} />
+                        ))
+                    } />
+                    <CartMenuLayout category="Dessert" children={
+                        menus.filter(menu => menu.category.name === "Dessert").map((menu) =>
+                        (
+                            <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`}
+                            />
+                        ))
+                    } />
                 </>
             }
 
@@ -54,13 +66,13 @@ function Menu() {
     )
 }
 
-export default Menu
-
-function CartMenuLayout(category, children) {
-    return <div className="mt-10" key={category}>
-        <h1 className="text-5xl font-semibold">{category}</h1>
-        <div className="grid grid-cols-4 gap-5 mt-8">
-            {children}
+function CartMenuLayout({ category, children }) {
+    return (
+        <div className="mt-10" key={category}>
+            <h1 className="text-5xl font-semibold">{category}</h1>
+            <div className="grid grid-cols-4 gap-5 mt-8">
+                {children}
+            </div>
         </div>
-    </div>
+    )
 }

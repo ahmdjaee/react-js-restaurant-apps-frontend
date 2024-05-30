@@ -1,6 +1,6 @@
 import { Button, Typography, Textarea, Input } from "@material-tailwind/react";
 import { Select, Option, Chip, Box } from "@mui/joy";
-
+import FloorPlan from './../../../assets/images/floor-plan.png';
 function getChipColor(text) {
     switch (text) {
         case "available":
@@ -16,9 +16,9 @@ export default function BookingForm({ onCancel, tables }) {
     const listTable = tables
         .map(item =>
         (
-            <Option className="font-semibold" value={item.id} key={item.id}>
+            <Option disabled={item.status !== "available"} sx={{ fontWeight: "700" }} value={item.id} key={item.id} label={item.no}>
                 <Box component="span" sx={{ display: 'block' }}>
-                    <p className="font-semibold">T{item.no}</p>
+                    <p className="font-semibold">{item.no}</p>
                 </Box>
                 <Chip
                     color={getChipColor(item.status)}
@@ -59,8 +59,21 @@ export default function BookingForm({ onCancel, tables }) {
                     }} />
                     <Typography variant="h6" className="mt-3">How many people will you order for?</Typography>
                     <Select name="person" placeholder="Select options">
-                        {Array.from({ length: 5 }, (_, i) => (
-                            <Option value={i + 1} key={i}>{i + 1}</Option>
+                        {Array.from({ length: 6 }, (_, i) => (
+                            <Option value={i + 1} key={i} label={i + 1}>{i + 1}
+                                <Chip
+                                    color={"primary"}
+                                    onClick={function () { }}
+                                    variant="outlined"
+                                    sx={{
+                                        ml: 'auto',
+                                        fontSize: "12px",
+                                        paddingX: "10px",
+                                    }}
+                                >
+                                    person
+                                </Chip>
+                            </Option>
                         ))}
                     </Select>
                     <Typography variant="h6" className="mt-3">Select an available table </Typography>
@@ -87,7 +100,8 @@ export default function BookingForm({ onCancel, tables }) {
                         <li className="text-yellow-500">&#11200; <span className="text-black">Booked</span></li>
                         <li className="text-deep-purple-600">&#11200; <span className="text-black">Used</span></li>
                     </ul>
-                    <img src="" alt="" />
+                    <p className="mt-5 text-sm  bg-blue-gray-50 p-2 rounded text-blue-900   ">Below is the floor plan of our restaurant, please select the available table on the select menu on the left 😊.</p>
+                    <img className="mt-2" src={FloorPlan} alt="" />
                 </div>
 
             </div>

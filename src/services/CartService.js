@@ -1,78 +1,47 @@
-import { BASE_URL, token } from "./Api.js";
+import axios from "axios";
 
 async function getCartItem() {
     try {
-        const response = await fetch(BASE_URL + "/carts", {
-            headers: {
-                "Authorization": token
-            },
-
-        });
-
-        if (response.status === 404) {
-            throw new Error(response.json());
-        }
-
-        return response.json();
+        const res = await axios.get('/carts');
+        return res.data;
     } catch (error) {
-        console.log(error.message)
+        throw error.response;
     }
+
 }
 
-async function addCartItem(data, controller) {
+async function updateCartItem(id, quantity) {
     try {
-        const response = await fetch(BASE_URL + "/carts", {
-            method: "POST",
-            signal: controller.signal,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (response.status === 404) {
-            throw new Error("Error " + response.status + " " + response.statusText);
-        }
-
-        return response;
+        const response = await axios.patch('/carts/' + id, {
+            quantity: quantity
+        }, {});
+        return response.data;
     } catch (error) {
-        console.log(error.message)
+        throw error.response;
     }
 }
 
 async function deleteCartItem(id) {
     try {
-        const response = await fetch(BASE_URL + "/carts/" + id,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                }
-            }
-        );
-        return response.json();
+        const response = await axios.delete('/carts/' + id, {});
+        return response.data;
     } catch (error) {
-        console.log(error.message);
-    }
-}
-async function updateCartItem(id, quantity) {
-    try {
-        const response = await fetch(BASE_URL + "/carts/" + id,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                },
-                body: JSON.stringify(quantity)
-            }
-        );
-        return response.json();
-    } catch (error) {
-        console.log(error.message);
+        console.log(error.response);
+        throw error.response;
     }
 }
 
-export { getCartItem, addCartItem, deleteCartItem, updateCartItem }
+async function addCartItem({ menu_id, quantity }) {
+    try {
+        const response = await axios.post('/carts', {
+            menu_id,
+            quantity
+        }, {});
+        return response.data;
+    } catch (error) {
+        console.log(error.response);
+        throw error.response;
+    }
+}
+
+export { getCartItem, updateCartItem, deleteCartItem, addCartItem }

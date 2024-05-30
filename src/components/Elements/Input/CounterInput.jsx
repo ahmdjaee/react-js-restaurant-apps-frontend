@@ -2,11 +2,13 @@ import { useState } from "react";
 
 export default function CounterInput({ value = 1, onChange }) {
     const [quantity, setQuantity] = useState(value);
-    quantity < 1 && setQuantity(1)
 
     const decrement = () => {
-        setQuantity(prevValue => prevValue - 1);
-        if (quantity > 1) onChange && onChange(quantity - 1);
+        if (quantity > 1) {
+            setQuantity(prevValue => prevValue - 1);
+            onChange(quantity - 1)
+        }
+        else onChange(quantity);
     };
 
     const increment = () => {

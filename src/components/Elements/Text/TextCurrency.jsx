@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function TextCurrency({ text, style, fontWeight = "font-semibold", color = "text-primary" }) {
+function TextCurrency({ text, className, fontWeight = "font-semibold", color = "text-primary" }) {
 
     let Idr = new Intl.NumberFormat('in-ID', {
         style: 'currency',
@@ -8,13 +8,13 @@ function TextCurrency({ text, style, fontWeight = "font-semibold", color = "text
     });
 
     return (
-        <p className={`${color} text-2xl ${fontWeight} ${style}`}>{Idr.format(text)}</p>
+        <p className={`${color} text-2xl ${fontWeight} ${className}`}>{Idr.format(text)}</p>
     )
 }
 
 TextCurrency.propTypes = {
     text: PropTypes.number.isRequired,
-    style: PropTypes.string,
+    className: PropTypes.string,
     fontWeight: PropTypes.string,
     color: PropTypes.string,
 };

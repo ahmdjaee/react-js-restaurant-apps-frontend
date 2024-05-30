@@ -3,7 +3,7 @@ import { useState } from "react";
 import TextCurrency from "../../components/Elements/Text/TextCurrency";
 import { getMenuDetail } from "../../services/MenuService";
 import { addCartItem } from "../../services/CartService";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import CounterInput from "../../components/Elements/Input/CounterInput";
 import CustomSnackbar from "../../components/Elements/Indicator/CustomSnackbar";
 
@@ -13,7 +13,6 @@ export async function loader({ params }) {
     return { data };
 }
 
-
 function Detail() {
     const { data } = useLoaderData();
 
@@ -21,28 +20,27 @@ function Detail() {
     const [success, setSuccess] = useState(false);
 
     const addToCart = () => {
-        const controller = new AbortController();
         addCartItem({
             menu_id: data.id,
             quantity: quantity
-        }, controller).then((res) => {
-            if (res.status === 200) {
-                setSuccess(true);
-                setTimeout(() => {
-                    setSuccess(false)
-                }, 1500);
-            } else {
-                throw Error("Failed add item to cart");
-            }
+        }).then(() => {
+            setSuccess(true);
+            setTimeout(() => {
+                setSuccess(false)
+            }, 1500);
         }).catch((err) => {
-            console.log(err.message);
+            console.log(err.body);
         });
     }
 
     return (
         <div className="container flex justify-center items-center gap-10 pt-14">
             {success && <CustomSnackbar text="Successfully add item to cart" />}
-            <a className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" href="/menus">&#x2B9C; Menu</a>
+            <Link
+                to={"/menus"}
+                className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" >
+                &#x2B9C; Menu
+            </Link>
             <img className="w-5/12 xl:h-[26rem] rounded-lg object-cover" src={data.image} alt="" />
             <div className="flex-grow-0">
                 <h1 className="text-5xl font-semibold">{data.name}</h1>

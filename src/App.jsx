@@ -1,4 +1,4 @@
-import {RouterProvider} from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { router } from './routes/routes';
 
@@ -14,12 +14,20 @@ const baseTheme = extendTheme({
                     outlinedBorder: '#eab308', // yellow bg-500
                     outlinedHoverBorder: undefined,
                     outlinedHoverBg: '#fef3c7',  // yellow bg-100
-                    outlinedActiveBg: '#ca8a04', // yellow bg-600
+                    outlinedActiveBg: '#fef08a', // yellow bg-200
+                },
+                dark: {
+                    solidColor: '#ffffff',
+                    solidBg: 'var(--dark)',
+                    solidHoverBg: 'var(--dark-hover)',
+                    solidActiveBg: 'var(--dark-hover)',
+                    solidDisabledBg: 'var(--disabled)',
+
                 },
                 focusVisible: 'rgba(66, 153, 225, 0.6)',
             },
         },
-    }, 
+    },
 });
 
 export default function App() {

@@ -1,4 +1,4 @@
-import { BASE_URL } from "./Api.js";
+import { BASE_URL } from "./config.js";
 
 async function getMenu(controller) {
     try {
