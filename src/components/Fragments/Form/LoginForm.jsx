@@ -10,6 +10,7 @@ import { login } from "../../../services/UserService";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import CustomSnackbar from "../../Elements/Indicator/CustomSnackbar";
 import { INITIAL_STATE, loginReducer } from "../../../reducer/loginReducer";
+import { Link } from "react-router-dom";
 function LoginForm() {
     const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE);
     async function handleLogin() {
@@ -103,9 +104,9 @@ function LoginForm() {
                     </Button>
                     <Typography color="gray" className="mt-4 text-center font-normal">
                         Don't have an account?{" "}
-                        <a href="/register" className="font-medium text-gray-900">
+                        <Link to="/register" className="font-medium text-gray-900">
                             Register
-                        </a>
+                        </Link>
                     </Typography>
                 </form>
             </Card>
