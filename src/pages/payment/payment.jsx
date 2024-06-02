@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Text from "../../components/Elements/Text/Text";
-import TextBetween from "../../components/Elements/Text/TextBetween";
 import { Button, Card } from "@mui/joy";
 import TextCurrency from "../../components/Elements/Text/TextCurrency";
 
