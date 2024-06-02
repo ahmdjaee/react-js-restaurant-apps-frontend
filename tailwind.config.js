@@ -37,6 +37,12 @@ export default withMT({
       backgroundImage: {
         'about-us': "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
       },
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1200px',
+      },
       container: {
         center: true,
         screens: {

@@ -1,27 +1,8 @@
 import CardMenu from "../../components/Fragments/Card/CardMenu"
-import { useEffect, useState } from "react"
-import { getMenu } from "../../services/MenuService"
+import useMenu from "../../hooks/menus/useMenu"
 
 export default function Menu() {
-    const [menus, setMenus] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        async function fetchData() {
-            setLoading(true)
-            const response = await getMenu(controller);
-
-            if (response.data) {
-                setMenus(response.data)
-                setLoading(false)
-            }
-        }
-
-        fetchData();
-        return () => controller.abort();
-    }, [])
+    const [menus, loading, error] = useMenu();
 
     return (
         <div className="container flex flex-col gap-5">
@@ -61,7 +42,6 @@ export default function Menu() {
                     } />
                 </>
             }
-
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react"
+import { useState, useEffect, createContext, useReducer } from "react"
 import CardCart from "../../components/Fragments/Card/CardCart"
 import CardReservation from "./components/CardReservation"
 import {
@@ -18,13 +18,15 @@ export const CartContext = createContext(null);
 
 export default function Cart() {
 
-    const [carts, loading] = useCarts();
+    const [carts, loading, setCarts] = useCarts();
     const [openDialog, setOpenDialog] = useState(false)
     const [success, setSuccess] = useState(false)
     const [id, setId] = useState(null)
     const [quantity, setQuantity] = useState(null)
     const [delayedQuantity, setDelayedQuantity] = useState(quantity)
- 
+
+    const [state, dispatch] = useReducer(cartReducer, carts);
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setQuantity(delayedQuantity)
@@ -38,13 +40,17 @@ export default function Cart() {
         deleteCartItem(id).then(() => {
             setSuccess(true);
             setOpenDialog(false)
-            carts.splice(carts.findIndex(cart => cart.id === id), 1)
+            setCarts(carts.filter(cart => cart.id !== id))
             setTimeout(() => {
                 setSuccess(false)
             }, 1500);
         }).catch((err) => {
             console.log(err);
         })
+    }
+
+    async function handleDelete(id) {
+
     }
 
     useEffect(() => {
@@ -95,6 +101,27 @@ export default function Cart() {
             <DeleteDialog openDialog={openDialog} setOpenDialog={setOpenDialog} onDelete={onDelete} />
         </section>
     )
+}
+
+
+function cartReducer(state, action) {
+    switch (action.type) {
+        case "add": {
+
+        }
+
+        case "update": {
+
+        }
+        case "delete": 
+        return {
+            success: true,
+            carts : state.carts.filter(cart => cart.id !== action.id)
+        }
+
+        default:
+            throw new Error()
+    }
 }
 
 

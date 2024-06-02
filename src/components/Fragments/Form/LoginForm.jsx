@@ -5,35 +5,46 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import InputForm from "../../Elements/Input/InputForm";
-import { useState } from "react";
+import { useReducer } from "react";
 import { login } from "../../../services/UserService";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
-
+import CustomSnackbar from "../../Elements/Indicator/CustomSnackbar";
+import { INITIAL_STATE, loginReducer } from "../../../reducer/loginReducer";
 function LoginForm() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
-
-    async function onLogin() {
-        setLoading(true)
-        const response = await login({ email, password })
+    const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE);
+    async function handleLogin() {
+        dispatch({ type: "ACTION_START" })
+        const response = await login({ email: state.email, password: state.password });
 
         if (response.errors) {
-            setLoading(false)
-            setErrors(response.errors)
+            dispatch({ type: "ACTION_ERROR", payload: { errors: response.errors } })
         }
 
         if (response.data) {
             window.location.href = "/";
+            dispatch({ type: "ACTION_SUCCESS" })
             localStorage.setItem("token", response.data.token)
             localStorage.setItem("user", JSON.stringify(response.data))
         }
 
     }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        dispatch({ type: "CHANGE", payload: { name, value } })
+    }
+
     return (
         <>
-            {loading && <CircularProgress />}
+            {state.loading && <CircularProgress />}
+
+            {state.errors.message &&
+                < CustomSnackbar
+                    variant="error"
+                    text={state.errors.message}
+                />
+            }
+
             <Card color="transparent" className="m-auto" shadow={false}>
 
                 <Typography variant="h4" color="blue-gray">
@@ -45,22 +56,24 @@ function LoginForm() {
                 <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">
                     <div className="mb-5 flex flex-col gap-6">
                         <InputForm
+                            name={"email"}
                             title="Your Email"
                             type="email"
                             placeholder="name@mail.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            errorsText={errors.email}
+                            value={state.email}
+                            onChange={(e) => handleChange(e)}
+                            errorsText={state.errors.email}
                         />
                         <InputForm
+                            name={"password"}
                             title="Password"
                             type="password"
                             placeholder="********"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            errorsText={errors.password}
+                            value={state.password}
+                            onChange={(e) => handleChange(e)}
+                            errorsText={state.errors.password}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter") onLogin()
+                                if (e.key === "Enter") handleLogin()
                             }}
                         />
                     </div>
@@ -85,7 +98,7 @@ function LoginForm() {
                     <Button
                         className="mt-6"
                         fullWidth
-                        onClick={() => onLogin()}>
+                        onClick={() => handleLogin()}>
                         Login
                     </Button>
                     <Typography color="gray" className="mt-4 text-center font-normal">

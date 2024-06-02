@@ -18,10 +18,9 @@ import { getTable } from "../../services/TableService"
 export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
-    const controller = new AbortController();
 
     async function fetchTable() {
-        const response = await getTable(controller)
+        const response = await getTable()
 
         if (response.data) {
             setData(response.data)
@@ -30,7 +29,7 @@ export default function Home() {
     return (
         <>
             <Modal onKeyDown={() => setShowModal(false)} showModal={showModal} >
-                <BookingForm tables={data} onCancel={() => setShowModal(false)} />
+                <BookingForm tables={data} onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
             </Modal>
 
             <section className="container justify-between flex items-center pt-8 pb-16">

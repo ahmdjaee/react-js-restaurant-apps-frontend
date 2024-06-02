@@ -1,19 +1,39 @@
 import { Box, Button, Modal, ModalDialog, Textarea, Typography } from "@mui/joy";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { Link } from "react-router-dom";
 import useCarts from "../../hooks/carts/useCartItem";
 import TextCurrency from "../../components/Elements/Text/TextCurrency";
+import TextBetween from "../../components/Elements/Text/TextBetween";
+import useReservation from "../../hooks/reservation/useReservation";
+import { postReducer } from "../../reducer/postReducer";
+import { ACTION } from "../../utils/action";
 
 export default function Order() {
-    const reservation = JSON.parse(sessionStorage.getItem("reservation"));
 
+    const [reservation, loadingReservation, error] = useReservation();
     const [showModal, setShowModal] = useState(false);
-    const [carts, loading] = useCarts();
+    const [carts, loadingCarts] = useCarts();
+    const totalPayment = carts.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
+    const totalItem = carts.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
 
+    const [state, dispatch] = useReducer(postReducer, {
+        loading: false,
+        success: false,
+        errors: null
+    })
+
+    const handleOrder = () => {
+        dispatch({ type: ACTION.START });
+        try {
+            dispatch({ type: ACTION.SUCCESS })
+        } catch (error) {
+            dispatch({ type: ACTION.ERROR })
+        }
+    }
     return (
         <>
             <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
-                <Link to={"/"}><a className="text-2xl font-bold text-gray-800">restaurants</a></Link>
+                <Link to={"/"} className="text-2xl font-bold text-gray-800" >restaurants</Link>
                 <div className="mt-4 py-2 text-xs sm:mt-0 sm:ml-auto sm:text-base">
                     <div className="relative">
                         <ul className="relative flex w-full items-center justify-between space-x-2 sm:space-x-4">
@@ -48,7 +68,7 @@ export default function Order() {
                     <p className="text-xl font-medium">Order Summary</p>
                     <p className="text-gray-400">Check your items. And select a suitable payment method.</p>
                     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6 ">
-                        {loading
+                        {loadingCarts
                             ? Array.from({ length: 2 }, (_, i) => (
                                 <div key={i} className="flex flex-col rounded-lg bg-white sm:flex-row" >
                                     <div className="m-2 h-24 w-28 rounded-md border object-cover object-center bg-gray-200 animate-pulse" alt="" />
@@ -102,28 +122,40 @@ export default function Order() {
                     <p className="text-xl font-medium">Reservation Details</p>
                     <p className="text-gray-400">Double check that your reservation is correct</p>
                     <div className="">
-                        <div className="mt-6 border-t border-b py-2">
-                            <TextBetween leftText="Name" rightText={reservation.name} />
-                            <TextBetween leftText="Table Number" rightText={reservation.table} />
-                            <TextBetween leftText="Ordered For" rightText={reservation.person + " Person"} />
-                            <TextBetween leftText="Date" rightText={reservation.date} />
-                            <TextBetween leftText="Time" rightText={reservation.time} />
-                            <TextBetween leftText="Note" />
-                            <Textarea value={reservation.notes} minRows={3} maxRows={3} readOnly sx={{ boxShadow: "none" }} />
+                        <div className="mt-6 border-t border-b px-5 py-2">
+                            {loadingReservation
+                                ? Array.from({ length: 6 }, (_, i) => (
+                                    <TextBetween
+                                        key={i}
+                                        leftStyle={"h-4 bg-gray-200 w-24 rounded-md  animate-pulse"}
+                                        rightStyle={"h-4 bg-gray-200 w-40 rounded-md animate-pulse"}
+                                    />
+                                ))
+                                : <>
+                                    <TextBetween leftText="Name" rightText={reservation.user.name} />
+                                    <TextBetween leftText="Table Number" rightText={reservation.table.no} />
+                                    <TextBetween leftText="Ordered For" rightText={reservation.persons + " Person"} />
+                                    <TextBetween leftText="Date" rightText={reservation.date} />
+                                    <TextBetween leftText="Time" rightText={reservation.time} />
+                                    <TextBetween leftText="Note" />
+                                    <Textarea value={reservation.notes} minRows={3} maxRows={3} readOnly sx={{ boxShadow: "none" }} />
+                                </>
+                            }
                         </div>
                         <div className="mt-6 border-t border-b py-2">
                             <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-gray-900">Subtotal</p>
-                                <p className="font-semibold text-gray-900">$399.00</p>
+                                <p className="text-sm font-medium text-gray-900">Total Item</p>
+                                <p className="font-semibold text-gray-900">x{totalItem}</p>
                             </div>
-                            <div className="flex items-center justify-between">
+                            {/* <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-gray-900">Shipping</p>
                                 <p className="font-semibold text-gray-900">$8.00</p>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="mt-6 flex items-center justify-between">
-                            <p className="text-sm font-medium text-gray-900">Total</p>
-                            <p className="text-2xl font-semibold text-gray-900">$408.00</p>
+                            <p className="text-sm font-medium text-gray-900">Total payment</p>
+                            <TextCurrency className="text-2xl" fontWeight="font-semibold" color="text-gray-900" text={totalPayment} />
+                            {/* <p className="text-2xl font-semibold text-gray-900">{totalPayment}</p> */}
                         </div>
                     </div>
                     {/* <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button> */}
@@ -151,8 +183,7 @@ export default function Order() {
                         Are you absolutely sure?
                     </Typography>
                     <Typography id="nested-modal-description" textColor="text.tertiary">
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                        
                     </Typography>
                     <Box
                         sx={{
@@ -162,7 +193,7 @@ export default function Order() {
                             flexDirection: { xs: 'column', sm: 'row-reverse' },
                         }}
                     >
-                        <Button variant="solid" color="success" onClick={() => window.location.href = "/payment"}>
+                        <Button variant="solid" color="success" onClick={() =>window.location.href = "/payment"}>
                             Continue
                         </Button>
                         <Button
@@ -179,11 +210,3 @@ export default function Order() {
     )
 }
 
-function TextBetween({ leftText, rightText }) {
-    return (
-        <div className="flex items-center justify-between my-2">
-            <p className="text-sm font-medium text-gray-900">{leftText}</p>
-            <p className="text-sm font-semibold text-gray-900">{rightText}</p>
-        </div>
-    );
-}

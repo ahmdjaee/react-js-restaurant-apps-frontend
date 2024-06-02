@@ -15,8 +15,6 @@ import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { logout } from '../../services/UserService';
-import { Badge } from '@mui/joy';
-import { getCartItem } from '../../services/CartService';
 
 function NavBar({ children, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -29,18 +27,6 @@ function NavBar({ children, navLink = true }) {
 
         setOpen(inOpen);
     };
-
-    // React.useEffect(() => {
-    //     async function fetchData() {
-    //         const controller = new AbortController();
-    //         const response = await getCartItem(controller);
-
-    //         const totalQuantity = response.data.reduce((total, cart) => total + cart.quantity, 0);
-
-    //         setTotalQuantity(totalQuantity)
-    //     }
-    //     fetchData();
-    // }, []);
 
     const handleLogout = async () => {
         localStorage.removeItem("user")
@@ -89,11 +75,6 @@ function NavBar({ children, navLink = true }) {
                     </List>
                     <Divider />
                     <List>
-                        {/* {['All mail', 'Trash', 'Spam'].map((text) => (
-                            <ListItem key={text}>
-                                <ListItemButton>{text}</ListItemButton>
-                            </ListItem>
-                        ))} */}
                         <ListItem>
                             <ListItemButton onClick={() => setOpenDialog(true)}>Logout </ListItemButton>
                         </ListItem>

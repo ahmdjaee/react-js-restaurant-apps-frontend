@@ -21,7 +21,7 @@ const useCarts = () => {
         fetchCarts();
     }, []);
 
-    return [carts, loading];
+    return [carts, loading, setCarts];
 };
 
 export default useCarts;

@@ -1,9 +1,8 @@
 import { BASE_URL } from "./config.js";
 
-async function getMenu(controller) {
+async function getMenu() {
     try {
         const response = await fetch(BASE_URL + "/menus", {
-            signal: controller.signal,
             headers: {
                 "Content-Type": "application/json",
             }

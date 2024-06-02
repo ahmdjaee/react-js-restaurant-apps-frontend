@@ -1,11 +1,10 @@
 import { BASE_URL, token } from "./config.js";
 
-async function getTable(controller) {
+async function getTable() {
     try {
         const response = await fetch(BASE_URL + "/tables",
             {
                 method: "GET",
-                signal: controller.signal,
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": token

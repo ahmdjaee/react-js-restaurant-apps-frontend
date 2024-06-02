@@ -1,7 +1,6 @@
 export default function CircularProgress() {
     return (
-        <div className="w-screen h-full absolute bg-black/5">
-
+        <div className="w-screen h-full z-50 fixed top-0 left-0 flex items-center justify-center bg-black/10">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <svg
                     className="w-12 h-12 animate-spin"

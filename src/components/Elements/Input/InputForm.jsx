@@ -3,7 +3,7 @@ import propType from "prop-types";
 import { useState } from "react";
 import TextError from "../Text/TextError";
 
-export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown }) {
+export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown, name }) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
@@ -12,10 +12,11 @@ export default function InputForm({ title, type, placeholder, value, onChange, e
                 {title}
             </Typography>
             <Input
+                name={name}
                 size="lg"
                 type={showPassword ? "text" : type}
                 placeholder={placeholder}
-                onKeyDown={(e) => onKeyDown(e)}
+                onKeyDown={onKeyDown}
                 value={value}
                 onChange={onChange}
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
