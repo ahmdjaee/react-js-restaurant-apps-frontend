@@ -67,7 +67,6 @@ export default function RegisterForm() {
                             onChange={(e) => setEmail(e.target.value)}
                             errorsText={errors.email}
                         />
-                        {console.log(errors.email)}
                         <InputForm
                             title="Password"
                             type="password"
