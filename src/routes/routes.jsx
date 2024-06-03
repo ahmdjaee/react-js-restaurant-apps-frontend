@@ -13,6 +13,7 @@ import Register from '../pages/register/register.jsx';
 import Order from '../pages/order/order.jsx';
 import Transaction from '../pages/transactions/transactions.jsx';
 import Payment from "../pages/payment/payment.jsx";
+import Event from "../pages/events/events.jsx";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,7 +22,7 @@ export const router = createBrowserRouter(
                 <Route index element={<Home />} />
                 <Route path="menus" element={<Menu />} />
                 <Route path="menus/:id" element={<Detail />} loader={menuLoader} />
-                <Route path="events" element={<h1>Events</h1>} />
+                <Route path="events" element={<Event />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="carts" element={<Cart />} />

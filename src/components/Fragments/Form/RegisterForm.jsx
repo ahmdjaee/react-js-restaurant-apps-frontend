@@ -7,6 +7,7 @@ import { useState } from "react";
 import { register } from "../../../services/UserService";
 import InputForm from "../../Elements/Input/InputForm";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
+import { Link } from "react-router-dom";
 
 export default function RegisterForm() {
     const [name, setName] = useState("")
@@ -104,7 +105,7 @@ export default function RegisterForm() {
                     </Button>
                     <Typography color="gray" className="mt-4 text-center font-normal">
                         Already have an account?{" "}
-                        <a href="/login" className="font-medium text-gray-900"> Sign In</a>
+                        <Link href="/login" className="font-medium text-gray-900"> Sign In</Link>
                     </Typography>
                 </form>
             </div>
