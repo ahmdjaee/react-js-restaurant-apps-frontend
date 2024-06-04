@@ -15,7 +15,7 @@ import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { logout } from '../../services/UserService';
-import { Badge } from '@mui/joy';
+import { Avatar, Badge } from '@mui/joy';
 
 function NavBar({ children, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -38,13 +38,13 @@ function NavBar({ children, navLink = true }) {
     }
     return (
         <>
-            <nav className="container py-6 flex items-center justify-between">
+            <nav className="container px-2 sm:px-0 py-6 flex items-center justify-between">
                 <Logo home={"/"} />
                 {
                     navLink && <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
                 }
 
-                <div className="flex gap-12 items-center">
+                <div className="flex gap-5 sm:gap-12 items-center">
                     {user
                         ? <Link to={"/carts"}>
                             <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
@@ -60,7 +60,12 @@ function NavBar({ children, navLink = true }) {
                     }
 
                     {user
-                        ? <p className="font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
+                        ? <>
+                            <p className="hidden sm:block font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
+                            <div className="sm:hidden">
+                                <Avatar alt="Remy Sharp" src="https://i.pravatar.cc" />
+                            </div>
+                        </>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
                     }
                 </div>

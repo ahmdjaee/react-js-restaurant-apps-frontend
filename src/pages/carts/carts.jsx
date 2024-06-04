@@ -70,7 +70,7 @@ export default function Cart() {
     
 
     return (
-        <section className="bg-gray-200 flex-grow py-5">
+        <section className="bg-zinc-100 flex-grow py-5">
             {success && <CustomSnackbar text="Successfully update cart item" />}
             <div className="container h-full pb-5 flex gap-10">
                 <div className="flex-grow h-min">

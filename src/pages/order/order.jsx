@@ -70,7 +70,7 @@ export default function Order() {
                     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6 ">
                         {loadingCarts
                             ? Array.from({ length: 2 }, (_, i) => (
-                                <div key={i} className="flex flex-col rounded-lg bg-white sm:flex-row" >
+                                <div key={i} className="flex rounded-lg bg-white sm:flex-row" >
                                     <div className="m-2 h-24 w-28 rounded-md border object-cover object-center bg-gray-200 animate-pulse" alt="" />
                                     <div className="flex gap-2 flex-grow flex-col px-4 py-4">
                                         <span className="h-4 w-40 rounded-md bg-gray-200 animate-pulse" />
@@ -79,12 +79,12 @@ export default function Order() {
                                 </div>
                             ))
                             : carts.map(cart => (
-                                <div key={cart.id} className="flex flex-col rounded-lg bg-white sm:flex-row">
+                                <div key={cart.id} className="flex  rounded-lg bg-white sm:flex-row">
                                     <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src={cart.menu.image} alt="" />
                                     <div className="flex flex-grow flex-col px-4 py-4">
                                         <span className="font-semibold">{cart.menu.name}</span>
                                         <span className="float-right text-gray-400">x{cart.quantity}</span>
-                                        {/* <p className="text-lg font-bold">$138.99</p> */}
+
                                         <TextCurrency color="text-black" className={"text-lg font-bold"} text={cart.menu.price} />
                                     </div>
                                 </div>
@@ -147,18 +147,14 @@ export default function Order() {
                                 <p className="text-sm font-medium text-gray-900">Total Item</p>
                                 <p className="font-semibold text-gray-900">x{totalItem}</p>
                             </div>
-                            {/* <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-gray-900">Shipping</p>
-                                <p className="font-semibold text-gray-900">$8.00</p>
-                            </div> */}
                         </div>
                         <div className="mt-6 flex items-center justify-between">
                             <p className="text-sm font-medium text-gray-900">Total payment</p>
                             <TextCurrency className="text-2xl" fontWeight="font-semibold" color="text-gray-900" text={totalPayment} />
-                            {/* <p className="text-2xl font-semibold text-gray-900">{totalPayment}</p> */}
+
                         </div>
                     </div>
-                    {/* <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button> */}
+
                     <Button color="dark" onClick={() => setShowModal(true)} size="lg" sx={{ my: 2, }} fullWidth>Place Older</Button>
                 </div>
             </div>
@@ -193,7 +189,7 @@ export default function Order() {
                             flexDirection: { xs: 'column', sm: 'row-reverse' },
                         }}
                     >
-                        <Button variant="solid" color="success" onClick={() =>window.location.href = "/payment"}>
+                        <Button variant="solid" color="success" onClick={() => window.location.href = "/payment"}>
                             Continue
                         </Button>
                         <Button
