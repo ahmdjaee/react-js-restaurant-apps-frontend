@@ -47,7 +47,7 @@ export default function Menu() {
 function CartMenuLayout({ category, children }) {
     return (
         <div className="mt-10 mx-2 sm:mx-0" key={category}>
-            <h1 className=" md:text-4xl sm:text-3xl text-2xl font-semibold">{category}</h1>
+            <h1 className="md:text-4xl sm:text-3xl text-lg font-semibold">{category}</h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-2 sm:gap-5 mt-8">
                 {children}
             </div>

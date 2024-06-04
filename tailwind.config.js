@@ -9,7 +9,6 @@ export default withMT({
   ],
   theme: {
     screens: {
-      xs: '480px',
       sm: '640px',
       md: '768px',
       lg: '1024px',
@@ -53,8 +52,6 @@ export default withMT({
       backgroundImage: {
         'about-us': "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
       },
-      
-      
       keyframes: {
         'right-slide-in': {
           '0%': { transform: 'translateX(40%)' },
