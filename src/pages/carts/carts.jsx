@@ -67,6 +67,8 @@ export default function Cart() {
 
     }, [quantity])
 
+    
+
     return (
         <section className="bg-gray-200 flex-grow py-5">
             {success && <CustomSnackbar text="Successfully update cart item" />}
@@ -96,7 +98,7 @@ export default function Cart() {
                             />
                         ))}
                 </div>
-                <CardReservation item={2} total={232323} />
+                <CardReservation item={2} total={232323}  />
             </div>
             <DeleteDialog openDialog={openDialog} setOpenDialog={setOpenDialog} onDelete={onDelete} />
         </section>
@@ -113,11 +115,11 @@ function cartReducer(state, action) {
         case "update": {
 
         }
-        case "delete": 
-        return {
-            success: true,
-            carts : state.carts.filter(cart => cart.id !== action.id)
-        }
+        case "delete":
+            return {
+                success: true,
+                carts: state.carts.filter(cart => cart.id !== action.id)
+            }
 
         default:
             throw new Error()

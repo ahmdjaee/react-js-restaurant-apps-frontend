@@ -14,8 +14,8 @@ const baseTheme = extendTheme({
                     outlinedColor: '#f97316', // orange bg-600
                     outlinedBorder: '#f97316', // orange bg-500
                     outlinedHoverBorder: undefined,
-                    outlinedHoverBg: '#fbcfe8', // orange bg-100
-                    outlinedActiveBg: '#f9a8d4', // orange bg-200
+                    outlinedHoverBg: '#fffffff', // orange bg-100
+                    outlinedActiveBg: '#fffffff', // orange bg-200
                 },
                 warning: {
                     solidBg: '#eab308', // yellow bg-500

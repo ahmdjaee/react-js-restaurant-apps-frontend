@@ -183,7 +183,7 @@ export default function Order() {
                         Are you absolutely sure?
                     </Typography>
                     <Typography id="nested-modal-description" textColor="text.tertiary">
-                        
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, animi.
                     </Typography>
                     <Box
                         sx={{

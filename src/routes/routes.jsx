@@ -1,7 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 
 import Root from '../pages/root.jsx';
-import Home from '../pages/home/home.jsx';
+import Home from "../pages/home/home.jsx";
 import Menu from '../pages/menus/menus.jsx';
 import About from '../pages/about/about.jsx';
 import Contact from '../pages/contact/contact.jsx';

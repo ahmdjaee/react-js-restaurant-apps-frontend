@@ -5,7 +5,7 @@ import Text from '../../components/Elements/Text/Text'
 function Contact() {
     return (
         <div className="container flex-grow grid grid-cols-2 pt-5 pb-10 shadow-lg">
-            <div className="flex flex-col bg-center bg-cover bg-no-repeat text-white p-5" style={{ backgroundImage: `url(${ContactBg})` }}>
+            <div className="flex flex-col items-center bg-center bg-cover bg-no-repeat text-white p-5" style={{ backgroundImage: `url(${ContactBg})` }}>
                 <h1 className="text-5xl font-semibold">Contact Us</h1>
                 <p className="text-base mt-10 flex-grow">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 <a className='w-fit mx-auto' aria-label="Chat on WhatsApp" target='_blank' href="https://wa.me/+62895331621985?text=Hello, I'm interested and want to ask about the products you sell."><img alt="Chat on WhatsApp" src={WhatsAppButton} /></a>

@@ -14,10 +14,18 @@ import HeroImage2 from "./../../assets/hero2.svg"
 import Instagram from "./../../assets/instagram.svg"
 import Twitter from "./../../assets/twitter.svg"
 import { getTable } from "../../services/TableService"
+import BookingDetail from "../../components/Fragments/Form/BookingDetail"
+import useReservation from "../../hooks/reservation/useReservation"
+import { Button, IconButton, Typography } from "@mui/joy"
+import Text from "../../components/Elements/Text/Text"
+import CardUserNotLogin from "../../components/Fragments/Card/CardUserNotLogin"
 
 export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
+
+    const user = JSON.parse(localStorage.getItem("user"))
+    const reservation = JSON.parse(sessionStorage.getItem("reservation"))
 
     async function fetchTable() {
         const response = await getTable()
@@ -26,10 +34,27 @@ export default function Home() {
             setData(response.data)
         }
     }
+
+    function checkUser() {
+        if (user) {
+            return (
+                <>
+                    {reservation
+                        ? <BookingDetail onCancel={() => setShowModal(false)}></BookingDetail>
+                        : <BookingForm tables={data} onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
+                    }
+                </>
+            )
+        } else {
+            return <CardUserNotLogin onClose={() => setShowModal(false)} />
+        }
+    }
+
+
     return (
         <>
             <Modal onKeyDown={() => setShowModal(false)} showModal={showModal} >
-                <BookingForm tables={data} onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
+                {checkUser()}
             </Modal>
 
             <section className="container justify-between flex items-center pt-8 pb-16">

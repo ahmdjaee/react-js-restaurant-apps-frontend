@@ -38,6 +38,7 @@ export default withMT({
         'about-us': "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
       },
       screens: {
+        xs: '380px',
         sm: '640px',
         md: '768px',
         lg: '1024px',

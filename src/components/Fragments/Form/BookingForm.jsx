@@ -33,6 +33,7 @@ export default function BookingForm({ onCancel, tables, success }) {
             const formJson = Object.fromEntries(formData.entries());
             const response = await createReservation({ ...formJson });
             dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
+            sessionStorage.setItem("reservation", JSON.stringify(response.data));
             success();
         } catch (error) {
             dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });

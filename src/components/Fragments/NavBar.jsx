@@ -15,6 +15,7 @@ import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { logout } from '../../services/UserService';
+import { Badge } from '@mui/joy';
 
 function NavBar({ children, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -34,7 +35,6 @@ function NavBar({ children, navLink = true }) {
         window.location.href = "/"
 
         const response = await logout();
-        console.info("Logout " + response)
     }
     return (
         <>
@@ -45,12 +45,24 @@ function NavBar({ children, navLink = true }) {
                 }
 
                 <div className="flex gap-12 items-center">
-                    {children}
+                    {user
+                        ? <Link to={"/carts"}>
+                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+                                <i className="fa-solid fa-shopping-cart fa-xl " ></i>
+                            </Badge>
+                        </Link>
+                        : <Link to={"/login"}>
+                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+                                <i className="fa-solid fa-shopping-cart fa-xl " ></i>
+                            </Badge>
+                        </Link>
+
+                    }
+
                     {user
                         ? <p className="font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
                     }
-
                 </div>
             </nav>
 
