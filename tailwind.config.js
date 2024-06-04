@@ -8,6 +8,22 @@ export default withMT({
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      xs: '480px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1200px',
+    },
+    container: {
+      center: true,
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1200px',
+      }
+    },
     extend: {
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
@@ -37,22 +53,8 @@ export default withMT({
       backgroundImage: {
         'about-us': "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg')",
       },
-      screens: {
-        xs: '380px',
-        sm: '640px',
-        md: '768px',
-        lg: '1024px',
-        xl: '1200px',
-      },
-      container: {
-        center: true,
-        screens: {
-          sm: '640px',
-          md: '768px',
-          lg: '1024px',
-          xl: '1200px',
-        }
-      },
+      
+      
       keyframes: {
         'right-slide-in': {
           '0%': { transform: 'translateX(40%)' },
