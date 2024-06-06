@@ -7,12 +7,12 @@ export default function CardReservation({ item, total }) {
     return (
         <div className="w-[22rem] bg-white rounded-lg h-min px-5 py-7">
             <CartSummary item={item} total={total} />
-            <Link to={"/order"} ><Button className="bg-primary my-5 w-full">Checkout ({25})</Button></Link>
+            <Link to={"/order"} ><Button className="bg-primary my-5 w-full">CHECKOUT ({item})</Button></Link>
         </div>
     )
 }
 
-function CartSummary({ item, total }) {
+function CartSummary({ item, total = 0 }) {
     return (
         <div className="">
             <Text className={"text-center font-bold"}>Detail Orders</Text>

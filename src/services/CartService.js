@@ -7,7 +7,6 @@ async function getCartItem() {
     } catch (error) {
         throw error.response;
     }
-
 }
 
 async function updateCartItem(id, quantity) {

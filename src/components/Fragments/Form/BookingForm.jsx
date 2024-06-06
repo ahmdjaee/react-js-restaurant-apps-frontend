@@ -1,9 +1,8 @@
-import { Button, Typography, Textarea, Input } from "@material-tailwind/react";
-import { Select, Option, Chip, Box } from "@mui/joy";
+import { Button, Typography, Input } from "@material-tailwind/react";
+import { Select, Option, Chip, Box, Textarea } from "@mui/joy";
 import FloorPlan from './../../../assets/images/floor-plan.png';
 import { createReservation } from "../../../services/ReservationService";
 import { useReducer, useState } from "react";
-import Text from "../../Elements/Text/Text";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import { postReducer } from "../../../reducer/postReducer";
 import { ACTION } from "../../../utils/action";
@@ -101,7 +100,7 @@ export default function BookingForm({ onCancel, tables, success }) {
                             </div>
                         </div>
                         <Typography variant="h6" className="mt-3">Leave us your notes</Typography>
-                        <Textarea label="Notes" name="notes" />
+                        <Textarea minRows={3} placeholder="Notes" name="notes" />
                     </div>
                     <div>
                         <Typography variant="h6" className="">Restaurant Plan</Typography>

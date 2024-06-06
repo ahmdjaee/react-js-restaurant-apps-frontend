@@ -14,7 +14,7 @@ export async function loader({ params }) {
 }
 
 function Detail() {
-    const { data } = useLoaderData();
+    const { data } = useLoaderData();   
 
     const [quantity, setQuantity] = useState(1);
     const [success, setSuccess] = useState(false);

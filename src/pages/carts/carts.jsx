@@ -1,6 +1,3 @@
-import { useState, useEffect, createContext, useReducer } from "react"
-import CardCart from "../../components/Fragments/Card/CardCart"
-import CardReservation from "./components/CardReservation"
 import {
     Button,
     DialogActions,
@@ -10,31 +7,56 @@ import {
     Modal,
     ModalDialog
 } from "@mui/joy"
+import { useEffect, useState } from "react"
 import CustomSnackbar from "../../components/Elements/Indicator/CustomSnackbar"
+import CardCart from "../../components/Fragments/Card/CardCart"
 import useCarts from "../../hooks/carts/useCartItem"
-import { updateCartItem, deleteCartItem } from "../../services/CartService"
-
-export const CartContext = createContext(null);
+import { deleteCartItem, updateCartItem } from "../../services/CartService"
+import CardReservation from "./components/CardReservation"
+import { useOutletContext } from "react-router-dom"
 
 export default function Cart() {
 
-    const [carts, loading, setCarts] = useCarts();
+    const [carts, loading, setCarts, setDependency] = useCarts();
     const [openDialog, setOpenDialog] = useState(false)
     const [success, setSuccess] = useState(false)
     const [id, setId] = useState(null)
     const [quantity, setQuantity] = useState(null)
-    const [delayedQuantity, setDelayedQuantity] = useState(quantity)
+    const [item, setItem] = useState({})
+    const [loadingUpdate, setloadingUpdate] = useState(false)
+    const { setOutletItem } = useOutletContext()
 
-    const [state, dispatch] = useReducer(cartReducer, carts);
+    useEffect(() => {
+        setOutletItem(item)
+    }, [item])
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setQuantity(delayedQuantity)
+            async function handleUpdate() {
+                setloadingUpdate(true);
+                try {
+                    const response = await updateCartItem(id, quantity)
+                    if (response) {
+                        setDependency(response)
+                        setloadingUpdate(false);
+                    }
+                } catch (error) {
+                    console.log(error.data);
+                    setloadingUpdate(false)
+                }
+            }
+            id && handleUpdate()
         }, 300);
 
         return () => clearTimeout(timer)
-    }, [delayedQuantity])
+    }, [quantity, id])
 
+    useEffect(() => {
+        setItem({
+            qty: carts?.reduce((prev, cart) => prev + cart.quantity, 0),
+            totalPrice: carts?.reduce((prev, cart) => prev + cart.total_price, 0)
+        })
+    }, [carts])
 
     async function onDelete() {
         deleteCartItem(id).then(() => {
@@ -49,37 +71,17 @@ export default function Cart() {
         })
     }
 
-    async function handleDelete(id) {
-
-    }
-
-    useEffect(() => {
-        if (id !== null) {
-            updateCartItem(id, quantity).then(() => {
-                setSuccess(true);
-                setTimeout(() => {
-                    setSuccess(false)
-                }, 1500);
-            }).catch((err) => {
-                console.log(err);
-            })
-        }
-
-    }, [quantity])
-
-    
-
     return (
         <section className="bg-zinc-100 flex-grow py-5">
-            {success && <CustomSnackbar text="Successfully update cart item" />}
-            <div className="container h-full pb-5 flex gap-10">
+            {success && <CustomSnackbar text="Successfully delete item" />}
+            <div className="container h-full pb-5 flex flex-col md:flex-row gap-10">
                 <div className="flex-grow h-min">
-                    {loading
+                    {carts === null
                         ? Array.from({ length: 4 }, (_, i) => (
                             <div key={i} className="w-full mb-2" >
                                 <div className="bg-white flex-grow rounded-lg h-40 p-5 flex ">
-                                    <div className="w-36 bg-gray-200 animate-pulse" />
-                                    <div className="h-4 bg-gray-200 flex-grow mx-5" />
+                                    <div className="w-36 bg-zinc-200 animate-pulse" />
+                                    <div className="h-4 bg-zinc-200 flex-grow mx-5" />
                                 </div>
                             </div>
                         ))
@@ -87,8 +89,9 @@ export default function Cart() {
                             <CardCart
                                 key={cart.id}
                                 cart={cart}
+                                loading={loading}
                                 onChangeQuantity={(e) => {
-                                    setDelayedQuantity(e)
+                                    setQuantity(e)
                                     setId(cart.id)
                                 }}
                                 onDelete={() => {
@@ -98,32 +101,11 @@ export default function Cart() {
                             />
                         ))}
                 </div>
-                <CardReservation item={2} total={232323}  />
+                <CardReservation item={item.qty && item.qty} total={item.totalPrice} />
             </div>
             <DeleteDialog openDialog={openDialog} setOpenDialog={setOpenDialog} onDelete={onDelete} />
         </section>
     )
-}
-
-
-function cartReducer(state, action) {
-    switch (action.type) {
-        case "add": {
-
-        }
-
-        case "update": {
-
-        }
-        case "delete":
-            return {
-                success: true,
-                carts: state.carts.filter(cart => cart.id !== action.id)
-            }
-
-        default:
-            throw new Error()
-    }
 }
 
 

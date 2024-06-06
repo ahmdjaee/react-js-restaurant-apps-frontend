@@ -1,9 +1,4 @@
-import {
-    Button,
-    Card,
-    Checkbox,
-    Typography,
-} from "@material-tailwind/react";
+
 import InputForm from "../../Elements/Input/InputForm";
 import { useReducer } from "react";
 import { login } from "../../../services/UserService";
@@ -11,6 +6,7 @@ import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import CustomSnackbar from "../../Elements/Indicator/CustomSnackbar";
 import { INITIAL_STATE, loginReducer } from "../../../reducer/loginReducer";
 import { Link } from "react-router-dom";
+import { Button, Checkbox, Typography } from "@mui/joy";
 function LoginForm() {
     const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE);
     async function handleLogin() {
@@ -46,12 +42,12 @@ function LoginForm() {
                 />
             }
 
-            <Card color="transparent" className="m-auto" shadow={false}>
+            <div className="m-auto">
 
-                <Typography variant="h4" color="blue-gray">
+                <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
                     Login
                 </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
+                <Typography color="gray" sx={{mt: 1}}>
                     Use the account you registered earlier
                 </Typography>
                 <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">
@@ -94,22 +90,22 @@ function LoginForm() {
                                 </a>
                             </Typography>
                         }
-                        containerProps={{ className: "-ml-2.5" }}
                     />
                     <Button
-                        className="mt-6"
+                        sx={{ mt: 6 }}
+                        color="dark"
                         fullWidth
                         onClick={() => handleLogin()}>
-                        Login
+                        LOGIN
                     </Button>
-                    <Typography color="gray" className="mt-4 text-center font-normal">
+                    <Typography sx={{ color: "GrayText", mt: 4 }} className="mt-4 text-center font-normal">
                         Don't have an account?{" "}
                         <Link to="/register" className="font-medium text-gray-900">
                             Register
                         </Link>
                     </Typography>
                 </form>
-            </Card>
+            </div>
         </>
 
     )

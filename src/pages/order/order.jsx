@@ -7,14 +7,15 @@ import TextBetween from "../../components/Elements/Text/TextBetween";
 import useReservation from "../../hooks/reservation/useReservation";
 import { postReducer } from "../../reducer/postReducer";
 import { ACTION } from "../../utils/action";
+import { makeOrder } from "../../services/OrderService";
 
 export default function Order() {
 
     const [reservation, loadingReservation, error] = useReservation();
     const [showModal, setShowModal] = useState(false);
     const [carts, loadingCarts] = useCarts();
-    const totalPayment = carts.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
-    const totalItem = carts.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
+    const totalPayment = carts?.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
+    const totalItem = carts?.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
 
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
@@ -25,6 +26,12 @@ export default function Order() {
     const handleOrder = () => {
         dispatch({ type: ACTION.START });
         try {
+            const {data} = makeOrder({
+                cart_item_id: carts?.map(cart => cart.id),
+                reservation_id: reservation?.id,
+                status: "pending",
+                total_payment: totalPayment
+            })
             dispatch({ type: ACTION.SUCCESS })
         } catch (error) {
             dispatch({ type: ACTION.ERROR })
@@ -92,7 +99,7 @@ export default function Order() {
                         }
                     </div>
 
-                    <p className="mt-8 text-lg font-medium">Payment Methods</p>
+                    {/* <p className="mt-8 text-lg font-medium">Payment Methods</p>
                     <form className="mt-5 grid gap-6">
                         <div className="relative">
                             <input className="peer hidden" id="radio_1" type="radio" name="radio" defaultChecked />
@@ -116,7 +123,7 @@ export default function Order() {
                                 </div>
                             </label>
                         </div>
-                    </form>
+                    </form> */}
                 </div>
                 <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
                     <p className="text-xl font-medium">Reservation Details</p>

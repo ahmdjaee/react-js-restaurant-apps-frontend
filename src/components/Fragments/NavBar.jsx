@@ -16,11 +16,14 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { logout } from '../../services/UserService';
 import { Avatar, Badge } from '@mui/joy';
+import { CartContext } from '../../context/Context';
 
-function NavBar({ children, navLink = true }) {
+function NavBar({ item, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
+   
+
     const toggleDrawer = (inOpen) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -47,7 +50,7 @@ function NavBar({ children, navLink = true }) {
                 <div className="flex gap-5 sm:gap-12 items-center">
                     {user
                         ? <Link to={"/carts"}>
-                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={item.qty}>
                                 <i className="fa-solid fa-shopping-cart fa-xl " ></i>
                             </Badge>
                         </Link>
