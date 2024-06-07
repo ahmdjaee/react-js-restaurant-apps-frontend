@@ -46,7 +46,7 @@ export default function Cart() {
                 }
             }
             id && handleUpdate()
-        }, 300);
+        }, 250);
 
         return () => clearTimeout(timer)
     }, [quantity, id])

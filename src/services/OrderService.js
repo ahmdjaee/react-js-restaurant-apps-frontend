@@ -1,15 +1,19 @@
+import axios from "axios";
+
 async function makeOrder(data) {
+
     try {
         const response = await axios.post('/orders',
             {
-                cart_item_id: data.cart_item_id,
+                items: data.items,
                 reservation_id: data.reservation_id,
                 status: data.status,
                 total_payment: data.total_payment
             });
-
+            
         return response.data
     } catch (error) {
+        console.log(error.response);
         throw error.response;
     }
 }

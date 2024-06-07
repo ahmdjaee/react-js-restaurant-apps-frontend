@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://restaurants.food/api";
+const BASE_URL = "https://larest.xyz/api";
 const token = localStorage.getItem("token");
 
 axios.defaults.baseURL = BASE_URL;

@@ -23,20 +23,31 @@ export default function Order() {
         errors: null
     })
 
-    const handleOrder = () => {
-        dispatch({ type: ACTION.START });
+
+    async function handleOrder() {
+        // dispatch({ type: ACTION.START });
+        const items = carts?.map((cart) => {
+            return {
+                menu_id: cart.menu.id,
+                quantity: cart.quantity,
+                price: cart.total_price
+            }
+        })
+
         try {
-            const {data} = makeOrder({
-                cart_item_id: carts?.map(cart => cart.id),
+            const { data } = await makeOrder({
+                items: items,
                 reservation_id: reservation?.id,
-                status: "pending",
+                status: "new",
                 total_payment: totalPayment
             })
-            dispatch({ type: ACTION.SUCCESS })
+            console.log(data);
+            // dispatch({ type: ACTION.SUCCESS })
         } catch (error) {
-            dispatch({ type: ACTION.ERROR })
+            // dispatch({ type: ACTION.ERROR, payload: { errors: error } });
         }
     }
+    
     return (
         <>
             <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -162,7 +173,7 @@ export default function Order() {
                         </div>
                     </div>
 
-                    <Button color="dark" onClick={() => setShowModal(true)} size="lg" sx={{ my: 2, }} fullWidth>Place Older</Button>
+                    <Button color="dark" onClick={handleOrder} size="lg" sx={{ my: 2, }} fullWidth>Place Older</Button>
                 </div>
             </div>
 
