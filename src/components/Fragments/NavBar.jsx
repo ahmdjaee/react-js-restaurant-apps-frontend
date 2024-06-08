@@ -40,8 +40,8 @@ function NavBar({ item, navLink = true }) {
         const response = await logout();
     }
     return (
-        <>
-            <nav className="container px-2 sm:px-0 py-6 flex items-center justify-between">
+        <div className="sticky top-0 z-30 bg-white">
+            <nav className="container px-2 sm:px-0 py-6 flex items-center justify-between ">
                 <Logo home={"/"} />
                 {
                     navLink && <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
@@ -50,7 +50,7 @@ function NavBar({ item, navLink = true }) {
                 <div className="flex gap-5 sm:gap-12 items-center">
                     {user
                         ? <Link to={"/carts"}>
-                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={item.qty}>
+                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={item && item.qty}>
                                 <i className="fa-solid fa-shopping-cart fa-xl " ></i>
                             </Badge>
                         </Link>
@@ -66,7 +66,7 @@ function NavBar({ item, navLink = true }) {
                         ? <>
                             <p className="hidden sm:block font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
                             <div className="sm:hidden">
-                                <Avatar alt="Remy Sharp" src="https://i.pravatar.cc" />
+                                <Avatar  onClick={toggleDrawer(true)} alt="Remy Sharp" src="https://i.pravatar.cc" />
                             </div>
                         </>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
@@ -121,7 +121,7 @@ function NavBar({ item, navLink = true }) {
                     </DialogActions>
                 </ModalDialog>
             </Modal>
-        </>
+        </div>
     )
 }
 

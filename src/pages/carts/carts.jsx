@@ -28,6 +28,8 @@ export default function Cart() {
 
     useEffect(() => {
         setOutletItem(item)
+        console.log(item);
+        return () => setOutletItem(null)
     }, [item])
 
     useEffect(() => {
@@ -56,6 +58,7 @@ export default function Cart() {
             qty: carts?.reduce((prev, cart) => prev + cart.quantity, 0),
             totalPrice: carts?.reduce((prev, cart) => prev + cart.total_price, 0)
         })
+        console.log(item.qty);
     }, [carts])
 
     async function onDelete() {

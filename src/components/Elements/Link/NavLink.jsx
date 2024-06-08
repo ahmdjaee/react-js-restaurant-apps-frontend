@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NavLink({ menu, events, about, contacts }) {
     return (

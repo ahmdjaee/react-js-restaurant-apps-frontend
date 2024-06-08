@@ -52,13 +52,13 @@ export default function Home() {
 
 
     return (
-        <>
+        <div className="overflow-x-clip">
             <Modal onKeyDown={() => setShowModal(false)} showModal={showModal} >
                 {checkUser()}
             </Modal>
 
-            <section className="container justify-between flex items-center pt-8 pb-16">
-                <div className="w-2/5 animate-left-slide-in">
+            <section className="container justify-between flex flex-col sm:flex-row items-center pt-8 pb-16">
+                <div className="sm:w-2/5 animate-left-slide-in">
                     <h1 className="text-5xl font-semibold">We provide the best food for you</h1>
                     <p className="text-base my-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     <Link to={"/menus"}><OvalButton text="Menu" type="dark" style="me-5" /></Link>
@@ -74,27 +74,27 @@ export default function Home() {
                     </div>
                 </div>
                 <img
-                    className="w-2/4 min-h-[36rem] animate-right-slide-in"
+                    className="sm:w-2/4 min-h-[36rem] animate-right-slide-in"
                     src={HeroImage}
                     alt=""
                 />
             </section>
 
-            <section className="bg-gray-200 py-12 text-center">
+            <section className="bg-zinc-200 py-12 text-center">
                 <div className="container">
                     <h1 className="text-5xl font-semibold my-5">Our Special Dishes</h1>
-                    <p className="w-1/2 mx-auto mb-16">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique, ratione! Atque consectetur blanditiis molestias. Accusantium rerum at sed fuga mollitia.</p>
+                    <p className="sm:w-1/2 mx-auto mb-16">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique, ratione! Atque consectetur blanditiis molestias. Accusantium rerum at sed fuga mollitia.</p>
 
-                    <div className="flex justify-center gap-7">
+                    <div className="flex flex-row overflow-x-scroll overflow-y-hidden sm:justify-center gap-7">
                         <CardMenuOval />
                         <CardMenuOval />
                         <CardMenuOval />
                         <CardMenuOval />
                     </div>
 
-                    <div className="flex mt-20 container text-start items-center">
-                        <img className="w-2/4 animate-spin-slow " src={HeroImage2} alt="" />
-                        <div className="ms-24">
+                    <div className="flex flex-col sm:flex-row mt-20 container text-start items-center">
+                        <img className="sm:w-2/4 animate-spin-slow " src={HeroImage2} alt="" />
+                        <div className="sm:ms-24">
                             <h1 className="text-5xl font-semibold">Wecome to Our Restaurant</h1>
                             <p className="text-base my-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             <OvalButton text="Menu" type="dark" style="me-5" />
@@ -104,11 +104,11 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="flex container items-center py-12 gap-5">
+            <section className="flex flex-col sm:flex-row container items-center py-12 gap-5">
                 <div>
                     <h1 className="text-5xl font-semibold">Our Expects Chef</h1>
                     <p className="text-base my-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <div className="grid grid-cols-2 gap-y-8 gap-x-4">
+                    <div className="grid sm:grid-cols-2 gap-y-8 gap-x-4">
                         <div className="flex gap-3 items-start">
                             <img className="py-2" src={Check} alt="" />
                             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore</p>
@@ -135,10 +135,10 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <img className="w-2/5 " src={Chef} alt="" />
+                <img className="w-2/5 order-first sm:order-last" src={Chef} alt="" />
             </section>
 
-            <section className="bg-gray-200 py-12 text-center">
+            <section className="bg-zinc-200 py-12 text-center">
                 <div className="container">
                     <h1 className="text-5xl font-semibold">Our Happy Customers</h1>
                     <p className="text-base my-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -151,7 +151,7 @@ export default function Home() {
             </section>
 
             <Footer />
-        </>
+        </div>
     )
 
 }

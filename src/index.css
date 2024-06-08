@@ -74,12 +74,13 @@
 }
 
 #root {
-    height: 100vh;
-    overflow: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 body {
     box-sizing: border-box;
+    height: 100vh;
 }
