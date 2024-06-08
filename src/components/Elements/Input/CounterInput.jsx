@@ -65,7 +65,7 @@ export default function CounterInput({ value = 1, onChange, minValue = 1, maxVal
     };
 
     return (
-        <div className="custom-number-input h-10 w-32">
+        <div className="custom-number-input h-10 w-20 sm:w-32">
             <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
                 <button onClick={decrement} className="bg-zinc-300 text-zinc-600 hover:text-zinc-700 hover:bg-zinc-400 h-full w-20 rounded-l cursor-pointer outline-none" data-action="decrement">
                     <span className="m-auto text-2xl font-thin">−</span>
@@ -74,7 +74,7 @@ export default function CounterInput({ value = 1, onChange, minValue = 1, maxVal
                     type="text"
                     inputMode="numeric"
                     //   pattern="\d*"
-                    className="outline-none focus:outline-none text-center w-full bg-zinc-300 font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-zinc-700"
+                    className="outline-none focus:outline-none text-center w-full bg-zinc-300 font-semibold text-md hover:text-black focus:text-black text-sm md:text-base cursor-default flex items-center text-zinc-700"
                     name="custom-input-number"
                     value={quantity}
                     onChange={(e) => {

@@ -58,7 +58,6 @@ export default function Cart() {
             qty: carts?.reduce((prev, cart) => prev + cart.quantity, 0),
             totalPrice: carts?.reduce((prev, cart) => prev + cart.total_price, 0)
         })
-        console.log(item.qty);
     }, [carts])
 
     async function onDelete() {
@@ -75,7 +74,7 @@ export default function Cart() {
     }
 
     return (
-        <section className="bg-zinc-100 flex-grow py-5">
+        <section className="overflow-x-clip bg-zinc-100 flex-grow py-5">
             {success && <CustomSnackbar text="Successfully delete item" />}
             <div className="container h-full pb-5 flex flex-col md:flex-row gap-10">
                 <div className="flex-grow h-min">
