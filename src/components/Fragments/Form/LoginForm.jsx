@@ -43,7 +43,6 @@ function LoginForm() {
             }
 
             <div className="m-auto">
-
                 <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
                     Login
                 </Typography>
@@ -92,13 +91,13 @@ function LoginForm() {
                         }
                     />
                     <Button
-                        sx={{ mt: 6 }}
+                        sx={{ mt: 4 }}
                         color="dark"
                         fullWidth
                         onClick={() => handleLogin()}>
                         LOGIN
                     </Button>
-                    <Typography sx={{ color: "GrayText", mt: 4 }} className="mt-4 text-center font-normal">
+                    <Typography sx={{ color: "GrayText", mt: 2 }} className="mt-4 text-center font-normal">
                         Don't have an account?{" "}
                         <Link to="/register" className="font-medium text-gray-900">
                             Register

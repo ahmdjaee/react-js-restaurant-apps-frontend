@@ -2,7 +2,7 @@ import {
     Button,
     Checkbox,
     Typography,
-} from "@material-tailwind/react";
+} from "@mui/joy";
 import { useState } from "react";
 import { register } from "../../../services/UserService";
 import InputForm from "../../Elements/Input/InputForm";
@@ -45,10 +45,10 @@ export default function RegisterForm() {
                 Successfully registered
             </div>}
             <div className="m-auto">
-                <Typography variant="h4" color="blue-gray">
+                <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
                     Sign Up
                 </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
+                <Typography  level="" sx={{ mt: 1, maxWidth: "320px"}}>
                     Nice to meet you! Enter your details to register.
                 </Typography>
                 <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">
@@ -80,6 +80,7 @@ export default function RegisterForm() {
                         </InputForm>
                     </div>
                     <Checkbox
+                    sx={{ mt: 2 }}
                         label={
                             <Typography
                                 variant="small"
@@ -95,15 +96,16 @@ export default function RegisterForm() {
                                 </a>
                             </Typography>
                         }
-                        containerProps={{ className: "-ml-2.5" }}
                     />
                     <Button
                         disabled={!name || !email || !password}
-                        className="mt-6" fullWidth
+                        color="dark"
+                        sx={{ mt: 4 }}
+                        fullWidth
                         onClick={onRegister}>
                         Register
                     </Button>
-                    <Typography color="gray" className="mt-4 text-center font-normal">
+                    <Typography sx={{ color: "GrayText", mt: 2 }} className="mt-4 text-center font-normal">
                         Already have an account?{" "}
                         <Link to="/login" className="font-medium text-gray-900"> Sign In</Link>
                     </Typography>
