@@ -16,13 +16,14 @@ import Twitter from "./../../assets/twitter.svg"
 import { getTable } from "../../services/TableService"
 import BookingDetail from "../../components/Fragments/Form/BookingDetail"
 import CardUserNotLogin from "../../components/Fragments/Card/CardUserNotLogin"
+import useReservation from "../../hooks/reservation/useReservation"
 
 export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
 
     const user = JSON.parse(localStorage.getItem("user"))
-    const reservation = JSON.parse(sessionStorage.getItem("reservation"))
+    const [reservation, loading, error] = useReservation();
 
     async function fetchTable() {
         const response = await getTable()
@@ -37,7 +38,7 @@ export default function Home() {
             return (
                 <>
                     {reservation
-                        ? <BookingDetail onCancel={() => setShowModal(false)}></BookingDetail>
+                        ? <BookingDetail reservation={reservation} loading={loading} onCancel={() => setShowModal(false)}></BookingDetail>
                         : <BookingForm tables={data} onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
                     }
                 </>

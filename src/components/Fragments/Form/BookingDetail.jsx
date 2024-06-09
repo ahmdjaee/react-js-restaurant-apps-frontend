@@ -1,10 +1,7 @@
 import { Button, IconButton, Typography } from "@mui/joy";
-import useReservation from "../../../hooks/reservation/useReservation";
-import CircularProgress from "../../Elements/Indicator/CircularProgress";
 
-export default function BookingDetail({ onCancel }) {
-    const [reservation, loading, error] = useReservation();
-
+export default function BookingDetail({ onCancel, reservation, loading }) {
+    
     return (
         <div className="flex flex-col w-96 mx-2">
             <div className="mb-2 flex justify-between items-center">

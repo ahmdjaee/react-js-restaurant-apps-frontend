@@ -35,12 +35,10 @@ export default function Order() {
 
         // Optional: set script attribute, for example snap.js have data-client-key attribute 
         // (change the value according to your client-key)
-        const myMidtransClientKey = 'your-client-key-goes-here';
+        const myMidtransClientKey = 'SB-Mid-client-R1k8J1RSa9ITMmZG';
         scriptTag.setAttribute('data-client-key', myMidtransClientKey);
 
         document.body.appendChild(scriptTag);
-        console.log('lkjfdfjk');
-
         return () => {
             document.body.removeChild(scriptTag);
         }
@@ -64,8 +62,26 @@ export default function Order() {
                 status: "new",
                 total_payment: totalPayment
             })
+
             if (data) {
-                window.snap.pay('TRANSACTION_TOKEN_HERE');
+                window.snap.pay(data.token, {
+                    onSuccess: function (result) {
+                        /* You may add your own implementation here */
+                        alert("payment success!"); console.log(result);
+                    },
+                    onPending: function (result) {
+                        /* You may add your own implementation here */
+                        alert("waiting your payment!"); console.log(result);
+                    },
+                    onError: function (result) {
+                        /* You may add your own implementation here */
+                        alert("payment failed!"); console.log(result);
+                    },
+                    onClose: function () {
+                        /* You may add your own implementation here */
+                        alert('you closed the popup without finishing the payment');
+                    }
+                });
             }
             // dispatch({ type: ACTION.SUCCESS })
         } catch (error) {
@@ -75,7 +91,7 @@ export default function Order() {
 
     return (
         <>
-            
+
             <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32 mb-8">
                 <div className="px-4 pt-8">
                     <p className="text-xl font-medium">Order Summary</p>
