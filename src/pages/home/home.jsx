@@ -15,9 +15,6 @@ import Instagram from "./../../assets/instagram.svg"
 import Twitter from "./../../assets/twitter.svg"
 import { getTable } from "../../services/TableService"
 import BookingDetail from "../../components/Fragments/Form/BookingDetail"
-import useReservation from "../../hooks/reservation/useReservation"
-import { Button, IconButton, Typography } from "@mui/joy"
-import Text from "../../components/Elements/Text/Text"
 import CardUserNotLogin from "../../components/Fragments/Card/CardUserNotLogin"
 
 export default function Home() {
@@ -85,7 +82,7 @@ export default function Home() {
                     <h1 className="text-5xl font-semibold my-5">Our Special Dishes</h1>
                     <p className="sm:w-1/2 mx-auto mb-16">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique, ratione! Atque consectetur blanditiis molestias. Accusantium rerum at sed fuga mollitia.</p>
 
-                    <div className="flex flex-row overflow-x-scroll overflow-y-hidden sm:justify-center gap-7">
+                    <div className="flex flex-row overflow-x-auto overflow-y-clip sm:justify-center gap-7">
                         <CardMenuOval />
                         <CardMenuOval />
                         <CardMenuOval />

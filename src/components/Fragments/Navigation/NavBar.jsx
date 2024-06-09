@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from "react-router-dom"
-import NavLink from "../Elements/Link/NavLink"
-import Logo from "../Elements/Logo/Logo"
+import NavLink from "../../Elements/Link/NavLink"
+import Logo from "../../Elements/Logo/Logo"
 import { Button } from "@material-tailwind/react"
 import Box from '@mui/joy/Box';
 import Drawer from '@mui/joy/Drawer';
@@ -14,9 +14,8 @@ import DialogContent from '@mui/joy/DialogContent';
 import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
-import { logout } from '../../services/UserService';
+import { logout } from '../../../services/UserService';
 import { Avatar, Badge } from '@mui/joy';
-import { CartContext } from '../../context/Context';
 
 function NavBar({ item, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))

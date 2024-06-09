@@ -13,7 +13,6 @@ async function makeOrder(data) {
             
         return response.data
     } catch (error) {
-        console.log(error.response);
         throw error.response;
     }
 }
