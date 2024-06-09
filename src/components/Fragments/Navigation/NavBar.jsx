@@ -21,7 +21,6 @@ function NavBar({ item, navLink = true }) {
     const user = JSON.parse(localStorage.getItem("user"))
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
-   
 
     const toggleDrawer = (inOpen) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -32,11 +31,12 @@ function NavBar({ item, navLink = true }) {
     };
 
     const handleLogout = async () => {
-        localStorage.removeItem("user")
-        localStorage.removeItem("token")
-        window.location.href = "/"
-
         const response = await logout();
+        if (response) {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = "/"
+        }
     }
     return (
         <div className="sticky top-0 z-30 bg-white">
@@ -65,7 +65,7 @@ function NavBar({ item, navLink = true }) {
                         ? <>
                             <p className="hidden sm:block font-semibold cursor-pointer" onClick={toggleDrawer(true)}><span className="text-primary">Hello,</span> {user.name}</p>
                             <div className="sm:hidden">
-                                <Avatar  onClick={toggleDrawer(true)} alt="Remy Sharp" src="https://i.pravatar.cc" />
+                                <Avatar onClick={toggleDrawer(true)} alt="Remy Sharp" src="https://i.pravatar.cc" />
                             </div>
                         </>
                         : <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>

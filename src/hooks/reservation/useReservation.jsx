@@ -3,16 +3,17 @@ import { getReservation } from "../../services/ReservationService";
 
 const useReservation = () => {
     const [reservation, setReservation] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const sessionReservation = JSON.parse(sessionStorage.getItem("reservation"));
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    const sessionReservation = JSON.parse(sessionStorage.getItem("reservation"))
 
     useEffect(() => {
         if (sessionReservation !== null) {
             setReservation(sessionReservation);
+            setLoading(false);
         } else {
             (async () => {
-                setLoading(true);
                 try {
                     const response = await getReservation();
                     if (response) {
@@ -27,6 +28,7 @@ const useReservation = () => {
                 }
             })();
         }
+
     }, []);
 
     return [reservation, loading, error];

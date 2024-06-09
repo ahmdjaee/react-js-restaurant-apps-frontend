@@ -2,10 +2,11 @@ import { Button, Typography, Input } from "@material-tailwind/react";
 import { Select, Option, Chip, Box, Textarea } from "@mui/joy";
 import FloorPlan from './../../../assets/images/floor-plan.png';
 import { createReservation } from "../../../services/ReservationService";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import { postReducer } from "../../../reducer/postReducer";
 import { ACTION } from "../../../utils/action";
+import { getTable } from "../../../services/TableService";
 function getChipColor(text) {
     switch (text) {
         case "available":
@@ -16,12 +17,26 @@ function getChipColor(text) {
             return "danger";
     }
 }
-export default function BookingForm({ onCancel, tables, success }) {
+export default function BookingForm({ onCancel, success }) {
+    const user = JSON.parse(localStorage.getItem("user"))
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
         errors: null,
         success: false
     })
+
+    const [tables, setTables] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getTable();
+                setTables(response.data);
+            } catch (error) {
+                console.log(error.data);
+            }
+        })();
+    }, []);
 
     async function onSubmit(e) {
         e.preventDefault();
@@ -32,7 +47,6 @@ export default function BookingForm({ onCancel, tables, success }) {
             const formJson = Object.fromEntries(formData.entries());
             const response = await createReservation({ ...formJson });
             dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
-            sessionStorage.setItem("reservation", JSON.stringify(response.data));
             success();
         } catch (error) {
             dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });
@@ -47,7 +61,7 @@ export default function BookingForm({ onCancel, tables, success }) {
                 <div className="grid grid-cols-2 gap-x-5">
                     <div className="flex flex-col">
                         <Typography variant="h6">Your name</Typography>
-                        <Input name="name" value={"Ahmad Jaelani"} readOnly={true} className=" !border-t-blue-gray-200 focus:!border-t-gray-900" labelProps={{
+                        <Input name="name" value={user.name} readOnly={true} className=" !border-t-blue-gray-200 focus:!border-t-gray-900" labelProps={{
                             className: "before:content-none after:content-none",
                         }} />
                         <Typography variant="h6" className="mt-3">How many people will you order for?</Typography>

@@ -16,8 +16,6 @@ export default function Order() {
     const [carts, loadingCarts] = useCarts();
     const totalPayment = carts?.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
     const totalItem = carts?.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
-    const [payment, setPayment] = useState(0);
-
 
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
@@ -161,6 +159,7 @@ export default function Order() {
                                     />
                                 ))
                                 : <>
+                                {console.log(reservation)}
                                     <TextBetween leftText="Name" rightText={reservation.user.name} />
                                     <TextBetween leftText="Table Number" rightText={reservation.table.no} />
                                     <TextBetween leftText="Ordered For" rightText={reservation.persons + " Person"} />

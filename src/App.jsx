@@ -10,6 +10,7 @@ const baseTheme = extendTheme({
                     solidColor: '#ffffff',
                     solidBg: '#f97316', // orange bg-500
                     solidHoverBg: '#f97316', // orange bg-600
+                    solidDisabledBg: 'var(--disabled)',
                     solidActiveBg: '#f97316', // orange bg-600
                     outlinedColor: '#f97316', // orange bg-600
                     outlinedBorder: '#f97316', // orange bg-500

@@ -27,11 +27,8 @@ export default function Cart() {
     const { setOutletItem } = useOutletContext()
     const user = JSON.parse(localStorage.getItem("user"))
 
-    console.log(carts);
-
     useEffect(() => {
         setOutletItem(item)
-        console.log(item);
         return () => setOutletItem(null)
     }, [item])
 
