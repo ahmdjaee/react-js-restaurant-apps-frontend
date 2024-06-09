@@ -1,5 +1,7 @@
 # This project is still under development
 
+You can see demo here (https://larest.vercel.app/) but it's not completely finished and there are still some bugs hahaha.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
