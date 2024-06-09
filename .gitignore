@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # config 
-src/services/config.js
+./src/services/config.js
