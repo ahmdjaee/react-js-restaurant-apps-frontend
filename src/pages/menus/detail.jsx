@@ -36,11 +36,11 @@ function Detail() {
     return (
         <div className="container flex flex-col sm:flex-row justify-center items-center gap-10 sm:pt-14">
             {success && <CustomSnackbar text="Successfully add item to cart" />}
-            <Link
+            {/* <Link
                 to={"/menus"}
-                className="absolute top-28 left-56 cursor-pointer text-orange-900 font-semibold" >
+                className="absolute top-28 left-56 cursor-pointer text-primary font-semibold" >
                 &#x2B9C; Menu
-            </Link>
+            </Link> */}
             <img className="sm:w-5/12 xl:h-[26rem] rounded-lg object-cover" src={data.image} alt="" />
             <div className="flex-grow-0">
                 <h1 className="text-5xl font-semibold">{data.name}</h1>

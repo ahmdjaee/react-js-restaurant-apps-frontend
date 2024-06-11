@@ -17,7 +17,7 @@ function getChipColor(text) {
             return "danger";
     }
 }
-export default function BookingForm({ onCancel, success }) {
+export default function BookingForm({ onCancel, success, type = "create" }) {
     const user = JSON.parse(localStorage.getItem("user"))
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
@@ -42,32 +42,52 @@ export default function BookingForm({ onCancel, success }) {
         e.preventDefault();
         dispatch({ type: ACTION.START });
 
-        try {
-            const formData = new FormData(e.target);
-            const formJson = Object.fromEntries(formData.entries());
-            const response = await createReservation({ ...formJson });
-            dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
-            success();
-        } catch (error) {
-            dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });
-            console.log(error.data);
+        if (type === "edit") {
+            try {
+                const formData = new FormData(e.target);
+                const formJson = Object.fromEntries(formData.entries());
+                const response = await createReservation({ ...formJson });
+                dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
+                success();
+            } catch (error) {
+                dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });
+                console.log(error.data);
+            }
+            return;
+        } else if (type === "create") {
+            try {
+                const formData = new FormData(e.target);
+                const formJson = Object.fromEntries(formData.entries());
+                const response = await createReservation({ ...formJson });
+                dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
+                success();
+            } catch (error) {
+                dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });
+                console.log(error.data);
+            }
         }
+
     }
 
     return (
         <>
             {state.loading && <CircularProgress />}
-            <form className="w-[50rem]" onSubmit={(e) => onSubmit(e)}>
-                <div className="grid grid-cols-2 gap-x-5">
+            <form className="sm:w-[50rem] " onSubmit={(e) => onSubmit(e)}>
+                <div className="sm:grid sm:grid-cols-2 gap-x-5">
                     <div className="flex flex-col">
                         <Typography variant="h6">Your name</Typography>
-                        <Input name="name" value={user.name} readOnly={true} className=" !border-t-blue-gray-200 focus:!border-t-gray-900" labelProps={{
-                            className: "before:content-none after:content-none",
-                        }} />
+                        <Input name="name" value={user.name} readOnly={true} />
                         <Typography variant="h6" className="mt-3">How many people will you order for?</Typography>
+
                         <Select
-                            name="persons"
                             placeholder="Select options"
+                            name="persons"
+                            slotProps={{
+                                listbox: {
+                                    placement: 'bottom-start',
+                                    sx: { minWidth: 160 },
+                                },
+                            }}
                             endDecorator={
                                 <Chip
                                     color="primary"
@@ -100,7 +120,13 @@ export default function BookingForm({ onCancel, success }) {
                             ))}
                         </Select>
                         <Typography variant="h6" className="mt-3">Select an available table </Typography>
-                        <Select name="table_id" placeholder="Select table">
+                        <Select name="table_id" placeholder="Select table"
+                            slotProps={{
+                                listbox: {
+                                    placement: 'bottom-start',
+                                    sx: { minWidth: 160 },
+                                },
+                            }}>
                             <ListItemTable tables={tables} />
                         </Select>
                         <div className="flex">
@@ -116,29 +142,31 @@ export default function BookingForm({ onCancel, success }) {
                         <Typography variant="h6" className="mt-3">Leave us your notes</Typography>
                         <Textarea minRows={3} placeholder="Notes" name="notes" />
                     </div>
-                    <div>
+
+
+                    <div >
                         <Typography variant="h6" className="">Restaurant Plan</Typography>
                         <ul className="flex gap-3 text-sm my-3">
                             <li className="text-green-500">&#11200; <span className="text-black">Available</span></li>
                             <li className="text-yellow-500">&#11200; <span className="text-black">Booked</span></li>
                             <li className="text-deep-purple-600">&#11200; <span className="text-black">Used</span></li>
                         </ul>
-                        <p className="mt-3 text-sm font-serif font-medium bg-gray-100 p-2 rounded ">Below is the floor plan of our restaurant, please select the available table on the select menu on the left 😊.</p>
+                        <p className="mt-3 text-ellipsis text-sm font-serif font-medium bg-gray-100 p-2 rounded ">Below is the floor plan of our restaurant, please select the available table on the select menu on the left 😊.</p>
                         <img className="mt-2 border" src="https://restaurant.eatapp.co/hs-fs/hubfs/image6%20(4)-1.webp?width=669&height=350&name=image6%20(4)-1.webp" alt="" />
                     </div>
                 </div>
-                <footer className="flex justify-end gap-5 item-center">
+                <footer className="mt-5 sm:mt-0 flex justify-end gap-5 item-center">
                     <Button
                         variant="outlined"
                         color="red"
                         onClick={onCancel}
-                    >Cancel</Button>
+                    >CANCEL</Button>
 
                     <Button
                         className="bg-primary w-40"
                         disabled={false}
                         type="submit"
-                    >Reserve</Button>
+                    >RESERVE</Button>
                 </footer>
             </form>
         </>

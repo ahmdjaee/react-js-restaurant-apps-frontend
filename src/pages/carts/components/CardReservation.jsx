@@ -6,16 +6,18 @@ import useReservation from "../../../hooks/reservation/useReservation";
 import Modal from "../../../components/Fragments/Modal/Modal";
 import { useState } from "react";
 import BookingForm from "../../../components/Fragments/Form/BookingForm";
+import { useNavigate } from "react-router-dom";
 export default function CardReservation({ item, total }) {
     const [reservation, loadingReservation, error] = useReservation();
     const [showModal, setShowModal] = useState(false)
+    const navigate = useNavigate();
     
     return (
         <>
             <Modal onKeyDown={() => setShowModal(false)} showModal={showModal} >
-                <BookingForm onCancel={() => setShowModal(false)} success={() => window.location.href = "/order"} />
+                <BookingForm onCancel={() => setShowModal(false)} success={() => navigate("/order")} />
             </Modal>
-            <div className="w-full sticky bottom-10 sm:w-[22rem] sm:static bg-white rounded-lg h-min px-5 py-7">
+            <div className="w-full sticky bottom-16 sm:w-[22rem] sm:static bg-white rounded-lg h-min px-5 py-7">
                 <Text className={"text-center font-bold"}>Detail Orders</Text>
                 <div className="flex justify-between border-b sm:mt-5 py-2">
                     <Text>Items</Text>

@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 
 function Authentication({ children }) {
     return (
         <div className="relative container flex justify-center h-screen">
-            <a className="absolute top-20 left-72 cursor-pointer text-primary font-semibold" href="/">&#x2B9C; Home</a>
+            <Link className="absolute top-20 left-72 cursor-pointer text-primary font-semibold" to="/">&#x2B9C; Home</Link>
             {children}
         </div>
     )

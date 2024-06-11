@@ -7,12 +7,14 @@ export default function Modal({ showModal, children }) {
             {showModal ? (
                 <>
                     {/* Background */}
-                    <div id="modal" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-40 bg-black/30 outline-none focus:outline-none">
+                    <div id="modal" className="flex flex-row-reverse justify-center items-end sm:items-center bg-black/30 overflow-x-clip fixed top-0 inset-0 z-50 overflow-y-auto outline-none focus:outline-none">
                         {/* Container */}
-                        <div className="p-5 absolute z-50 bg-white my-6 mx-auto  rounded-lg ">
+                        <div className="p-5 w-screen h-[80%] overflow-y-auto sm:w-fit sm:absolute sm:h-fit z-50 bg-white sm:my-6 sm:mx-auto sm:mb-16 sm:m-0 rounded-lg ">
                             {/* Content */}
                             {children}
+                            <div className="h-16 sm:h-0"></div>
                         </div>
+                        {/* <div className="bg-white h-80 w-full"></div> */}
                     </div>
                 </>
             ) : null}

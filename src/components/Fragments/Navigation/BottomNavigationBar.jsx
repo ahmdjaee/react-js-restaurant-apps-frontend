@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function BottomNavigationBar() {
     return (
-        <div className="sm:hidden fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200">
+        <div className="sm:hidden sticky mt-auto bottom-0 left-0 z-50 w-full py-2 bg-white border-t border-gray-200">
             <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
                 <Link to={"/"} className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50  group">
                     <svg className="w-6 h-6 mb-1 text-gray-500  group-hover:text-primary " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

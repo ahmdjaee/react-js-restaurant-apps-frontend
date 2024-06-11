@@ -38,8 +38,8 @@ export default function Home() {
             return (
                 <>
                     {reservation
-                        ? <BookingDetail reservation={reservation} loading={loading} onCancel={() => setShowModal(false)}></BookingDetail>
-                        : <BookingForm tables={data} onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
+                        ? <BookingDetail reservation={reservation} loading={loading} onCancel={() => setShowModal(false)} />
+                        : <BookingForm onCancel={() => setShowModal(false)} success={() => setShowModal(false)} />
                     }
                 </>
             )

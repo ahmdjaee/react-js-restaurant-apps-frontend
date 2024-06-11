@@ -75,9 +75,9 @@ export default function Cart() {
 
 
     return (
-        <section id="cartSection" className="overflow-x-clip bg-zinc-100 flex-grow py-5">
+        <section id="cartSection" className="overflow-x-clip bg-zinc-100 flex-grow sm:py-5">
             {success && <CustomSnackbar text="Successfully delete item" />}
-            <div className="container h-full pb-5 flex flex-col md:flex-row gap-10">
+            <div className="container h-full sm:pb-5 flex flex-col md:flex-row gap-10">
                 <div className="flex-grow h-min">
                     <CartSection carts={carts} setQuantity={setQuantity} setId={setId} setOpenDialog={setOpenDialog} />
                 </div>

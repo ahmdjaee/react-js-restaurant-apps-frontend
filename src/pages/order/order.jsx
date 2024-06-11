@@ -8,6 +8,7 @@ import useReservation from "../../hooks/reservation/useReservation";
 import { postReducer } from "../../reducer/postReducer";
 import { ACTION } from "../../utils/action";
 import { makeOrder } from "../../services/OrderService";
+import { useNavigate } from "react-router-dom";
 
 export default function Order() {
 
@@ -16,6 +17,8 @@ export default function Order() {
     const [carts, loadingCarts] = useCarts();
     const totalPayment = carts?.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
     const totalItem = carts?.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
+    
+    const navigate = useNavigate();
 
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
@@ -42,6 +45,9 @@ export default function Order() {
         }
     }, []);
 
+    async function orderSuccess() {
+        setShowModal(true)
+    }
 
     async function handleOrder() {
         // dispatch({ type: ACTION.START });
@@ -65,7 +71,8 @@ export default function Order() {
                 window.snap.pay(data.token, {
                     onSuccess: function (result) {
                         /* You may add your own implementation here */
-                        alert("payment success!"); console.log(result);
+                        navigate("/order/success")
+                        // console.log(result);
                     },
                     onPending: function (result) {
                         /* You may add your own implementation here */
@@ -77,7 +84,7 @@ export default function Order() {
                     },
                     onClose: function () {
                         /* You may add your own implementation here */
-                        alert('you closed the popup without finishing the payment');
+                        // alert('you closed the popup without finishing the payment');
                     }
                 });
             }
@@ -159,7 +166,6 @@ export default function Order() {
                                     />
                                 ))
                                 : <>
-                                {console.log(reservation)}
                                     <TextBetween leftText="Name" rightText={reservation.user.name} />
                                     <TextBetween leftText="Table Number" rightText={reservation.table.no} />
                                     <TextBetween leftText="Ordered For" rightText={reservation.persons + " Person"} />

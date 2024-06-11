@@ -1,6 +1,6 @@
 import { Button, IconButton, Typography } from "@mui/joy";
 
-export default function BookingDetail({ onCancel, reservation, loading }) {
+export default function BookingDetail({ onCancel, reservation, loading, onEdit }) {
     
     return (
         <div className="flex flex-col w-96 mx-2">
@@ -53,8 +53,7 @@ export default function BookingDetail({ onCancel, reservation, loading }) {
 
                 <Button
                     color="primary"
-                    disabled={false}
-                    type="submit"
+                    onClick={onEdit}
                 >Edit Reservation</Button>
             </footer>
         </div>
