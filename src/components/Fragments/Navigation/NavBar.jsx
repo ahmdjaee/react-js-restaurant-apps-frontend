@@ -86,10 +86,10 @@ function NavBar({ item, navLink = true }) {
                         Some data will be lost. Are you sure want to logout?
                     </DialogContent>
                     <DialogActions>
-                        <Button color="red" onClick={handleLogout}>
+                        <Button color="danger" onClick={handleLogout}>
                             Logout
                         </Button>
-                        <Button variant="text" color="black" onClick={() => setOpenDialog(false)}>
+                        <Button variant="plain" onClick={() => setOpenDialog(false)}>
                             Cancel
                         </Button>
                     </DialogActions>
@@ -123,7 +123,7 @@ function CheckUser({ user, item, toggleDrawer }) {
                             <i className="fa-solid fa-shopping-cart fa-xl " ></i>
                         </Badge>
                     </Link>
-                    <Link to={"/login"}><Button variant="outlined" color="deep-orange">Sign in</Button></Link>
+                    <Link to={"/login"}><Button variant="outlined" >Sign in</Button></Link>
                 </>
             }
         </div>

@@ -1,6 +1,5 @@
 import { Box, Button, Modal, ModalDialog, Textarea, Typography } from "@mui/joy";
 import { useEffect, useReducer, useState } from "react";
-import { Link } from "react-router-dom";
 import useCarts from "../../hooks/carts/useCartItem";
 import TextCurrency from "../../components/Elements/Text/TextCurrency";
 import TextBetween from "../../components/Elements/Text/TextBetween";
@@ -36,7 +35,7 @@ export default function Order() {
 
         // Optional: set script attribute, for example snap.js have data-client-key attribute 
         // (change the value according to your client-key)
-        const myMidtransClientKey = 'SB-Mid-client-R1k8J1RSa9ITMmZG';
+        const myMidtransClientKey =  import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
         scriptTag.setAttribute('data-client-key', myMidtransClientKey);
 
         document.body.appendChild(scriptTag);
@@ -44,10 +43,6 @@ export default function Order() {
             document.body.removeChild(scriptTag);
         }
     }, []);
-
-    async function orderSuccess() {
-        setShowModal(true)
-    }
 
     async function handleOrder() {
         // dispatch({ type: ACTION.START });
@@ -125,32 +120,6 @@ export default function Order() {
                             ))
                         }
                     </div>
-
-                    {/* <p className="mt-8 text-lg font-medium">Payment Methods</p>
-                    <form className="mt-5 grid gap-6">
-                        <div className="relative">
-                            <input className="peer hidden" id="radio_1" type="radio" name="radio" defaultChecked />
-                            <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                            <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_1">
-                                <img className="w-14 object-contain max-h-12" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/2560px-Logo_QRIS.svg.png" alt="" />
-                                <div className="ml-5">
-                                    <span className="mt-2 font-semibold">QRIS</span>
-                                    <p className="text-slate-500 text-sm leading-6">Scan qr code to pay</p>
-                                </div>
-                            </label>
-                        </div>
-                        <div className="relative">
-                            <input className="peer hidden" id="radio_2" type="radio" name="radio" defaultChecked />
-                            <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                            <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_2">
-                                <img className="w-14 object-contain max-h-12" src="https://aalfiann.thedev.id/images/portfolio/bca-va.png" alt="" />
-                                <div className="ml-5">
-                                    <span className="mt-2 font-semibold">BCA Virtual Account</span>
-                                    <p className="text-slate-500 text-sm leading-6">Pay using bca virtual account</p>
-                                </div>
-                            </label>
-                        </div>
-                    </form> */}
                 </div>
                 <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
                     <p className="text-xl font-medium">Reservation Details</p>

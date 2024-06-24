@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "https://larest.xyz/api"; // for production
-// const BASE_URL = "http://restaurants.food/api"; // for development
 const token = localStorage.getItem("token");
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.common['Authorization'] = token;
