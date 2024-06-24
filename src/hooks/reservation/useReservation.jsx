@@ -6,7 +6,7 @@ const useReservation = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const sessionReservation = JSON.parse(sessionStorage.getItem("reservation"))
+    const sessionReservation = sessionStorage.getItem("reservation") && JSON.parse(sessionStorage.getItem("reservation"))
 
     useEffect(() => {
         if (sessionReservation !== null) {
