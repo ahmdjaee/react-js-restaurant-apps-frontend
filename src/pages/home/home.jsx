@@ -22,7 +22,7 @@ export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
 
-    const user = localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"))
+    const user = localStorage.getItem("user") !== undefined && JSON.parse(localStorage.getItem("user"))
     const [reservation, loading, error] = useReservation();
 
     async function fetchTable() {
