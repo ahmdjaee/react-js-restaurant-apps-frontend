@@ -9,7 +9,7 @@ const useReservation = () => {
     const sessionReservation = sessionStorage.getItem("reservation") && JSON.parse(sessionStorage.getItem("reservation"))
 
     useEffect(() => {
-        if (sessionReservation !== null) {
+        if (sessionReservation !== undefined) {
             setReservation(sessionReservation);
             setLoading(false);
         } else {
