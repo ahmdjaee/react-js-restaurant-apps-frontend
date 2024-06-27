@@ -80,7 +80,7 @@ export default function Cart() {
                 <div className="flex-grow h-min">
                     <CartSection carts={carts} setQuantity={setQuantity} setId={setId} setOpenDialog={setOpenDialog} />
                 </div>
-                <CardReservation item={item.qty && item.qty} total={item.totalPrice} />
+                {(Array.isArray(carts) &&  carts.length > 0) && <CardReservation item={item.qty && item.qty} total={item.totalPrice} />}
             </div>
             <DeleteDialog openDialog={openDialog} setOpenDialog={setOpenDialog} onDelete={onDelete} />
         </section>
