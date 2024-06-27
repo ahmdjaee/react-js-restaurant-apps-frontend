@@ -17,12 +17,13 @@ import { getTable } from "../../services/TableService"
 import BookingDetail from "../../components/Fragments/Form/BookingDetail"
 import CardUserNotLogin from "../../components/Fragments/Card/CardUserNotLogin"
 import useReservation from "../../hooks/reservation/useReservation"
+import { useStateContext } from "../../context/ContextProvider"
 
 export default function Home() {
     const [showModal, setShowModal] = useState(false)
     const [data, setData] = useState([]);
 
-    const user = localStorage.getItem("user") !== undefined && JSON.parse(localStorage.getItem("user"))
+    const {user} = useStateContext()
     const [reservation, loading, error] = useReservation();
 
     async function fetchTable() {

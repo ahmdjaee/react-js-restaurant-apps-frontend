@@ -1,14 +1,16 @@
 
 import InputForm from "../../Elements/Input/InputForm";
-import { useReducer } from "react";
 import { login } from "../../../services/UserService";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import CustomSnackbar from "../../Elements/Indicator/CustomSnackbar";
-import { INITIAL_STATE, loginReducer } from "../../../reducer/loginReducer";
 import { Link } from "react-router-dom";
 import { Button, Checkbox, Typography } from "@mui/joy";
+import { useStateContext } from "../../../context/ContextProvider";
+import { useNavigate } from "react-router-dom";
+
 function LoginForm() {
-    const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE);
+    const navigate = useNavigate();
+    const { state, dispatch, setToken } = useStateContext();
     async function handleLogin() {
         dispatch({ type: "ACTION_START" })
         const response = await login({ email: state.email, password: state.password });
@@ -18,10 +20,9 @@ function LoginForm() {
         }
 
         if (response.data) {
-            window.location.href = "/";
+            navigate("/")
             dispatch({ type: "ACTION_SUCCESS" })
-            localStorage.setItem("token", response.data.token)
-            localStorage.setItem("user", JSON.stringify(response.data))
+            setToken(response.data.token);
         }
 
     }
@@ -46,7 +47,7 @@ function LoginForm() {
                 <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
                     Login
                 </Typography>
-                <Typography color="gray" sx={{mt: 1}}>
+                <Typography color="gray" sx={{ mt: 1 }}>
                     Use the account you registered earlier
                 </Typography>
                 <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">

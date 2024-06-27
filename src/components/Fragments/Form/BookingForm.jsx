@@ -1,11 +1,11 @@
-import { Select, Option, Chip, Box, Textarea, Button, Typography, Input  } from "@mui/joy";
-import FloorPlan from './../../../assets/images/floor-plan.png';
+import { Select, Option, Chip, Box, Textarea, Button, Typography, Input } from "@mui/joy";
 import { createReservation } from "../../../services/ReservationService";
 import { useEffect, useReducer, useState } from "react";
 import CircularProgress from "../../Elements/Indicator/CircularProgress";
 import { postReducer } from "../../../reducer/postReducer";
 import { ACTION } from "../../../utils/action";
 import { getTable } from "../../../services/TableService";
+import { useStateContext } from "../../../context/ContextProvider";
 function getChipColor(text) {
     switch (text) {
         case "available":
@@ -17,7 +17,7 @@ function getChipColor(text) {
     }
 }
 export default function BookingForm({ onCancel, success, type = "create" }) {
-    const user = JSON.parse(localStorage.getItem("user"))
+    const { user } = useStateContext()
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
         errors: null,

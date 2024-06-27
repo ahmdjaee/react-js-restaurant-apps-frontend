@@ -25,7 +25,6 @@ export default function Cart() {
     const [item, setItem] = useState({})
     const [loadingUpdate, setloadingUpdate] = useState(false)
     const { setOutletItem } = useOutletContext()
-    const user = JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
         setOutletItem(item)

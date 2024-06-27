@@ -1,3 +1,4 @@
+import axiosClient from "./axios.js";
 import { BASE_URL, token } from "./config.js";
 
 async function register(data) {
@@ -61,6 +62,16 @@ async function logout() {
         console.log(error.message);
     }
 }
-export { register, login, logout }
+
+async function current() {
+    try {
+        const response = await axiosClient.get("/users/current");
+        return response.data
+    } catch (error) {
+        console.log(error.message);
+        throw error
+    }
+}
+export { register, login, logout, current }
 
 

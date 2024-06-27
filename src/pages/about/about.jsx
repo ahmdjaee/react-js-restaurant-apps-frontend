@@ -3,7 +3,7 @@ import dish3 from "../../assets/dish-3.svg"
 
 function About() {
     return (
-        <div className="container flex flex-col items-center text-center py-8   ">
+        <div className="container flex flex-col items-center text-center sm:py-5   ">
             <section>
                 <div className="w-full rounded-xl h-80 bg-slate-100 bg-about-us bg-no-repeat bg-center bg-cover"></div>
                 <h1 className="text-5xl font-bold my-8 text-primary">GREAT INDONESIAN FOOD COMES FIRST</h1>

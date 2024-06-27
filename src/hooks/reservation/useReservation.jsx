@@ -5,29 +5,22 @@ const useReservation = () => {
     const [reservation, setReservation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-
-    const sessionReservation = null;
-
+    
     useEffect(() => {
-        if (sessionReservation !== null) {
-            setReservation(sessionReservation);
-            setLoading(false);
-        } else {
-            (async () => {
-                try {
-                    const response = await getReservation();
-                    if (response) {
-                        setReservation(response.data);
-                        sessionStorage.setItem("reservation", JSON.stringify(response.data));
-                        setLoading(false);
-                    }
-                } catch (error) {
+
+        (async () => {
+            try {
+                const response = await getReservation();
+                if (response) {
+                    setReservation(response.data);
                     setLoading(false);
-                    setError(true);
-                    console.log(error);
                 }
-            })();
-        }
+            } catch (error) {
+                setLoading(false);
+                setError(true);
+                console.log(error);
+            }
+        })();
 
     }, []);
 

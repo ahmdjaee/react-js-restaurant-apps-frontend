@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { router } from './routes/routes';
+import ContextProvider from "./context/ContextProvider";
 
 const baseTheme = extendTheme({
     colorSchemes: {
@@ -44,7 +45,9 @@ const baseTheme = extendTheme({
 export default function App() {
     return (
         <CssVarsProvider theme={baseTheme}>
-            <RouterProvider router={router} />
+            <ContextProvider>
+                <RouterProvider router={router} />
+            </ContextProvider>
         </CssVarsProvider>
     );
 }
