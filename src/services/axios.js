@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: "https://larest.xyz/api",
+    baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 axiosClient.interceptors.request.use(async (config) => {

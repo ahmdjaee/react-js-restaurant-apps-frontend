@@ -7,7 +7,7 @@ import SearchInput from "../../components/Elements/Input/SearchInput";
 export default function Menu() {
     const [menus, loading, error] = useMenu();
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterType, setFilterType] = useState('All');
+    // const [filterType, setFilterType] = useState('All');
 
     const filteredMenus = menus.filter((menu) => {
         return (
@@ -18,7 +18,7 @@ export default function Menu() {
 
     return (
         <>
-            <header className="bg-white sticky top-20 z-40 py-2">
+            <section className="bg-white sticky top-20 z-40 py-2">
                 <div className="flex items-center justify-between container">
                     <SearchInput setSearchTerm={setSearchTerm}  searchTerm={searchTerm}/>
                     <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
@@ -41,7 +41,7 @@ export default function Menu() {
                         </TabList>
                     </Tabs>
                 </div>
-            </header>
+            </section>
             <section className="container flex flex-col gap-5">
                 {loading
                     ? <>

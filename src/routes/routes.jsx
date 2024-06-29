@@ -11,7 +11,6 @@ import ErrorPageNotFound from '../pages/errors/errors.jsx';
 import Order from '../pages/order/order.jsx';
 import Transaction from '../pages/transactions/transactions.jsx';
 import Payment from "../pages/payment/payment.jsx";
-import Event from "../pages/events/events.jsx";
 import Success from "../pages/order/success.jsx";
 import OrderNavbar from "../pages/root-order.jsx";
 import Authentication from "../pages/authentication/authentication.jsx";
@@ -47,6 +46,15 @@ export const router = createBrowserRouter(
             <Route path="order/success" element={<Success />} />
             <Route path="payment" element={<Payment />} />
             <Route path="*" element={<ErrorPageNotFound />} />
+
+            <Route path="admin" >
+                <Route path="menus" element={<h1>Menus</h1>} />
+                <Route path="orders" element={<h1>Orders</h1>} />
+                <Route path="users" element={<h1>Users</h1>} />
+                <Route path="transactions" element={<h1>Transactions</h1>} />
+                <Route path="reservations" element={<h1>Reservations</h1>} />
+                <Route path="events" element={<h1>Events</h1>} />
+            </Route>
         </>
     )
 );

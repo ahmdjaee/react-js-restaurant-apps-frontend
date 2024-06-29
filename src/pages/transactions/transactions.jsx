@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, Modal, Card } from '@mui/joy';
 import QRCode from 'qrcode.react';
+import SearchInput from '../../components/Elements/Input/SearchInput';
 
 const ReservationHistory = () => {
     const reservations = [
@@ -13,6 +14,11 @@ const ReservationHistory = () => {
 
     const [openModal, setOpenModal] = useState(false);
     const [selectedReservation, setSelectedReservation] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredReservations = reservations.filter((reservation) => {
+        return reservation.guestName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
     const handleOpenModal = (reservation) => {
         setSelectedReservation(reservation);
@@ -35,7 +41,7 @@ const ReservationHistory = () => {
                     <button className="text-gray-500">Cancelled(22)</button>
                 </div>
                 <div className="flex justify-between mb-4">
-                    <input type="text" placeholder="Search..." className="p-2 border border-gray-300 rounded" />
+                    <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                     <div className="flex space-x-2 items-center">
                         <input type="date" className="p-2 border border-gray-300 rounded" />
                         <span>To</span>
@@ -56,7 +62,7 @@ const ReservationHistory = () => {
                         </tr>
                     </thead>
                     <tbody className='px-2'>
-                        {reservations.map((reservation, index) => (
+                        {filteredReservations.map((reservation, index) => (
                             <tr key={index} className="border-b">
                                 <td className="py-2">
                                     <QRCode value={reservation.id} size={64} />

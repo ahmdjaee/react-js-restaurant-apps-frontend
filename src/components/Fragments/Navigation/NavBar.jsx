@@ -17,24 +17,13 @@ import { current, logout } from '../../../services/UserService';
 import { Avatar, Badge, Button } from '@mui/joy';
 import { useEffect } from 'react';
 import { useStateContext } from '../../../context/ContextProvider';
-import useCarts from '../../../hooks/carts/useCartItem';
 
 function NavBar({ navLink = true }) {
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
     const { user, setUser } = useStateContext();
-    const [carts] = useCarts();
-    const [totalQuantity, setTotalQuantity] = React.useState(0);
 
     useEffect(() => {
-        let _totalQuantity = 0;
-
-        carts?.forEach(cart => {
-            _totalQuantity += cart.quantity
-        })
-
-        setTotalQuantity(_totalQuantity)
-
         async function getUser() {
             try {
                 const response = await current();
@@ -45,9 +34,9 @@ function NavBar({ navLink = true }) {
 
             }
         }
-
         getUser();
-    }, [carts])
+    }, [])
+
 
 
     const toggleDrawer = (inOpen) => (event) => {
@@ -62,7 +51,6 @@ function NavBar({ navLink = true }) {
         const response = await logout();
         if (response) {
             localStorage.clear();
-            sessionStorage.clear();
             window.location.href = "/"
         }
     }
@@ -73,7 +61,7 @@ function NavBar({ navLink = true }) {
                 {
                     navLink && <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
                 }
-                <CheckUser totalQuantity={totalQuantity} user={user} toggleDrawer={toggleDrawer} />
+                <CheckUser user={user} toggleDrawer={toggleDrawer} />
 
             </nav >
 
@@ -130,14 +118,15 @@ function NavBar({ navLink = true }) {
 
 export default NavBar
 
-function CheckUser({ user, totalQuantity, toggleDrawer }) {
+function CheckUser({ user, toggleDrawer }) {
+
     return (
         <div className="flex gap-5 sm:gap-6 items-center">
             {user
                 ? <>
                     <Button size="sm" className='shadow-md shadow-slate-300 hidden lg:block' sx={{ borderRadius: '20px' }}>Book a table </Button>
                     <Link to={"/carts"}>
-                        <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={totalQuantity}>
+                        <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={0}>
                             <i className="fa-solid fa-shopping-cart fa-xl " ></i>
                         </Badge>
                     </Link>
