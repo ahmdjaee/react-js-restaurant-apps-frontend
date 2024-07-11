@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { useStateContext } from '../../../context/ContextProvider';
-import { CircularProgress } from '@mui/material';
-import useFetchData from '../../../hooks/useFetch';
+import { CircularProgress } from '@mui/joy';
+import React, { useEffect } from 'react';
 import { BiUser } from 'react-icons/bi';
-import { GrTransaction } from 'react-icons/gr';
+import { HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { MdAutorenew, MdOutlineEventAvailable } from 'react-icons/md';
-import { HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
+import { Link, useLocation } from 'react-router-dom';
+import { useStateContext } from '../../../context/ContextProvider';
+import useFetchData from '../../../hooks/useFetch';
 
 const links = [
   { to: '/menus', icon: <IoFastFoodOutline className="size-5" />, text: 'Menus' },
