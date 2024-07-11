@@ -1,8 +1,7 @@
-// import { Input, Typography } from "@material-tailwind/react";
 import propType from "prop-types";
 import { useState } from "react";
 import TextError from "../Text/TextError";
-import { TextField, Typography } from "@mui/material";
+import { Input, Typography } from "@mui/joy";
 
 export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown, name }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -12,16 +11,15 @@ export default function InputForm({ title, type, placeholder, value, onChange, e
       <Typography level="title-md" sx={{ mb: 2 }} color="blue-gray">
         {title}
       </Typography>
-      <TextField
+      <Input
         name={name}
-        size="small"
+        size="lg"
         type={showPassword ? "text" : type}
         placeholder={placeholder}
         onKeyDown={onKeyDown}
         value={value}
         onChange={onChange}
         sx={{ fontSize: "16px" }}
-        fullWidth
         endDecorator={type === "password" && <i className="fas fa-eye cursor-pointer" aria-hidden="true" onClick={() => {
           setShowPassword(!showPassword)
         }}></i>}

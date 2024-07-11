@@ -1,10 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Snackbar,
-  Typography
-} from "@mui/material";
+
+import { Button, Checkbox, Snackbar, Typography } from "@mui/joy";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FloatProgressIndicator from "../../../components/Elements/Indicator/FloatProgressIndicator";
@@ -79,12 +74,11 @@ function LoginForm() {
               onChange={(e) => handleChange(e)}
               errorsText={state.errors.password}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleLogin();
+                if (e.key === "Enter") handleLogin()
               }}
             />
           </div>
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
+          <Checkbox
             label={
               <Typography
                 variant="small"
@@ -104,9 +98,7 @@ function LoginForm() {
           <Button
             sx={{ mt: 4 }}
             fullWidth
-            variant="contained"
-            onClick={() => handleLogin()}
-          >
+            onClick={() => handleLogin()}>
             LOGIN
           </Button>
         </form>
