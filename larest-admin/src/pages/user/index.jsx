@@ -1,5 +1,4 @@
-import { Button, CircularProgress, Snackbar } from "@mui/joy";
-import IconButton from "@mui/material/IconButton";
+import { Button, CircularProgress, IconButton, Snackbar } from "@mui/joy";
 import React, { useState } from "react";
 import { BiUser } from "react-icons/bi";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
@@ -88,7 +87,7 @@ function User() {
                   </span>
                 </td>
                 <td className="p-3 pr-0 flex items-center justify-end">
-                  <IconButton >
+                  <IconButton>
                     <BsPencilFill className="text-blue-600 text-lg" />
                   </IconButton>
                   <IconButton onClick={() => handleDelete(user)}>
