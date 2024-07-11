@@ -1,9 +1,9 @@
-import { Button, IconButton } from '@mui/material'
 import SearchInput from '../../Elements/Input/SearchInput'
 import { BiExit } from 'react-icons/bi'
 import AlertDialogModal from '../Modal/AlertDialogModal'
 import { useState } from 'react'
 import { useStateContext } from '../../../context/ContextProvider'
+import { Button } from '@mui/joy'
 
 function NavBar() {
   const [open, setOpen] = useState(false)
@@ -13,7 +13,7 @@ function NavBar() {
     <div className="sticky top-0 shadow-md z-50 bg-white">
       <nav className=" px-2 sm:px-4 py-5 flex items-center justify-between ">
         <SearchInput onChange={(val) => setSearch(val)} value={search} />
-        <Button onClick={() => setOpen(true)}>
+        <Button variant='plain' color='warning' onClick={() => setOpen(true)}>
           <BiExit className="text-2xl me-2" />
           Logout
         </Button>
