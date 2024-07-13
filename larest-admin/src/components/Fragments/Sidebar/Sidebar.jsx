@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import { IoFastFoodOutline } from 'react-icons/io5';
-import { MdAutorenew, MdOutlineEventAvailable } from 'react-icons/md';
+import { MdAutorenew, MdOutlineCategory, MdOutlineEventAvailable, MdOutlineTableBar } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { useStateContext } from '../../../context/ContextProvider';
 import useFetchData from '../../../hooks/useFetch';
@@ -13,6 +13,8 @@ const links = [
   { to: '/transactions', icon: <MdAutorenew className="size-5" />, text: 'Transactions' },
   { to: '/events', icon: <MdOutlineEventAvailable className="size-5" />, text: 'Events' },
   { to: '/users', icon: <BiUser className="size-5" />, text: 'Users' },
+  { to: '/tables', icon: <MdOutlineTableBar className="size-5" />, text: 'Tables' },
+  { to: '/categories', icon: <MdOutlineCategory className="size-5" />, text: 'Categories' },
 ]
 
 function SidebarLink({ to, icon, text }) {

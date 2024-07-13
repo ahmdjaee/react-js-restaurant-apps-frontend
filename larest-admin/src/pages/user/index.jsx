@@ -19,7 +19,6 @@ function User() {
 
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;
-
     await actionDelete(`/admin/users/${user.id}`, dispatch);
   };
 
@@ -34,12 +33,12 @@ function User() {
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 min-w-24 text-start">NAME</th>
+            <th className="pb-3 min-w-24 pe-3 text-start">NAME</th>
             <th className="pb-3 min-w-24 px-3 text-start">EMAIL</th>
             <th className="pb-3 min-w-24 px-3 text-start">ROLE</th>
             <th className="pb-3 min-w-24 px-3 text-end "> CREATED AT</th>
             <th className="pb-3 min-w-24 px-3 text-end ">UPDATED AT</th>
-            <th className="pb-3 min-w-24 px-3 text-end ">ACTIONS</th>
+            <th className="pb-3 min-w-24 ps-3 text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>

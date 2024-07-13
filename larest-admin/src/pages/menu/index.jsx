@@ -27,11 +27,11 @@ function Menu() {
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 text-start">NAME</th>
-            <th className="pb-3 px-3 text-end">DESCRIPTION</th>
-            <th className="pb-3 px-3 text-end">PRICE</th>
-            <th className="pb-3 px-3 text-end ">CATEGORY</th>
-            <th className="pb-3 px-3 text-end ">ACTIONS</th>
+            <th className="pb-3 max-w-64 pe-3 text-start">NAME</th>
+            <th className="pb-3 max-w-64 px-3 text-start ">DESCRIPTION</th>
+            <th className="pb-3 max-w-64 px-3 text-end">PRICE</th>
+            <th className="pb-3 max-w-64 px-3 text-end ">CATEGORY</th>
+            <th className="pb-3 max-w-64 ps-3 text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@ function Menu() {
             </tr>
             : response.data.map((menu) => (
               <tr key={menu.id} className="border-b border-dashed last:border-b-0">
-                <td className="p-3 pl-0">
+                <td className="p-3 max-w-64 pl-0">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img src={menu.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
@@ -56,20 +56,22 @@ function Menu() {
                     </div>
                   </div>
                 </td>
-                <td className="p-3 text-end">
-                  <span className="font-semibold text-light-inverse text-md/normal ">{menu.description}</span>
+                <td className="p-3 max-w-64 text-start">
+                  <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
+                  {menu.description}
+                  </span>
                 </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
+                <td className="p-3 max-w-64 text-end">
+                  <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
                     Rp {menu.price}
                   </span>
                 </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
+                <td className="p-3 max-w-64 text-end">
+                  <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
                     {menu.category.name}
                   </span>
                 </td>
-                <td className="p-3 pr-0 flex items-center justify-end">
+                <td className="p-3 pr-0 max-w-64 flex items-center justify-end">
                   <IconButton>
                     <BsPencilFill className="text-blue-600 text-lg" />
                   </IconButton>
