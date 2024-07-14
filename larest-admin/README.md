@@ -11,3 +11,4 @@ Currently, two official plugins are available:
 # Preview
 
 ![image](https://github.com/ahmdjaee/react-js-restaurant-apps-frontend/assets/134043456/96596337-7a2d-41b5-beff-8af1c7639c6c)
+![image](https://github.com/user-attachments/assets/5e91995d-d402-4894-b8cc-39208d973694)
