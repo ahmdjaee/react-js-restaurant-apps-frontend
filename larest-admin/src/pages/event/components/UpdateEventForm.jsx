@@ -1,23 +1,20 @@
 import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select, Textarea } from '@mui/joy';
-import { useState } from 'react';
-import { MdOutlineCloudUpload } from 'react-icons/md';
-import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
-import { VisuallyHiddenInput } from '../../../components/Elements/Input/VisuallyHiddenInput';
-import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
-import { getMinDateTime } from '../../../utils/helper';
+import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
+import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
 import { ACTION } from '../../../utils/action';
+import { getMinDateTime } from '../../../utils/helper';
 
 
-function UpdateEventForm({ open, onClose, data }) {
+function UpdateEventForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    formJson.active = formJson.active ? 1 : 0;
-    await actionPost(`/admin/events/${data.id}`, formJson, dispatch, "multipart/form-data");
+    formJson.active = formJson.active === 'true' ? 1 : 0;
+    await actionPost(`/admin/events/${state.id}`, formJson, dispatch, "multipart/form-data")
   }
 
   const handleChange = (e) => {
@@ -49,8 +46,8 @@ function UpdateEventForm({ open, onClose, data }) {
                 <FormControl>
                   <FormLabel>Name</FormLabel>
                   <Input
-                    onChange={(e) => handleChange(e)}
-                    value={data.title}
+                    onChange={handleChange}
+                    value={state.title}
                     required
                     name='title'
                     placeholder="Event title"
@@ -59,7 +56,8 @@ function UpdateEventForm({ open, onClose, data }) {
                 <FormControl>
                   <FormLabel>Description</FormLabel>
                   <Textarea
-                    value={data.description}
+                    onChange={handleChange}
+                    value={state.description}
                     required
                     placeholder="Type in here…"
                     minRows={2}
@@ -70,7 +68,13 @@ function UpdateEventForm({ open, onClose, data }) {
                 <div className="grid grid-cols-2 gap-4">
                   <FormControl>
                     <FormLabel>Type</FormLabel>
-                    <Select value={data.type} onChange={(e) => handleChange(e)} required name='type' placeholder="Select event type">
+                    <Select
+                      value={state.type}
+                      onChange={(_, value) => handleChange({ target: { name: 'type', value } })}
+                      required
+                      name='type'
+                      placeholder="Select event type"
+                    >
                       <Option value='Promo'>Promo</Option>
                       <Option value='Concert'>Concert</Option>
                       <Option value='Workshop'>Workshop</Option>
@@ -80,7 +84,13 @@ function UpdateEventForm({ open, onClose, data }) {
                   </FormControl>
                   <FormControl>
                     <FormLabel>Active</FormLabel>
-                    <Select value={data.active} required name='active' placeholder="Active status">
+                    <Select
+                      value={state.active}
+                      onChange={(_, value) => handleChange({ target: { name: 'active', value } })}
+                      required
+                      name='active'
+                      placeholder="Active status"
+                    >
                       <Option value={true}>Active</Option>
                       <Option value={false}>Inactive</Option>
                     </Select>
@@ -89,15 +99,14 @@ function UpdateEventForm({ open, onClose, data }) {
                 <FormControl>
                   <FormLabel>Event Start</FormLabel>
                   <Input
-                    value={data.event_start}
-                    onChange={(e) => handleChange(e)}
+                    value={state.event_start}
+                    onChange={handleChange}
                     required
                     type="datetime-local"
                     name='event_start'
                     slotProps={{
                       input: {
-                        min: getMinDateTime(),
-                        // max: '2018-06-14',
+                        min: state.event_start ? state.event_start : getMinDateTime(),
                       },
                     }}
                   />
@@ -105,41 +114,23 @@ function UpdateEventForm({ open, onClose, data }) {
               </div>
 
               <div className="flex flex-col gap-2 justify-between">
-
                 <FormControl>
                   <FormLabel>Event End</FormLabel>
-                  <Input onChange={(e) => handleChange(e)}
-                    value={data.event_end}
+                  <Input onChange={handleChange}
+                    value={state.event_end}
                     required
                     name='event_end'
                     type="datetime-local"
                     slotProps={{
                       input: {
-                        min: getMinDateTime(),
-                        // max: '2018-06-14',
+                        min: state.event_end ? state.event_end : getMinDateTime(),
                       },
                     }}
                   />
                 </FormControl>
-
-                {/* <img src={image == null ? data.image : image} class="border border-zinc-300 w-[175px] h-[175px] object-cover mx-auto " />
-
-                <Button
-                  component="label"
-                  role={undefined}
-                  tabIndex={-1}
-                  variant="outlined"
-                  color="neutral"
-                  startDecorator={<MdOutlineCloudUpload />}
-                >
-                  Upload a file
-                  <VisuallyHiddenInput  accept="image/*" onChange={(event) => { setImage(URL.createObjectURL(event.target.files[0])) }} name='image' type="file" />
-                </Button> */}
-                <ImageUploader src={data.image} />
+                <ImageUploader src={state.image} />
               </div>
             </div>
-
-
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>
           </form>
         </ModalDialog>

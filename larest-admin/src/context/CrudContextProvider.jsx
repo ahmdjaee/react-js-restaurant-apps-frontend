@@ -19,6 +19,9 @@ export function crudReducer(state, action) {
         [action.name]: action.value
       }
     }
+    case ACTION.SET_FORM_DATA: {
+      return { ...state, ...action.formData };
+    }
     case ACTION.START: {
       return {
         ...state,
@@ -50,7 +53,7 @@ export function crudReducer(state, action) {
         loading: false,
         success: false,
         failed: false,
-        error: null
+        error: null,
       }
     }
     default:

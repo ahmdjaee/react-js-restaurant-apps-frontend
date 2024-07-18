@@ -1,7 +1,8 @@
-import { Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
+import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
 import React, { useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import Badge from '../../components/Elements/Badge/Badge';
+import EmptyState from '../../components/Elements/Indicator/EmptyState';
 import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
 import Table from '../../components/Fragments/Table/Table';
 import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
@@ -9,7 +10,6 @@ import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import { formatDate } from '../../utils/helper';
 import CreateEventForm from './components/CreateEventForm';
-import EmptyState from '../../components/Elements/Indicator/EmptyState';
 import UpdateEventForm from './components/UpdateEventForm';
 
 const getBadgeColor = (type) => {
@@ -34,15 +34,14 @@ function Event() {
   const [loading, error, response] = useFetchData(url, state.data);
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [event, setEvent] = useState({});
 
   const handleDelete = async (event) => {
     if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
-    await actionDelete(`/admin/events/${5645}`, dispatch);
+    await actionDelete(`/admin/events/${event.id}`, dispatch);
   };
 
   const handleUpdateModal = (event) => {
-    setEvent(event);
+    dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
     setUpdateModal(true);
   }
 
@@ -53,7 +52,6 @@ function Event() {
         title="Events"
         description={"List of all events"}
         actions={<Button onClick={() => setCreateModal(true)}>Create Event</Button>}
-      // footer={<Pagination response={response} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
@@ -67,7 +65,7 @@ function Event() {
           </tr>
         </thead>
         <tbody>
-          {loading ? (
+          {loading ? ( //NOTE - Add loading indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -76,12 +74,30 @@ function Event() {
                 <CircularProgress />
               </td>
             </tr>
-          ) : error ? <EmptyState /> : (
-            response.data.map((event, index) => (
+          ) : error ? ( //NOTE - Add error indicator
+            <tr>
+              <td
+                className="text-xl text-center overflow-hidden"
+                colSpan={7}
+              >
+                <EmptyState text={error} />
+              </td>
+            </tr>
+          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+            <tr>
+              <td
+                className="text-xl text-center overflow-hidden"
+                colSpan={7}
+              >
+                <EmptyState text={"No data found"} />
+              </td>
+            </tr>
+          ) : (
+            response.data.map((event, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="border-b border-dashed last:border-b-0 hover:bg-slate-100 hover:cursor-pointer"
-                onClick={() => handleUpdateModal(event)}
+              // onClick={() => handleUpdateModal(event)}
               >
                 <td className="p-3 max-w-64 pl-0">
                   <div className="flex items-center">
@@ -150,7 +166,6 @@ function Event() {
       <UpdateEventForm
         open={updateModal}
         onClose={() => setUpdateModal(false)}
-        data={event}
       />
     </>
   );

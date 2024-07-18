@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: "https://larest.xyz/api",
+    baseURL: "http://restaurants.food/api",
 });
 
 axiosClient.interceptors.request.use(async (config) => {

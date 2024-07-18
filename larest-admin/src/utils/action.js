@@ -3,7 +3,8 @@ const ACTION = {
     START: "START",
     SUCCESS: "SUCCESS",
     FAILED: "FAILED",
-    RESET: "RESET"
+    RESET: "RESET",
+    SET_FORM_DATA: "SET_FORM_DATA"
 }
 
 export { ACTION }
