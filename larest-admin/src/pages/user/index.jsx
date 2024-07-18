@@ -1,4 +1,4 @@
-import { Button, CircularProgress, IconButton, Snackbar } from "@mui/joy";
+import { Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
 import React, { useState } from "react";
 import { BiUser } from "react-icons/bi";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
@@ -28,12 +28,20 @@ function User() {
       <Table
         title="Users"
         description={"List of all users"}
-        actions={<Button>Create User</Button>}
+        actions={
+          <>
+            <Button color="danger" variant="outlined" sx={{ mr: 2 }}>Delete Selected</Button>
+            <Button>Create User</Button>
+          </>
+        }
         footer={<Pagination response={response} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 min-w-24 pe-3 text-start">NAME</th>
+            <th className="pb-2 h-min w-min pe-3 text-start">
+              <Checkbox sx={{ m: 0 }} />
+            </th>
+            <th className="pb-3 min-w-24 px-3 text-start">NAME</th>
             <th className="pb-3 min-w-24 px-3 text-start">EMAIL</th>
             <th className="pb-3 min-w-24 px-3 text-start">ROLE</th>
             <th className="pb-3 min-w-24 px-3 text-end "> CREATED AT</th>
@@ -58,6 +66,9 @@ function User() {
                 className="border-b border-dashed last:border-b-0"
               >
                 <td className="p-3 pl-0">
+                  <Checkbox />
+                </td>
+                <td className="p-3">
                   <div className="flex flex-col justify-start">
                     <span className="font-semibold text-light-inverse text-md/normal">
                       {user.name}
@@ -70,10 +81,7 @@ function User() {
                   </span>
                 </td>
                 <td className="p-3 text-start">
-                  <span className="text-center text-blue-600 align-baseline inline-flex py-1 mr-auto items-center font-medium text-base/none text-success bg-success-light rounded-lg">
-                    <BiUser className="w-5 h-5 me-2" />
-                    Admin
-                  </span>
+                  <Chip variant="solid" color="primary">Admin</Chip>
                 </td>
                 <td className="p-3 text-end">
                   <span className="font-medium text-light-inverse text-md/normal">
@@ -99,13 +107,13 @@ function User() {
         </tbody>
       </Table>
       <Snackbar
-        open={state.success}
-        color="success"
+        open={state.success || state.failed}
+        color={state.success ? "success" : "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({type : ACTION.RESET})}
+        onClose={() => dispatch({ type: ACTION.RESET })}
       >
-        User has been deleted
+        {state.message}
       </Snackbar >
     </>
   );

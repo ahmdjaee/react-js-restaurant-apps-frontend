@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Badge({ text, color }) {
 
   return (
@@ -8,6 +6,5 @@ function Badge({ text, color }) {
     </span>
   )
 }
-
 
 export default Badge

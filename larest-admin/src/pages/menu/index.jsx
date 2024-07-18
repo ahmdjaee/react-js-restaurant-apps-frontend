@@ -16,6 +16,7 @@ function Menu() {
   const handleDelete = async (menu) => {
     if (!window.confirm(`Are you sure want to delete menu: ${menu.name}?`)) return;
     await actionDelete(`/admin/menus/${menu.id}`, dispatch);
+    setNotificationMessage("Menu has been deleted");
   };
   return (
     <>
@@ -58,7 +59,7 @@ function Menu() {
                 </td>
                 <td className="p-3 max-w-64 text-start">
                   <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
-                  {menu.description}
+                    {menu.description}
                   </span>
                 </td>
                 <td className="p-3 max-w-64 text-end">
@@ -87,16 +88,19 @@ function Menu() {
       <CreateMenuForm
         open={dialogCreate}
         onClose={() => setDialogCreate(false)}
-        onSuccess={() => setDialogCreate(false)}
+        onSuccess={() => {
+          setDialogCreate(false);
+          setNotificationMessage("Menu has been created");
+        }}
       />
       <Snackbar
         open={state.success}
         color="success"
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({type : ACTION.RESET})}
+        onClose={() => dispatch({ type: ACTION.RESET })}
       >
-        Menu has been deleted
+        {state.message}
       </Snackbar >
     </>
   );

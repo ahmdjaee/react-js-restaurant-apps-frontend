@@ -3,35 +3,38 @@ import { useState } from 'react';
 import { MdOutlineCloudUpload } from 'react-icons/md';
 import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
 import { VisuallyHiddenInput } from '../../../components/Elements/Input/VisuallyHiddenInput';
-import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
-import { getMinDateTime } from '../../../utils/helper';
+import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
+import { getMinDateTime } from '../../../utils/helper';
+import { ACTION } from '../../../utils/action';
 
-function CreateEventForm({ open, onClose }) {
-  const [image, setImage] = useState(null);
+
+function UpdateEventForm({ open, onClose, data }) {
   const { state, dispatch } = useCrudContext();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    await actionCreate("/admin/events", formJson, dispatch, "multipart/form-data");
+    formJson.active = formJson.active ? 1 : 0;
+    await actionPost(`/admin/events/${data.id}`, formJson, dispatch, "multipart/form-data");
   }
 
-  const handleOnClose = () => {
-    setImage(null);
-    onClose();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch({ type: ACTION.CHANGE, name: name, value: value });
   }
 
   return (
     <>
       {state.loading && <FloatCircularProgress />}
-      <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={handleOnClose}>
+      <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            Create new event
+            Update event
             <IconButton
               variant="plain"
-              onClick={handleOnClose}
+              onClick={onClose}
             >
               ✕
             </IconButton>
@@ -45,20 +48,29 @@ function CreateEventForm({ open, onClose }) {
               <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>Name</FormLabel>
-                  <Input required name='title' placeholder="Event title" autoFocus />
+                  <Input
+                    onChange={(e) => handleChange(e)}
+                    value={data.title}
+                    required
+                    name='title'
+                    placeholder="Event title"
+                    autoFocus />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Description</FormLabel>
                   <Textarea
+                    value={data.description}
                     required
                     placeholder="Type in here…"
                     minRows={2}
                     maxRows={4}
                     name='description'
                   />
+                </FormControl>
+                <div className="grid grid-cols-2 gap-4">
                   <FormControl>
                     <FormLabel>Type</FormLabel>
-                    <Select required name='type' placeholder="Select event type">
+                    <Select value={data.type} onChange={(e) => handleChange(e)} required name='type' placeholder="Select event type">
                       <Option value='Promo'>Promo</Option>
                       <Option value='Concert'>Concert</Option>
                       <Option value='Workshop'>Workshop</Option>
@@ -66,10 +78,19 @@ function CreateEventForm({ open, onClose }) {
                       <Option value='Flash Sale'>Flash Sale</Option>
                     </Select>
                   </FormControl>
-                </FormControl>
+                  <FormControl>
+                    <FormLabel>Active</FormLabel>
+                    <Select value={data.active} required name='active' placeholder="Active status">
+                      <Option value={true}>Active</Option>
+                      <Option value={false}>Inactive</Option>
+                    </Select>
+                  </FormControl>
+                </div>
                 <FormControl>
                   <FormLabel>Event Start</FormLabel>
                   <Input
+                    value={data.event_start}
+                    onChange={(e) => handleChange(e)}
                     required
                     type="datetime-local"
                     name='event_start'
@@ -87,7 +108,8 @@ function CreateEventForm({ open, onClose }) {
 
                 <FormControl>
                   <FormLabel>Event End</FormLabel>
-                  <Input
+                  <Input onChange={(e) => handleChange(e)}
+                    value={data.event_end}
                     required
                     name='event_end'
                     type="datetime-local"
@@ -100,9 +122,7 @@ function CreateEventForm({ open, onClose }) {
                   />
                 </FormControl>
 
-                <ImageUploader/>
-
-                {/* <img src={image} class="border border-zinc-300 w-[175px] h-[175px] object-cover mx-auto " />
+                {/* <img src={image == null ? data.image : image} class="border border-zinc-300 w-[175px] h-[175px] object-cover mx-auto " />
 
                 <Button
                   component="label"
@@ -113,16 +133,14 @@ function CreateEventForm({ open, onClose }) {
                   startDecorator={<MdOutlineCloudUpload />}
                 >
                   Upload a file
-                  <VisuallyHiddenInput
-                    required
-                    accept="image/*"
-                    onChange={(event) => { setImage(URL.createObjectURL(event.target.files[0])) }}
-                    name='image'
-                    type="file" />
+                  <VisuallyHiddenInput  accept="image/*" onChange={(event) => { setImage(URL.createObjectURL(event.target.files[0])) }} name='image' type="file" />
                 </Button> */}
+                <ImageUploader src={data.image} />
               </div>
             </div>
-            <Button type='submit' sx={{ mt: 2, width: '100%' }}>Create</Button>
+
+
+            <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>
           </form>
         </ModalDialog>
       </Modal>
@@ -130,4 +148,4 @@ function CreateEventForm({ open, onClose }) {
   )
 }
 
-export default CreateEventForm
+export default UpdateEventForm

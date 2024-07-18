@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const StateContext = createContext({
     user: null,
@@ -9,11 +8,11 @@ const StateContext = createContext({
     setUser: () => { },
     setToken: () => { },
     dispatch: () => { },
-    handleLogout: () => { },
     setSearch: () => { }
 });
 
 export default function ContextProvider({ children }) {
+    
     const [user, setUser] = useState(null)
     const [token, _setToken] = useState(localStorage.getItem("ADMIN-TOKEN"))
     const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE)
@@ -28,12 +27,6 @@ export default function ContextProvider({ children }) {
         }
     }
 
-    const handleLogout = () => {
-        setToken(null)
-        setUser(null)
-        window.location.href = "/login"
-    }
-
     return (
         <StateContext.Provider
             value={{
@@ -44,7 +37,6 @@ export default function ContextProvider({ children }) {
                 setUser,
                 setToken,
                 dispatch,
-                handleLogout,
                 setSearch
             }}
         >
@@ -95,4 +87,5 @@ function loginReducer(state, action) {
     }
 }
 
-export { INITIAL_STATE, loginReducer }
+export { INITIAL_STATE, loginReducer };
+

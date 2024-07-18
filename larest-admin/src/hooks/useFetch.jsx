@@ -20,7 +20,7 @@ const useFetchData = (url, fetchAgain) => {
         }
       })
       .catch((err) => {
-        setError(err?.response?.data?.result?.error || 'Sorry! Something went wrong. App server error');
+        setError(err?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error');
         setLoading(false);
       });
   }, [url, fetchAgain]); // reFetch

@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { BiUser } from 'react-icons/bi';
-import { HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
+import { HiMiniCubeTransparent, HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { MdAutorenew, MdOutlineCategory, MdOutlineEventAvailable, MdOutlineTableBar } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
@@ -15,6 +15,7 @@ const links = [
   { to: '/users', icon: <BiUser className="size-5" />, text: 'Users' },
   { to: '/tables', icon: <MdOutlineTableBar className="size-5" />, text: 'Tables' },
   { to: '/categories', icon: <MdOutlineCategory className="size-5" />, text: 'Categories' },
+  { to: '/orders', icon: <HiMiniCubeTransparent className="size-5" />, text: 'Orders' },
 ]
 
 function SidebarLink({ to, icon, text }) {
@@ -52,7 +53,7 @@ function Sidebar() {
             <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">analytics</label>
             
             <SidebarLink
-              to="#"
+              to="/"
               icon={<HiOutlinePresentationChartLine className="w-5 h-5" />}
               text="Dashboard"
             />  

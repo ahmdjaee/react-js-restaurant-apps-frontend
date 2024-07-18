@@ -1,4 +1,4 @@
-import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
+import { Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
 import React, { useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import Badge from '../../components/Elements/Badge/Badge';
@@ -9,6 +9,8 @@ import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import { formatDate } from '../../utils/helper';
 import CreateEventForm from './components/CreateEventForm';
+import EmptyState from '../../components/Elements/Indicator/EmptyState';
+import UpdateEventForm from './components/UpdateEventForm';
 
 const getBadgeColor = (type) => {
   switch (type) {
@@ -29,17 +31,24 @@ const getBadgeColor = (type) => {
 function Event() {
   const { state, dispatch } = useCrudContext();
   const [url] = useState(`/events`);
-  const [loading, _, response] = useFetchData(url, state.data);
+  const [loading, error, response] = useFetchData(url, state.data);
   const [createModal, setCreateModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [event, setEvent] = useState({});
 
   const handleDelete = async (event) => {
     if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
-    await actionDelete(`/admin/events/${event.id}`, dispatch);
+    await actionDelete(`/admin/events/${5645}`, dispatch);
   };
+
+  const handleUpdateModal = (event) => {
+    setEvent(event);
+    setUpdateModal(true);
+  }
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      {state.loading ? <FloatProgressIndicator /> : null}
       <Table
         title="Events"
         description={"List of all events"}
@@ -62,16 +71,17 @@ function Event() {
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
-                colSpan={6}
+                colSpan={7}
               >
                 <CircularProgress />
               </td>
             </tr>
-          ) : (
+          ) : error ? <EmptyState /> : (
             response.data.map((event, index) => (
               <tr
                 key={index}
-                className="border-b border-dashed last:border-b-0"
+                className="border-b border-dashed last:border-b-0 hover:bg-slate-100 hover:cursor-pointer"
+                onClick={() => handleUpdateModal(event)}
               >
                 <td className="p-3 max-w-64 pl-0">
                   <div className="flex items-center">
@@ -112,11 +122,11 @@ function Event() {
                   </Chip>
                 </td>
                 <td className="p-3 pr-0 text-nowrap">
-                  <IconButton>
-                    <BsPencilFill className="text-blue-600 text-lg" />
+                  <IconButton onClick={() => handleUpdateModal(event)}>
+                    <BsPencilFill className="text-blue-700 text-lg hover:text-blue-800" />
                   </IconButton>
                   <IconButton onClick={() => handleDelete(event)}>
-                    <BsFillTrash3Fill className="text-red-600 text-lg" />
+                    <BsFillTrash3Fill className="text-red-700 text-lg hover:text-red-800" />
                   </IconButton>
                 </td>
               </tr>
@@ -125,17 +135,22 @@ function Event() {
         </tbody>
       </Table>
       <Snackbar
-        open={state.success}
-        color="success"
+        open={state.success || state.failed}
+        color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
         onClose={() => dispatch({ type: ACTION.RESET })}
       >
-        Table has been deleted
+        {state.message}
       </Snackbar >
       <CreateEventForm
         open={createModal}
         onClose={() => setCreateModal(false)}
+      />
+      <UpdateEventForm
+        open={updateModal}
+        onClose={() => setUpdateModal(false)}
+        data={event}
       />
     </>
   );
