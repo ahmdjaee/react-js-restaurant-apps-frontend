@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import { FaCamera } from 'react-icons/fa';
 import { MdOutlineCloudUpload } from 'react-icons/md';
-import { Button } from '@mui/joy';
+import { Button, FormLabel } from '@mui/joy';
 import { VisuallyHiddenInput } from '../Input/VisuallyHiddenInput';
 
 function ImageUploader({ src, name, props, className }) {
   const [image, setImage] = useState(null);
 
   return (
-    <div className={`flex flex-col items-center gap-2 ${className}`}>
-      <div className="flex items-center mx-5 gap-3">
-        <div className="">
-          <p className='text-sm font-bold'>Menu picture</p>
-          <p className='text-sm font-bold'>Max size: 5MB</p>
-        </div>
-        <div className="relative border border-zinc-300 w-[175px] h-[175px]">
+    <div className={`flex flex-col gap-2 ${className}`}>
+      <FormLabel>Image</FormLabel>
+      <div className="relative flex items-center justify-center gap-3 border border-gray-300  rounded-lg">
+        <div className="relative  w-[175px] h-[175px]">
           {image == null && src == null ? (
-            <div className="flex items-center justify-center w-full h-full bg-gray-200">
+            <div className="flex items-center justify-center w-full h-full">
               <FaCamera className="text-gray-500 text-4xl" />
             </div>
           ) : (
@@ -27,7 +24,7 @@ function ImageUploader({ src, name, props, className }) {
             />
           )}
         </div>
-
+        <p className='text-[11px] font-semibold absolute bottom-0 right-0 mb-2 mr-2 text-danger'>Max size: 5MB</p>  
       </div>
 
       <Button

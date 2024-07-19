@@ -12,10 +12,11 @@ import Main from "../components/Layout/MainLayout.jsx";
 import Tables from "../pages/table/index.jsx";
 import Category from "../pages/category/index.jsx";
 import Dashboard from "../pages/dashboard/index.jsx";
+import ErrorPageNotFound from "../pages/errors/index.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
+    <Route errorElement={<ErrorPageNotFound />}>
       <Route path="/" element={<Main />}>
         <Route index element={<Dashboard />} />
         <Route path="users" element={<User />} />
@@ -27,6 +28,6 @@ export const router = createBrowserRouter(
       </Route>
 
       <Route path="login" element={<Login />} />
-    </>
+    </Route>
   )
 );
