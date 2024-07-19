@@ -1,5 +1,5 @@
 
-import { Button, Checkbox, Snackbar, Typography } from "@mui/joy";
+import { Button, Card, Checkbox, Snackbar, Typography } from "@mui/joy";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FloatProgressIndicator from "../../../components/Elements/Indicator/FloatProgressIndicator";
@@ -103,6 +103,12 @@ function LoginForm() {
           </Button>
         </form>
       </div>
+      <Card sx={{ gap: 0, m: 2, position: "absolute", bottom: 0, right: 0, p: 2, textAlign: "center" }}>
+        <p className="font-bold">SELAMAT DATANG DI DEMO LAREST ADMIN</p>
+        <p>Silahkan copy data dibawah untuk login</p>
+        <p>email : admin@gmail.com</p>
+        <p>password : 123456789</p>
+      </Card>
       <Snackbar
         open={open}
         onClose={() => setOpen(false)}

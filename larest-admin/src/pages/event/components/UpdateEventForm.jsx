@@ -60,8 +60,8 @@ function UpdateEventForm({ open, onClose }) {
                     value={state.description}
                     required
                     placeholder="Type in here…"
-                    minRows={2}
-                    maxRows={4}
+                    minRows={3}
+                    maxRows={3}
                     name='description'
                   />
                 </FormControl>
@@ -128,7 +128,7 @@ function UpdateEventForm({ open, onClose }) {
                     }}
                   />
                 </FormControl>
-                <ImageUploader src={state.image} />
+                <ImageUploader  name={"image"} src={state.image} />
               </div>
             </div>
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>

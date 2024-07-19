@@ -13,3 +13,25 @@ body {
     box-sizing: border-box;
     height: 100vh;
 }
+
+@layer components {
+    .primary-with-hover {
+        @apply text-blue-700 hover:text-blue-800;
+    }
+
+    .danger-with-hover {
+        @apply text-red-700 hover:text-red-800;
+    }
+
+    .success-with-hover {
+        @apply text-green-700 hover:text-green-800;
+    }
+
+    .warning-with-hover {
+        @apply text-yellow-700 hover:text-yellow-800;
+    }
+
+    .table-row {
+        @apply border-b border-dashed last:border-b-0 hover:bg-slate-100 hover:cursor-pointer
+    }
+}

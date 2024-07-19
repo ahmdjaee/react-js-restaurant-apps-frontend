@@ -1,17 +1,18 @@
 import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select, Textarea } from '@mui/joy';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
 import { default as CircularProgress, default as FloatCircularProgress } from '../../../components/Elements/Indicator/FloatProgressIndicator';
-import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
+import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
 import useFetchData from '../../../hooks/useFetch';
 
-function CreateMenuForm({ open, onClose, onSuccess }) {
+function UpdateMenuForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
-  const [loading, _, response] = useFetchData("/categories");
+  const [loading, error, response] = useFetchData("/categories");
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    await actionCreate("/admin/menus", formJson, dispatch, "multipart/form-data");
+    await actionPost(`/admin/menus/${state.id}`, formJson, dispatch, "multipart/form-data")
+      .then(() => onClose());
   }
 
   return (
@@ -20,7 +21,7 @@ function CreateMenuForm({ open, onClose, onSuccess }) {
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            Create new menu
+            Update Menu
             <IconButton
               variant="plain"
               onClick={onClose}
@@ -37,11 +38,18 @@ function CreateMenuForm({ open, onClose, onSuccess }) {
               <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>Name</FormLabel>
-                  <Input name='name' placeholder="Menu name" autoFocus required />
+                  <Input
+                    defaultValue={state.name}
+                    name='name'
+                    placeholder="Menu name"
+                    autoFocus
+                    required
+                  />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Description</FormLabel>
                   <Textarea
+                    defaultValue={state.description}
                     placeholder="Type in here…"
                     minRows={3}
                     maxRows={3}
@@ -50,31 +58,50 @@ function CreateMenuForm({ open, onClose, onSuccess }) {
                 </FormControl>
                 <FormControl>
                   <FormLabel>Price</FormLabel>
-                  <Input name='price' placeholder="00" type="number" min={0} required />
+                  <Input
+                    defaultValue={state.price}
+                    name='price'
+                    placeholder="00"
+                    type="number"
+                    min={0}
+                    required
+                  />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Stock</FormLabel>
-                  <Input name='stock' placeholder="00" type="number" min={0} required />
+                  <Input
+                    defaultValue={state.stock}
+                    name='stock'
+                    placeholder="00"
+                    type="number"
+                    min={0}
+                    required
+                  />
                 </FormControl>
               </div>
 
               <div className="flex flex-col gap-2 justify-between">
                 <FormControl>
                   <FormLabel>Category</FormLabel>
-                  <Select name='category_id' defaultValue="dog" placeholder="Select a category">
+                  <Select name='category_id' defaultValue={state.category?.id} placeholder="Select a category">
                     {loading
                       ? <CircularProgress />
                       : response?.data.map((category) => (
-                        <Option key={category.id} value={category.id}>{category.name}</Option>
-                      ))}
+                        <Option
+                          key={category.id}
+                          value={category.id}
+                        >
+                          {category.name}
+                        </Option>
+                      ))
+                    }
                   </Select>
                 </FormControl>
 
-                <ImageUploader props={{required: true}} />
-
+                <ImageUploader src={state.image} />
               </div>
             </div>
-            <Button type='submit' sx={{ mt: 2, width: '100%' }}>Create</Button>
+            <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>
           </form>
         </ModalDialog>
       </Modal>
@@ -82,4 +109,4 @@ function CreateMenuForm({ open, onClose, onSuccess }) {
   )
 }
 
-export default CreateMenuForm
+export default UpdateMenuForm

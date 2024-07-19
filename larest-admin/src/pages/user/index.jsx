@@ -63,7 +63,7 @@ function User() {
             response.data.map((user, index) => (
               <tr
                 key={index}
-                className="border-b border-dashed last:border-b-0"
+                className="table-row"
               >
                 <td className="p-3 pl-0">
                   <Checkbox />
@@ -81,7 +81,7 @@ function User() {
                   </span>
                 </td>
                 <td className="p-3 text-start">
-                  <Chip variant="solid" color="primary">Admin</Chip>
+                  <Chip variant="solid" color={user?.is_admin ? "primary" : "neutral"}>{user?.is_admin ? "Admin" : "User"}</Chip>
                 </td>
                 <td className="p-3 text-end">
                   <span className="font-medium text-light-inverse text-md/normal">
@@ -95,10 +95,10 @@ function User() {
                 </td>
                 <td className="p-3 pr-0 flex items-center justify-end">
                   <IconButton>
-                    <BsPencilFill className="text-blue-600 text-lg" />
+                    <BsPencilFill className="primary-with-hover" />
                   </IconButton>
                   <IconButton onClick={() => handleDelete(user)}>
-                    <BsFillTrash3Fill className="text-red-600 text-lg" />
+                    <BsFillTrash3Fill className="danger-with-hover" />
                   </IconButton>
                 </td>
               </tr>

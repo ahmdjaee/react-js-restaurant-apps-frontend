@@ -1,7 +1,7 @@
 function EmptyState({ text }) {
     return (
         <div className="flex flex-col justify-center items-center pt-10">
-            <svg className="size-52" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
+            <svg className="size-48" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
                 viewBox="0 0 475 512.24"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
@@ -16,7 +16,7 @@ function EmptyState({ text }) {
                     <path fill="white" d="M289.85 364.94c-4.51,-4.44 -8.13,-7.23 -2.49,-12.71l18.21 -17.77c5.78,-5.84 9.16,-5.55 14.53,-0.04l24.55 24.55 24.4 -24.4c4.44,-4.51 7.23,-8.13 12.7,-2.49l17.78 18.21c5.84,5.78 5.54,9.16 0.04,14.54l-24.53 24.52 24.53 24.53c5.5,5.38 5.8,8.76 -0.04,14.53l-17.78 18.21c-5.47,5.64 -8.26,2.03 -12.7,-2.48l-24.4 -24.4 -24.55 24.55c-5.37,5.5 -8.75,5.8 -14.53,-0.04l-18.21 -17.78c-5.64,-5.47 -2.02,-8.26 2.49,-12.7l24.42 -24.42 -24.42 -24.41z" />
                 </g>
             </svg>
-            <p className="text-3xl font-medium">{text}</p>
+            <p className="text-2xl my-3 font-medium">{text}</p>
         </div>
     )
 }

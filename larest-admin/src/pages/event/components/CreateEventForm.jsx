@@ -1,14 +1,10 @@
 import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select, Textarea } from '@mui/joy';
-import { useState } from 'react';
-import { MdOutlineCloudUpload } from 'react-icons/md';
+import ImageUploader from '../../../components/Elements/Image/ImageUploader';
 import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
-import { VisuallyHiddenInput } from '../../../components/Elements/Input/VisuallyHiddenInput';
 import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
 import { getMinDateTime } from '../../../utils/helper';
-import ImageUploader from '../../../components/Elements/Image/ImageUploader';
 
 function CreateEventForm({ open, onClose }) {
-  const [image, setImage] = useState(null);
   const { state, dispatch } = useCrudContext();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,21 +13,16 @@ function CreateEventForm({ open, onClose }) {
     await actionCreate("/admin/events", formJson, dispatch, "multipart/form-data");
   }
 
-  const handleOnClose = () => {
-    setImage(null);
-    onClose();
-  }
-
   return (
     <>
       {state.loading && <FloatCircularProgress />}
-      <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={handleOnClose}>
+      <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             Create new event
             <IconButton
               variant="plain"
-              onClick={handleOnClose}
+              onClick={onClose}
             >
               ✕
             </IconButton>
@@ -52,8 +43,8 @@ function CreateEventForm({ open, onClose }) {
                   <Textarea
                     required
                     placeholder="Type in here…"
-                    minRows={2}
-                    maxRows={4}
+                    minRows={3}
+                    maxRows={3}
                     name='description'
                   />
                   <FormControl>
@@ -100,26 +91,7 @@ function CreateEventForm({ open, onClose }) {
                   />
                 </FormControl>
 
-                <ImageUploader/>
-
-                {/* <img src={image} class="border border-zinc-300 w-[175px] h-[175px] object-cover mx-auto " />
-
-                <Button
-                  component="label"
-                  role={undefined}
-                  tabIndex={-1}
-                  variant="outlined"
-                  color="neutral"
-                  startDecorator={<MdOutlineCloudUpload />}
-                >
-                  Upload a file
-                  <VisuallyHiddenInput
-                    required
-                    accept="image/*"
-                    onChange={(event) => { setImage(URL.createObjectURL(event.target.files[0])) }}
-                    name='image'
-                    type="file" />
-                </Button> */}
+                <ImageUploader required name={"image"}/>
               </div>
             </div>
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Create</Button>

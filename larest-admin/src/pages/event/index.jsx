@@ -96,7 +96,7 @@ function Event() {
             response.data.map((event, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
-                className="border-b border-dashed last:border-b-0 hover:bg-slate-100 hover:cursor-pointer"
+                className="table-row"
               // onClick={() => handleUpdateModal(event)}
               >
                 <td className="p-3 max-w-64 pl-0">
@@ -137,12 +137,12 @@ function Event() {
                     {event.active ? "Active" : "Inactive"}
                   </Chip>
                 </td>
-                <td className="p-3 pr-0 text-nowrap">
+                <td className="p-3 pr-0 text-nowrap text-end">
                   <IconButton onClick={() => handleUpdateModal(event)}>
-                    <BsPencilFill className="text-blue-700 text-lg hover:text-blue-800" />
+                    <BsPencilFill className="primary-with-hover" />
                   </IconButton>
                   <IconButton onClick={() => handleDelete(event)}>
-                    <BsFillTrash3Fill className="text-red-700 text-lg hover:text-red-800" />
+                    <BsFillTrash3Fill className="danger-with-hover" />
                   </IconButton>
                 </td>
               </tr>
