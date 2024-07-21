@@ -11,6 +11,7 @@ import { ACTION } from '../../utils/action';
 import { formatDate } from '../../utils/helper';
 import CreateEventForm from './components/CreateEventForm';
 import UpdateEventForm from './components/UpdateEventForm';
+import SearchInput from '../../components/Elements/Input/SearchInput';
 
 const getBadgeColor = (type) => {
   switch (type) {
@@ -34,6 +35,13 @@ function Event() {
   const [loading, error, response] = useFetchData(url, state.data);
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const filteredEvents = response?.data?.filter((event) => {
+    return (
+      event.title.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const handleDelete = async (event) => {
     if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
@@ -51,7 +59,12 @@ function Event() {
       <Table
         title="Events"
         description={"List of all events"}
-        actions={<Button onClick={() => setCreateModal(true)}>Create Event</Button>}
+        actions={
+          <>
+            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
+            <Button onClick={() => setCreateModal(true)}>Create Event</Button>
+          </>
+        }
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
@@ -93,7 +106,7 @@ function Event() {
               </td>
             </tr>
           ) : (
-            response.data.map((event, index) => ( //NOTE - Add table rows
+            filteredEvents.map((event, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="table-row"

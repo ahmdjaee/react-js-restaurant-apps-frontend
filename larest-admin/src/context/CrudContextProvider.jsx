@@ -99,7 +99,7 @@ export const actionCreate = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data,
+      error: error.response.data.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }
@@ -118,7 +118,7 @@ export const actionPost = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error?.response?.data,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }
@@ -138,7 +138,7 @@ export const actionUpdate = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data,
+      error: error.response.data.errors,
       message: error.response.data.errors.message || 'Sorry! Something went wrong. App server error'
     })
   }
@@ -154,7 +154,7 @@ export const actionDelete = async (url, dispatch) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data,
+      error: error.response.data.errors,
       message: error.response.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }

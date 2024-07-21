@@ -1,4 +1,4 @@
-import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog } from '@mui/joy';
+import { Button, DialogContent, DialogTitle, FormControl, FormHelperText, FormLabel, IconButton, Input, Modal, ModalDialog } from '@mui/joy';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
 import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
 import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
@@ -8,7 +8,7 @@ function UpdateCategoryForm({ open, onClose }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    await actionPost(`/admin/categories/${state.id}`, formJson, dispatch)
+    await actionPost(`/admin/categories/${state.id}`, formJson, dispatch, "multipart/form-data")
   }
 
   return (
@@ -30,16 +30,19 @@ function UpdateCategoryForm({ open, onClose }) {
             onSubmit={handleSubmit}
             className="w-full grid gap-2"
           >
-            <FormControl>
+            <FormControl error={state?.error?.name}>
               <FormLabel>Category Name</FormLabel>
               <Input
+                type="text"
+                defaultValue={state.name}
                 required
                 name='name'
                 placeholder="Insert category name"
                 autoFocus
               />
+              {state?.error?.name && <FormHelperText >{state?.error?.name}</FormHelperText>}
             </FormControl>
-            <ImageUploader props={{ required: true }} name={"image"} />
+            <ImageUploader src={state.image} name={"image"} />
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>
           </form>
         </ModalDialog>

@@ -6,47 +6,32 @@ import FloatProgressIndicator from "../../../components/Elements/Indicator/Float
 import InputForm from "../../../components/Elements/Input/InputForm";
 import { useStateContext } from "../../../context/ContextProvider";
 import axiosClient from "../../../service/axios";
+import { actionPost } from "../../../context/CrudContextProvider";
+import { ACTION } from "../../../utils/action";
 
 function LoginForm() {
   const navigate = useNavigate();
   const { state, dispatch, setToken } = useStateContext();
-  const [open, setOpen] = useState(false)
-  async function handleLogin() {
-    dispatch({ type: "ACTION_START" });
+  async function handleLogin(e) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const formJson = Object.fromEntries(formData.entries());
+
     try {
-      const response = await axiosClient.post("/admin/login", {
-        email: state.email,
-        password: state.password,
-      });
-      if (response.status === 200 && response.data.data.is_admin) {
+      dispatch({ type: ACTION.START });
+      const response = await axiosClient.post("/admin/login", formJson);
+      if (response.status === 200) {
         setToken(response.data.data.token);
         navigate("/users");
       }
     } catch (error) {
-      dispatch({ type: "ACTION_ERROR", payload: error.response.data });
-
-      if (error.response.data.errors.message) {
-        setOpen(true)
-      }
+      dispatch({ type: ACTION.FAILED, payload: { errors: error?.response?.data?.errors } });
     }
   }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    dispatch({ type: "CHANGE", payload: { name, value } });
-  };
-
+  
   return (
     <>
       {state.loading && <FloatProgressIndicator />}
-
-      {/* {state.errors.message &&
-                < CustomSnackbar
-                    variant="error"
-                    text={state.errors.message}
-                />
-            } */}
-
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
           Login
@@ -54,25 +39,23 @@ function LoginForm() {
         <Typography color="gray" sx={{ mt: 1 }}>
           Use the account you registered earlier
         </Typography>
-        <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96">
+        <form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={(e) => handleLogin(e)}>
           <div className="mb-5 flex flex-col gap-6">
             <InputForm
               name={"email"}
               title="Your Email"
               type="email"
+              defaultValue={"admin@gmail.com"}
               placeholder="name@mail.com"
-              value={state.email}
-              onChange={(e) => handleChange(e)}
-              errorsText={state.errors.email}
+              errorsText={state?.errors?.email}
             />
             <InputForm
               name={"password"}
               title="Password"
               type="password"
+              defaultValue={"123456789"}
               placeholder="********"
-              value={state.password}
-              onChange={(e) => handleChange(e)}
-              errorsText={state.errors.password}
+              errorsText={state?.errors?.password}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleLogin()
               }}
@@ -98,24 +81,21 @@ function LoginForm() {
           <Button
             sx={{ mt: 4 }}
             fullWidth
-            onClick={() => handleLogin()}>
+            type="submit"
+          >
             LOGIN
           </Button>
         </form>
       </div>
-      <Card sx={{ gap: 0, m: 2, position: "absolute", bottom: 0, right: 0, p: 2, textAlign: "center" }}>
-        <p className="font-bold">SELAMAT DATANG DI DEMO LAREST ADMIN</p>
-        <p>Silahkan copy data dibawah untuk login</p>
-        <p>email : admin@gmail.com</p>
-        <p>password : 123456789</p>
-      </Card>
       <Snackbar
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        autoHideDuration={3000}
-        message={state.errors.message}
-      />
+        open={state.success || state.failed}
+        color={state.success ? "success" : state.failed && "danger"}
+        variant="solid"
+        autoHideDuration={1500}
+        onClose={() => dispatch({ type: ACTION.RESET })}
+      >
+        {state?.errors?.message}
+      </Snackbar >
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
 import React, { useState } from "react";
-import { BiUser } from "react-icons/bi";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
+import SearchInput from "../../components/Elements/Input/SearchInput";
 import Pagination from "../../components/Fragments/Pagination/Pagination";
 import Table from "../../components/Fragments/Table/Table";
 import { useStateContext } from "../../context/ContextProvider";
@@ -10,12 +10,13 @@ import { actionDelete, useCrudContext } from "../../context/CrudContextProvider"
 import useFetchData from "../../hooks/useFetch";
 import { ACTION } from "../../utils/action";
 import { formatDate } from "../../utils/helper";
+import EmptyState from "../../components/Elements/Indicator/EmptyState";
 
 function User() {
-  const { search } = useStateContext();
+  const [search, setSearch] = useState("");
   const { state, dispatch } = useCrudContext();
   const [url, setUrl] = useState(`/admin/users?search=${search}&per_page=10&page=1`);
-  const [loading, _, response] = useFetchData(url, state.data);
+  const [loading, error, response] = useFetchData(url, state.data);
 
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;
@@ -31,6 +32,7 @@ function User() {
         actions={
           <>
             <Button color="danger" variant="outlined" sx={{ mr: 2 }}>Delete Selected</Button>
+            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
             <Button>Create User</Button>
           </>
         }
@@ -39,7 +41,7 @@ function User() {
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
             <th className="pb-2 h-min w-min pe-3 text-start">
-              <Checkbox sx={{ m: 0 }} />
+              <Checkbox />
             </th>
             <th className="pb-3 min-w-24 px-3 text-start">NAME</th>
             <th className="pb-3 min-w-24 px-3 text-start">EMAIL</th>
@@ -50,13 +52,31 @@ function User() {
           </tr>
         </thead>
         <tbody>
-          {loading ? (
+          {loading ? ( //NOTE - Add loading indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
-                colSpan={6}
+                colSpan={7}
               >
                 <CircularProgress />
+              </td>
+            </tr>
+          ) : error ? ( //NOTE - Add error indicator
+            <tr>
+              <td
+                className="text-xl text-center overflow-hidden"
+                colSpan={7}
+              >
+                <EmptyState text={error} />
+              </td>
+            </tr>
+          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+            <tr>
+              <td
+                className="text-xl text-center overflow-hidden"
+                colSpan={7}
+              >
+                <EmptyState text={"No data found"} />
               </td>
             </tr>
           ) : (
@@ -65,8 +85,10 @@ function User() {
                 key={index}
                 className="table-row"
               >
-                <td className="p-3 pl-0">
-                  <Checkbox />
+                <td className="p-3 pl-0 h-min w-min">
+                  <div className="flex flex-col justify-start">
+                    <Checkbox />
+                  </div>
                 </td>
                 <td className="p-3">
                   <div className="flex flex-col justify-start">
@@ -75,7 +97,7 @@ function User() {
                     </span>
                   </div>
                 </td>
-                <td className="p-3  text-start">
+                <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
                     {user.email}
                   </span>

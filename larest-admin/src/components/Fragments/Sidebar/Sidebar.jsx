@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/joy';
+import { Avatar, CircularProgress } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { HiMiniCubeTransparent, HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
@@ -43,8 +43,9 @@ function Sidebar() {
   }, [response])
   return (
     <aside className="flex flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-      <a href="#">
+      <a href="#" className="flex items-center">
         <img className="w-auto h-7" src="https://merakiui.com/images/logo.svg" alt="" />
+        <span className="ml-2 text-2xl font-semibold text-gray-800 whitespace-nowrap dark:text-white">Larest</span>
       </a>
 
       <div className="flex flex-col justify-between flex-1 mt-6">
@@ -82,7 +83,7 @@ function Sidebar() {
           {user === null || loading
             ? <CircularProgress />
             : <>
-              <img className="object-cover mx-2 rounded-full h-9 w-9" src={user.photo} alt="avatar" />
+              <Avatar src={user.photo} sx={{ width: 36, height: 36 }} />
               <span className="mx-2 text-sm font-medium text-gray-600 dark:text-gray-300">{user.name}</span>
             </>
           }

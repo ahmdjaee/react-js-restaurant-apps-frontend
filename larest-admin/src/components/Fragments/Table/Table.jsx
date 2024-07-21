@@ -3,9 +3,9 @@ import React from 'react'
 function Table({ children, footer, title, description, actions }) {
   return (
     <div className="flex flex-wrap -mx-3 mb-5">
-      <div className="w-full max-w-full px-3 mb-6  mx-auto">
-        <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
-          <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
+      <div className="w-full max-w-full px-3 mb-6 mx-auto">
+        <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-lg bg-white m-5">
+          <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-lg border-stone-200 bg-light/30">
             {/* <!-- card header --> */}
             <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
               <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">

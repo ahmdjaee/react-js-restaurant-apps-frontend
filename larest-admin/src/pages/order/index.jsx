@@ -1,56 +1,47 @@
-import { Button, CircularProgress, IconButton, Snackbar } from '@mui/joy';
+import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
 import React, { useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
+import Badge from '../../components/Elements/Badge/Badge';
 import EmptyState from '../../components/Elements/Indicator/EmptyState';
 import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
 import Table from '../../components/Fragments/Table/Table';
 import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
 import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
-import CreateCategoryForm from './components/CreateCategoryForm';
-import UpdateCategoryForm from './components/UpdateCategoryForm';
-import SearchInput from '../../components/Elements/Input/SearchInput';
-
-function Category() {
+import { formatDate } from '../../utils/helper';
+function Order() {
   const { state, dispatch } = useCrudContext();
-  const [loading, error, response] = useFetchData(`/categories`, state.data);
+  const [url] = useState(`/admin/orders`);
+  const [loading, error, response] = useFetchData(url, state.data);
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [search, setSearch] = useState('');
 
-  const filteredCategories = response?.data?.filter((category) => {
-    return (
-      category.name.toLowerCase().includes(search.toLowerCase())
-    );
-  });
-
-  const handleDelete = async (category) => {
-    if (!window.confirm(`Are you sure want to delete category: ${category.no}?`)) return;
-    await actionDelete(`/admin/categories/${category.id}`, dispatch);
+  const handleDelete = async (event) => {
+    if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
+    await actionDelete(`/admin/events/${event.id}`, dispatch);
   };
 
   const handleUpdateModal = (event) => {
     dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
     setUpdateModal(true);
-  };
+  }
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      {state.loading ? <FloatProgressIndicator /> : null}
       <Table
-        title="Categories"
-        description={"List of all categories"}
-        actions={
-          <>
-            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
-            <Button onClick={() => setCreateModal(true)}>Create Category</Button>
-          </>
-        }
+        title="Orders"
+        description={"List of all orders"}
+        actions={<Button onClick={() => setCreateModal(true)}>Create Order</Button>}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-start">NAME</th>
-            <th className="pb-3 ps-3 text-end">ACTION</th>
+            <th className="pb-3 pe-3 text-nowrap text-start">USER</th>
+            <th className="pb-3 px-3 text-nowrap text-start">TOKEN</th>
+            <th className="pb-3 px-3 text-nowrap text-start">RESERVATION ID</th>
+            <th className="pb-3 px-3 text-nowrap text-start">STATUS</th>
+            <th className="pb-3 px-3 text-nowrap text-end ">TOTAL PAYMENT</th>
+            <th className="pb-3 ps-3 text-nowrap text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -82,26 +73,42 @@ function Category() {
               </td>
             </tr>
           ) : (
-            filteredCategories.map((category, index) => (
+            response.data.map((order, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="table-row"
+              // onClick={() => handleUpdateModal(order)}
               >
-                <td className="p-3 max-w-64 pl-0">
-                  <div className="flex items-center">
-                    <div className="relative inline-block shrink-0 rounded-2xl me-3">
-                      <img src={category.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
-                    </div>
-                    <span className="font-medium text-light-inverse text-md/normal">
-                      {category.name}
-                    </span>
-                  </div>
+                <td className="p-3 text-start">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {order.user.name}
+                  </span>
+                </td>
+                <td className="p-3 text-start">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {order.token}
+                  </span>
+                </td>
+                <td className="p-3 text-start">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {order.reservation.id}
+                  </span>
+                </td>
+                <td className="p-3 text-end">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {order.status}
+                  </span>
+                </td>
+                <td className="p-3 text-end">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {order.total_payment}
+                  </span>
                 </td>
                 <td className="p-3 pr-0 text-nowrap text-end">
-                  <IconButton onClick={() => handleUpdateModal(category)}>
+                  <IconButton onClick={() => handleUpdateModal(order)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(category)}>
+                  <IconButton onClick={() => handleDelete(order)}>
                     <BsFillTrash3Fill className="danger-with-hover" />
                   </IconButton>
                 </td>
@@ -119,16 +126,8 @@ function Category() {
       >
         {state.message}
       </Snackbar >
-      <CreateCategoryForm
-        open={createModal}
-        onClose={() => setCreateModal(false)}
-      />
-      <UpdateCategoryForm
-        open={updateModal}
-        onClose={() => setUpdateModal(false)}
-      />
     </>
   );
 }
 
-export default Category
+export default Order

@@ -9,6 +9,7 @@ import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import CreateTableForm from './components/CreateTableForm';
 import UpdateTableForm from './components/UpdateTableForm';
+import SearchInput from '../../components/Elements/Input/SearchInput';
 
 function getChipColor(status) {
   switch (status) {
@@ -27,12 +28,19 @@ function Tables() {
   const [loading, error, response] = useFetchData(`/tables`, state.data);
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const filteredTables = response?.data?.filter((table) => {
+    return (
+      table.no.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const handleDelete = async (table) => {
     if (!window.confirm(`Are you sure want to delete table: ${table.no}?`)) return;
     await actionDelete(`/admin/tables/${table.id}`, dispatch);
   };
-
+  
   const handleUpdateModal = (event) => {
     dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
     setUpdateModal(true);
@@ -44,7 +52,12 @@ function Tables() {
       <Table
         title="Tables"
         description={"List of all tables"}
-        actions={<Button onClick={() => setCreateModal(true)}>Create Table</Button>}
+        actions={
+          <>
+            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
+            <Button onClick={() => setCreateModal(true)}>Create Table</Button>
+          </>
+        }
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
@@ -83,7 +96,7 @@ function Tables() {
               </td>
             </tr>
           ) : (
-            response.data.map((table, index) => (
+            filteredTables.map((table, index) => (
               <tr
                 key={index}
                 className="table-row"

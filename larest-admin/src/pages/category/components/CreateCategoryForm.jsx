@@ -10,7 +10,7 @@ function CreateCategoryForm({ open, onClose }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    await actionCreate(`/admin/categories`, formJson, dispatch)
+    await actionCreate(`/admin/categories`, formJson, dispatch, "multipart/form-data")
   }
 
   return (
