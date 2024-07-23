@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: "http://restaurants.food/api",
+    baseURL: import.meta.env.VITE_BASE_URL + "/api",
     // baseURL: "https://larest.xyz/api",
 });
 
