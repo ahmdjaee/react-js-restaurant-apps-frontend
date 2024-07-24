@@ -10,12 +10,11 @@ import useFetchData from '../../../hooks/useFetch';
 
 const links = [
   { to: '/menus', icon: <IoFastFoodOutline className="size-5" />, text: 'Menus' },
-  { to: '/transactions', icon: <MdAutorenew className="size-5" />, text: 'Transactions' },
   { to: '/events', icon: <MdOutlineEventAvailable className="size-5" />, text: 'Events' },
   { to: '/users', icon: <BiUser className="size-5" />, text: 'Users' },
   { to: '/tables', icon: <MdOutlineTableBar className="size-5" />, text: 'Tables' },
   { to: '/categories', icon: <MdOutlineCategory className="size-5" />, text: 'Categories' },
-  { to: '/orders', icon: <HiMiniCubeTransparent className="size-5" />, text: 'Orders' },
+  { to: '/orders', icon: <MdAutorenew className="size-5" />, text: 'Orders' },
 ]
 
 function SidebarLink({ to, icon, text }) {

@@ -11,17 +11,22 @@ import useFetchData from "../../hooks/useFetch";
 import { ACTION } from "../../utils/action";
 import { formatDate } from "../../utils/helper";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
+import useDebouncedCallback from "../../hooks/useDebounceCallback";
+import { SEARCH_TIMEOUT } from "../../utils/settings";
 
 function User() {
-  const [search, setSearch] = useState("");
   const { state, dispatch } = useCrudContext();
-  const [url, setUrl] = useState(`/admin/users?search=${search}&per_page=10&page=1`);
+  const [url, setUrl] = useState(`/admin/users`);
   const [loading, error, response] = useFetchData(url, state.data);
 
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;
     await actionDelete(`/admin/users/${user.id}`, dispatch);
   };
+
+  const setSearchParams = useDebouncedCallback((value) => {
+    setUrl(`/admin/users?search=${value}`);
+  }, SEARCH_TIMEOUT);
 
   return (
     <>
@@ -31,8 +36,8 @@ function User() {
         description={"List of all users"}
         actions={
           <>
+            <SearchInput className={"me-3"} onChange={(val) => setSearchParams(val)} />
             <Button color="danger" variant="outlined" sx={{ mr: 2 }}>Delete Selected</Button>
-            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
             <Button>Create User</Button>
           </>
         }

@@ -144,7 +144,6 @@ function Event() {
                   <Chip
                     color={event.active ? "primary" : "danger"}
                     onClick={function () { }}
-                    size="sm"
                     variant="solid"
                   >
                     {event.active ? "Active" : "Inactive"}

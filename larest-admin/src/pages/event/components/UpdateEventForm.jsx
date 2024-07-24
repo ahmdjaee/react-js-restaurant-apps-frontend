@@ -15,6 +15,7 @@ function UpdateEventForm({ open, onClose }) {
     const formJson = Object.fromEntries(formData.entries());
     formJson.active = formJson.active === 'true' ? 1 : 0;
     await actionPost(`/admin/events/${state.id}`, formJson, dispatch, "multipart/form-data")
+      .then(() => onClose()); 
   }
 
   const handleChange = (e) => {

@@ -14,7 +14,7 @@ function Main() {
     return (
         <div className="flex overflow-hidden">
             <Sidebar />
-            <div className="flex-grow block overflow-y-auto overflow-x-clip">
+            <div className="flex-1 block overflow-y-auto overflow-x-clip">
                 <NavBar />
                 <Outlet />
             </div>
