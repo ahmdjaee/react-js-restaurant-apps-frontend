@@ -1,4 +1,4 @@
-import { Button, CircularProgress, IconButton, Snackbar } from "@mui/joy";
+import { Button, CircularProgress, IconButton, Option, Select, Snackbar } from "@mui/joy";
 import { useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import Table from "../../components/Fragments/Table/Table";
@@ -17,9 +17,11 @@ function Menu() {
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
+  const [filterType, setFilterType] = useState(null);
 
   const filteredMenus = response?.data?.filter((menu) => {
     return (
+      ( !filterType || menu.category.name === filterType) &&
       menu.name.toLowerCase().includes(search.toLowerCase())
     );
   });
@@ -43,6 +45,17 @@ function Menu() {
         description="List of all menu"
         actions={
           <>
+            <Select
+              value={filterType}
+              onChange={(_, value) => setFilterType(value)}
+              sx={{ width: 150, marginRight: "12px" }}
+              placeholder="Category"
+            >
+              <Option value="">All</Option>
+              <Option value="Food">Food</Option>
+              <Option value="Drink">Drink</Option>
+              <Option value="Dessert">Dessert</Option>
+            </Select>
             <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
             <Button onClick={() => setCreateModal(true)}>Create Menu</Button>
           </>
@@ -76,7 +89,7 @@ function Menu() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : filteredMenus.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"

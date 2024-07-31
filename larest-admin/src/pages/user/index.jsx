@@ -95,9 +95,12 @@ function User() {
                     <Checkbox />
                   </div>
                 </td>
-                <td className="p-3">
-                  <div className="flex flex-col justify-start">
-                    <span className="font-semibold text-light-inverse text-md/normal">
+                <td className="p-3 max-w-64 pl-0">
+                  <div className="flex items-center">
+                    <div className="relative inline-block shrink-0 rounded-2xl me-3">
+                      <img src={user.photo || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
+                    </div>
+                    <span className="font-medium text-light-inverse text-md/normal">
                       {user.name}
                     </span>
                   </div>
@@ -135,7 +138,7 @@ function User() {
       </Table>
       <Snackbar
         open={state.success || state.failed}
-        color={state.success ? "success" : "danger"}
+        color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
         onClose={() => dispatch({ type: ACTION.RESET })}

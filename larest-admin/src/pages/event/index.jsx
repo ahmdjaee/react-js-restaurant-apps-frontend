@@ -164,7 +164,7 @@ function Event() {
       </Table>
       <Snackbar
         open={state.success || state.failed}
-        color={state.success ? "success" : state.failed && "danger"}
+        color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
         onClose={() => dispatch({ type: ACTION.RESET })}

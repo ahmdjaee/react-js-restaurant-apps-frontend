@@ -18,11 +18,18 @@ function Pagination({ response, setUrl }) {
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination">
             {response?.meta?.links.map((link, index) => (
-              <a key={index} onClick={() => setUrl(link.url)}
-                className={`${link.active
-                  ? "relative z-10 inline-flex items-center border border-gray-300 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
-                  : "cursor-pointer relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"}
-                           `}
+              <a key={index} onClick={() => {
+                if (link.url) {
+                  setUrl(link.url)
+                }
+              }}
+                className={`relative inline-flex items-center border border-gray-300 px-4 py-2 text-sm font-medium focus:z-20 
+                  ${link.active
+                    ? "z-10 bg-indigo-50 text-indigo-600"
+                    : link.url === null
+                      ? "cursor-not-allowed bg-white text-gray-500 hover:bg-gray-50"
+                      : "cursor-pointer bg-white text-gray-500 hover:bg-gray-50"
+                  }`}
                 dangerouslySetInnerHTML={{ __html: link.label }}>
               </a>
             ))}

@@ -25,7 +25,7 @@ function Category() {
   });
 
   const handleDelete = async (category) => {
-    if (!window.confirm(`Are you sure want to delete category: ${category.no}?`)) return;
+    if (!window.confirm(`Are you sure want to delete category: ${category.name}?`)) return;
     await actionDelete(`/admin/categories/${category.id}`, dispatch);
   };
 

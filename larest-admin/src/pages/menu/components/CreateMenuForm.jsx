@@ -4,7 +4,7 @@ import { default as CircularProgress, default as FloatCircularProgress } from '.
 import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
 import useFetchData from '../../../hooks/useFetch';
 
-function CreateMenuForm({ open, onClose, onSuccess }) {
+function CreateMenuForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
   const [loading, _, response] = useFetchData("/categories");
   const handleSubmit = async (event) => {

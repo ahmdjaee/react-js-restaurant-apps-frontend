@@ -23,6 +23,7 @@ function LoginForm() {
       if (response.status === 200) {
         setToken(response.data.data.token);
         navigate("/users");
+        dispatch({ type: ACTION.RESET})
       }
     } catch (error) {
       dispatch({ type: ACTION.FAILED, payload: { errors: error?.response?.data?.errors } });

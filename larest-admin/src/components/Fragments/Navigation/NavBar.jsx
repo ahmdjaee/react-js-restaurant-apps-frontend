@@ -4,11 +4,9 @@ import AlertDialogModal from '../Modal/AlertDialogModal'
 import { useState } from 'react'
 import { useStateContext } from '../../../context/ContextProvider'
 import { Button } from '@mui/joy'
-import { useNavigate } from 'react-router-dom'
 import axiosClient from '../../../service/axios'
 
 function NavBar() {
-  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const { search, setSearch, setToken, setUser } = useStateContext()
 
@@ -16,7 +14,6 @@ function NavBar() {
     try {
       const response = await axiosClient.delete('/users/logout')
       if (response && response.status === 200) {
-        window.location.href = '/login'
         setToken(null)
         setUser(null)
       }

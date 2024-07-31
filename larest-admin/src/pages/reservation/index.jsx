@@ -1,20 +1,18 @@
-import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import QRCode from 'qrcode.react';
+import { Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
 import React, { useState } from 'react';
-import { BsFillTrash3Fill, BsPencilFill, BsPrinter } from 'react-icons/bs';
-import { MdArrowForwardIos } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import EmptyState from '../../components/Elements/Indicator/EmptyState';
 import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
 import SearchInput from '../../components/Elements/Input/SearchInput';
 import Pagination from '../../components/Fragments/Pagination/Pagination';
 import Table from '../../components/Fragments/Table/Table';
-import { useCrudContext } from '../../context/CrudContextProvider';
-import useDebouncedCallback from '../../hooks/useDebounceCallback';
+import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
 import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import { formatDate } from '../../utils/helper';
+import useDebouncedCallback from '../../hooks/useDebounceCallback';
 import { SEARCH_TIMEOUT } from '../../utils/settings';
+
 function getChipColor(status) {
   switch (status) {
     case "new":
@@ -32,10 +30,9 @@ function getChipColor(status) {
   }
 }
 
-function Order() {
-  const navigate = useNavigate();
+function Reservation() {
   const { state, dispatch } = useCrudContext();
-  const [url, setUrl] = useState(`admin/orders`);
+  const [url, setUrl] = useState(`/admin/reservations`);
   const [loading, error, response] = useFetchData(url, state.data);
 
   const handleDelete = async (event) => {
@@ -49,35 +46,28 @@ function Order() {
   }
 
   const debouncedSetUrl = useDebouncedCallback((value) => {
-    setUrl(`admin/orders?search=${value}`);
+    setUrl(`admin/reservations?search=${value}`);
   }, SEARCH_TIMEOUT);
 
   return (
     <>
       {state.loading ? <FloatProgressIndicator /> : null}
       <Table
-        title="Orders"
-        description={"List of all orders"}
-        actions={
-          <>
-            <Button variant='outlined' color='neutral' sx={{ mr: 1 }} onClick={() => window.print()}>
-              <BsPrinter className='me-2'/>
-              Print
-            </Button>
-            <SearchInput onChange={debouncedSetUrl} />
-          </>
-        }
+        title="Reservations"
+        description={"List of all reservation"}
+        actions={<SearchInput onChange={debouncedSetUrl} />}
         footer={<Pagination response={response} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-nowrap text-center">ID</th>
-            <th className="pb-3 px-3 text-nowrap text-start">QR</th>
+            <th className="pb-3 pe-3 text-nowrap text-start">ID</th>
             <th className="pb-3 px-3 text-nowrap text-start">USER</th>
-            <th className="pb-3 px-3 text-nowrap text-center">RESERVATION ID</th>
-            <th className="pb-3 px-3 text-nowrap text-start">STATUS</th>
-            <th className="pb-3 px-3 text-nowrap text-end">TOTAL PAYMENT</th>
-            <th className="pb-3 px-3 text-nowrap text-end">CREATED AT</th>
+            <th className="pb-3 px-3 text-nowrap text-start">NUMBER TABLE</th>
+            <th className="pb-3 px-3 text-nowrap text-start">DATE</th>
+            <th className="pb-3 px-3 text-nowrap text-start">TIME</th>
+            <th className="pb-3 px-3 text-nowrap text-end">PERSON</th>
+            <th className="pb-3 px-3 text-nowrap text-center">STATUS</th>
+            <th className="pb-3 ps-3 text-nowrap text-start">NOTES</th>
             <th className="pb-3 ps-3 text-nowrap text-end">ACTIONS</th>
           </tr>
         </thead>
@@ -110,60 +100,64 @@ function Order() {
               </td>
             </tr>
           ) : (
-            response.data.map((order, index) => ( //NOTE - Add table rows
+            response.data.map((reservation, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="table-row"
-                to={`/orders/${order.id}`}
-                onClick={() => navigate(`/orders/${order.id}`)}
+              // onClick={() => handleUpdateModal(reservation)}
               >
-                <td className="p-3 pl-0 text-center">
+                <td className="p-3 pl-0 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {order.id}
+                    {reservation.id}
                   </span>
                 </td>
-                <td className="p-3 ">
-                  <QRCode value={order.id} size={50} />
+                <td className="p-3 text-start">
+                  <span className="font-medium text-nowrap text-light-inverse text-md/normal">
+                    {reservation.user.name}
+                  </span>
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {order.user.name}
+                    {reservation.table.no}
+                  </span>
+                </td>
+
+                <td className="p-3 text-start">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {formatDate(reservation.date)}
+                  </span>
+                </td>
+                <td className="p-3 text-start">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    {formatDate(reservation.time)}
                   </span>
                 </td>
                 <td className="p-3 text-center">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {order.reservation.id}
+                    {reservation.persons}
+                  </span>
+                </td>
+                <td className="p-3 text-center">
+                  <span className="font-medium text-light-inverse text-md/normal">
+                    <Chip
+                      variant='solid'
+                      color={getChipColor(reservation.status)}
+                    >
+                      {reservation.status}
+                    </Chip>
                   </span>
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    <Chip
-                      variant='solid'
-                      color={getChipColor(order.status)}
-                    >
-                      {order.status}
-                    </Chip>
-                  </span>
-                </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
-                    Rp {order.total_payment}
-                  </span>
-                </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
-                    {formatDate(order.created_at)}
+                    {reservation.notes}
                   </span>
                 </td>
                 <td className="p-3 pr-0 text-nowrap text-end">
-                  {/* <IconButton onClick={() => handleUpdateModal(order)}>
+                  <IconButton onClick={() => handleUpdateModal(reservation)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(order)}>
+                  <IconButton onClick={() => handleDelete(reservation)}>
                     <BsFillTrash3Fill className="danger-with-hover" />
-                  </IconButton> */}
-                  <IconButton >
-                    <MdArrowForwardIos className="secondary-with-hover" />
                   </IconButton>
                 </td>
               </tr>
@@ -184,4 +178,4 @@ function Order() {
   );
 }
 
-export default Order
+export default Reservation

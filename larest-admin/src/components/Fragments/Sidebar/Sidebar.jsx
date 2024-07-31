@@ -1,33 +1,49 @@
 import { Avatar, CircularProgress } from '@mui/joy';
 import React, { useEffect } from 'react';
 import { BiUser } from 'react-icons/bi';
-import { HiMiniCubeTransparent, HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
+import { HiOutlinePresentationChartBar, HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { MdAutorenew, MdOutlineCategory, MdOutlineEventAvailable, MdOutlineTableBar } from 'react-icons/md';
-import { Link, useLocation } from 'react-router-dom';
+import { RiReservedLine } from 'react-icons/ri';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useStateContext } from '../../../context/ContextProvider';
 import useFetchData from '../../../hooks/useFetch';
 
 const links = [
   { to: '/menus', icon: <IoFastFoodOutline className="size-5" />, text: 'Menus' },
   { to: '/events', icon: <MdOutlineEventAvailable className="size-5" />, text: 'Events' },
-  { to: '/users', icon: <BiUser className="size-5" />, text: 'Users' },
   { to: '/tables', icon: <MdOutlineTableBar className="size-5" />, text: 'Tables' },
   { to: '/categories', icon: <MdOutlineCategory className="size-5" />, text: 'Categories' },
   { to: '/orders', icon: <MdAutorenew className="size-5" />, text: 'Orders' },
+  { to: '/reservations', icon: <RiReservedLine className="size-5" />, text: 'Reservations ' },
 ]
 
+// function SidebarLink({ to, icon, text }) {
+//   const location = useLocation();
+
+//   return (
+//     <Link
+//       className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 active: hover:text-gray-700 
+//         ${location.pathname.includes(to) && 'text-primary bg-gray-100 dark:bg-gray-800 dark:text-gray-200'}`}
+//       to={to}>
+//       {icon}
+//       <span className="mx-2 text-sm font-medium">{text}</span>
+//     </Link>
+//   )
+// }
 function SidebarLink({ to, icon, text }) {
-  const location = useLocation();
 
   return (
-    <Link
-      className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 active: hover:text-gray-700 
-        ${location.pathname === to && 'text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-200'}`}
+    <NavLink
+      className={({ isActive }) =>
+        isActive
+          ? "flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 active: hover:text-gray-700 text-primary bg-gray-100 dark:bg-gray-800 dark:text-gray-200"
+          : "flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 active: hover:text-gray-700 "
+      }
       to={to}>
       {icon}
       <span className="mx-2 text-sm font-medium">{text}</span>
-    </Link>
+    </NavLink>
   )
 }
 
@@ -51,17 +67,22 @@ function Sidebar() {
         <nav className="-mx-3 space-y-6">
           <div className="space-y-3">
             <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">analytics</label>
-            
+
             <SidebarLink
               to="/"
               icon={<HiOutlinePresentationChartLine className="w-5 h-5" />}
               text="Dashboard"
-            />  
+            />
             <SidebarLink
-              to="#"
+              to="/users"
+              icon={<BiUser className="w-5 h-5" />}
+              text="Users"
+            />
+            {/* <SidebarLink
+              to="/performance"
               icon={<HiOutlinePresentationChartBar className="w-5 h-5" />}
               text="Performance"
-            />
+            /> */}
           </div>
 
           <div className="space-y-3">

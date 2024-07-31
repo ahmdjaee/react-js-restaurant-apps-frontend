@@ -31,7 +31,11 @@ body {
         @apply text-yellow-700 hover:text-yellow-800;
     }
 
+    .secondary-with-hover {
+        @apply text-zinc-400 hover:text-zinc-500;
+    }
+
     .table-row {
-        @apply border-b border-dashed last:border-b-0 hover:bg-slate-100 hover:cursor-pointer
+        @apply border-b border-dashed last:border-b-0 hover:bg-slate-50 hover:cursor-pointer
     }
 }

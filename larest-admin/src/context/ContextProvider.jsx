@@ -25,6 +25,7 @@ export default function ContextProvider({ children }) {
             localStorage.setItem("ADMIN-TOKEN", token)
         } else {
             localStorage.removeItem("ADMIN-TOKEN")
+            _setToken(null)
         }
     }
 

@@ -6,7 +6,7 @@ import useFetchData from '../../../hooks/useFetch';
 
 function UpdateMenuForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
-  const [loading, error, response] = useFetchData("/categories");
+  const [loading, _, response] = useFetchData("/categories");
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
