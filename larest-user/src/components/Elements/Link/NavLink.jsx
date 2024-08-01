@@ -1,13 +1,27 @@
-import { Button } from "@mui/joy";
-import { Link } from "react-router-dom";
+import { NavLink as Link } from "react-router-dom"
 
-function NavLink({ menu, events, about, contacts }) {
+const links = [
+    ["Menu", "/menus"],
+    ["Events", "/events"],
+    ["About", "/about"],
+    ["Contact", "/contact"],
+]
+function NavLink() {
     return (
         <div className="hidden sm:flex gap-8 items-center">
-            <Link className="hover:font-semibold hover:text-black focus:text-black focus:font-semibold text-zinc-500" to={menu}>Menu</Link>
-            <Link className="hover:font-semibold hover:text-black focus:text-black focus:font-semibold text-zinc-500" to={events}>Events</Link>
-            <Link className="hover:font-semibold hover:text-black focus:text-black focus:font-semibold text-zinc-500" to={about}>About</Link>
-            <Link className="hover:font-semibold hover:text-black focus:text-black focus:font-semibold text-zinc-500" to={contacts}>Contact</Link>
+            {
+                links.map(([name, link]) => (
+                    <Link key={name} className={({ isActive }) =>
+                        isActive
+                            ? " text-black font-semibold "
+                            : "hover:font-semibold hover:text-black text-zinc-500"
+                    }
+                        to={link}
+                    >
+                        {name}
+                    </Link>
+                ))
+            }
         </div>
     )
 }

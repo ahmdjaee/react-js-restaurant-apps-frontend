@@ -1,11 +1,12 @@
-import { Select, Option, Chip, Box, Textarea, Button, Typography, Input } from "@mui/joy";
-import { createReservation } from "../../../services/ReservationService";
-import { useEffect, useReducer, useState } from "react";
-import CircularProgress from "../../Elements/Indicator/CircularProgress";
-import { postReducer } from "../../../reducer/postReducer";
-import { ACTION } from "../../../utils/action";
-import { getTable } from "../../../services/TableService";
+import { Box, Button, Chip, Input, Option, Select, Textarea, Typography } from "@mui/joy";
+import { useReducer } from "react";
+import { useLoaderData } from "react-router-dom";
 import { useStateContext } from "../../../context/ContextProvider";
+import { postReducer } from "../../../reducer/postReducer";
+import { createReservation } from "../../../services/ReservationService";
+import { ACTION } from "../../../utils/action";
+import CircularProgress from "../../Elements/Indicator/CircularProgress";
+import axiosClient from "../../../services/axios";
 function getChipColor(text) {
     switch (text) {
         case "available":
@@ -16,27 +17,20 @@ function getChipColor(text) {
             return "danger";
     }
 }
+
+
+export async function loader() {
+    const tables = await axiosClient.get('/tables');
+    return { tables: tables?.data?.data }
+}
 export default function BookingForm({ onCancel, onSuccess }) {
     const { user } = useStateContext()
+    const { tables } = useLoaderData()
     const [state, dispatch] = useReducer(postReducer, {
         loading: false,
         errors: null,
         success: false
     })
-
-    const [tables, setTables] = useState([]);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await getTable();
-                response && setTables(response.data);
-            } catch (error) {
-                console.log(error.data);
-            }
-        })();
-    }, []);
-
     async function onSubmit(e) {
         e.preventDefault();
         dispatch({ type: ACTION.START });

@@ -2,6 +2,7 @@ import { RouterProvider } from "react-router-dom";
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { router } from './routes/routes';
 import ContextProvider from "./context/ContextProvider";
+import TopProgressBar from "./components/Elements/Indicator/TopProgressBar";
 
 const baseTheme = extendTheme({
     colorSchemes: {
@@ -18,6 +19,7 @@ const baseTheme = extendTheme({
                     outlinedHoverBorder: undefined,
                     outlinedHoverBg: '#fffffff', // orange bg-100
                     outlinedActiveBg: '#fffffff', // orange bg-200
+                    loadingColor: '#f97316',
                 },
                 warning: {
                     solidBg: '#eab308', // yellow bg-500
@@ -46,7 +48,7 @@ export default function App() {
     return (
         <CssVarsProvider theme={baseTheme}>
             <ContextProvider>
-                <RouterProvider router={router} />
+                <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
             </ContextProvider>
         </CssVarsProvider>
     );

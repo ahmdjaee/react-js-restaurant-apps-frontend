@@ -39,8 +39,10 @@ const INITIAL_STATE = {
     carts: null,
     error: null,
     loading: true,
+    submitting: false,
     success: false,
-    dialog: null
+    dialog: null,
+    message: null
 }
 
 function cartReducer(state, action) {
@@ -48,7 +50,12 @@ function cartReducer(state, action) {
         case "START":
             return {
                 ...state,
-                loading: true
+                loading: true,
+            }
+        case "SUBMIT":
+            return {
+                ...state,
+                submitting: true,
             }
         case "ADD":
             return {
@@ -64,6 +71,9 @@ function cartReducer(state, action) {
         case "UPDATE":
             return {
                 ...state,
+                success: true,
+                submitting: false,
+                message: action.message,
                 carts: state.carts.map(cart => {
                     if (cart.id === action.payload.id) {
                         return action.payload
@@ -76,7 +86,9 @@ function cartReducer(state, action) {
                 ...state,
                 carts: state.carts.filter(cart => cart.id !== action.payload),
                 success: true,
-                dialog: false
+                dialog: false,
+                message: action.message
+
             }
         case "ERROR":
             return {
@@ -91,7 +103,11 @@ function cartReducer(state, action) {
                 loading: false
             }
         case "RESET":
-            return INITIAL_STATE
+            return {
+                ...state,
+                submitting: false,
+                success: false,
+            }
         default:
             return state
     }

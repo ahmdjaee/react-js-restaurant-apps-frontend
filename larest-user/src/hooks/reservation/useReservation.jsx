@@ -7,7 +7,6 @@ const useReservation = () => {
     const [error, setError] = useState(false);
     
     useEffect(() => {
-
         (async () => {
             try {
                 const response = await getReservation();
@@ -21,7 +20,6 @@ const useReservation = () => {
                 console.log(error);
             }
         })();
-
     }, []);
 
     return [reservation, loading, error];

@@ -1,44 +1,27 @@
-import * as React from 'react';
-import { Link } from "react-router-dom"
-import NavLink from "../../Elements/Link/NavLink"
-import Logo from "../../Elements/Logo/Logo"
+import { Avatar, Badge, Button } from '@mui/joy';
 import Box from '@mui/joy/Box';
+import DialogActions from '@mui/joy/DialogActions';
+import DialogContent from '@mui/joy/DialogContent';
+import DialogTitle from '@mui/joy/DialogTitle';
+import Divider from '@mui/joy/Divider';
 import Drawer from '@mui/joy/Drawer';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
-import Divider from '@mui/joy/Divider';
-import DialogTitle from '@mui/joy/DialogTitle';
-import DialogContent from '@mui/joy/DialogContent';
-import DialogActions from '@mui/joy/DialogActions';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
-import { current, logout } from '../../../services/UserService';
-import { Avatar, Badge, Button } from '@mui/joy';
-import { useEffect } from 'react';
+import * as React from 'react';
+import { Link } from "react-router-dom";
 import { useStateContext } from '../../../context/ContextProvider';
+import { logout } from '../../../services/UserService';
+import Logo from "../../Elements/Logo/Logo";
 import BookingAction from '../Form/BookingAction';
+import NavLink from '../../Elements/Link/NavLink';
 
-function NavBar({ navLink = true }) {
+function NavBar({ navLink = true, carts }) {
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
-    const { user, setUser } = useStateContext();
-
-    useEffect(() => {
-        async function getUser() {
-            try {
-                const response = await current();
-                if (response) {
-                    setUser(response)
-                }
-            } catch (error) {
-
-            }
-        }
-        getUser();
-    }, [])
-
-
+    const { user } = useStateContext();
 
     const toggleDrawer = (inOpen) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -59,10 +42,8 @@ function NavBar({ navLink = true }) {
         <div className="sticky top-0 shadow-sm z-50 bg-white">
             <nav className="container px-2 sm:px-0 py-5 flex items-center justify-between ">
                 <Logo home={"/"} />
-                {
-                    navLink && <NavLink menu="/menus" events="/events" about="/about" contacts="/contact" />
-                }
-                <CheckUser user={user} toggleDrawer={toggleDrawer} />
+                <NavLink />
+                <CheckUser user={user} toggleDrawer={toggleDrawer} carts={carts} />
 
             </nav >
 
@@ -119,7 +100,7 @@ function NavBar({ navLink = true }) {
 
 export default NavBar
 
-function CheckUser({ user, toggleDrawer }) {
+function CheckUser({ user, toggleDrawer, carts }) {
     const [showModal, setShowModal] = React.useState(false);
     return (
         <>
@@ -134,7 +115,7 @@ function CheckUser({ user, toggleDrawer }) {
                     ? <>
                         <Button onClick={() => setShowModal(true)} size="sm" className='shadow-md shadow-slate-300 hidden lg:block' sx={{ borderRadius: '20px' }}>Book a table </Button>
                         <Link to={"/carts"}>
-                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={0}>
+                            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={carts?.length}>
                                 <i className="fa-solid fa-shopping-cart fa-xl " ></i>
                             </Badge>
                         </Link>

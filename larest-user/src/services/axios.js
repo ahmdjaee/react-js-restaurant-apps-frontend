@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_URL + "/api",
+    // baseURL: "https://larest.xyz/api",
 });
 
 axiosClient.interceptors.request.use(async (config) => {
@@ -13,16 +14,12 @@ axiosClient.interceptors.request.use(async (config) => {
 });
 
 axiosClient.interceptors.response.use((response) => {
-    if (response && response.data) {
-        return response.data;
-    }
     return response;
 }, (error) => {
     if (error.response.status === 401) {
         localStorage.removeItem("USER-TOKEN");
     }
-    console.log(error);
-    throw error;
+    return Promise.reject(error);
 });
 
-export default axiosClient
+export default axiosClient;
