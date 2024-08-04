@@ -1,9 +1,8 @@
 import { CircularProgress } from "@mui/joy";
 import { useStateContext } from "../../../context/ContextProvider";
-import useReservation from "../../../hooks/reservation/useReservation";
-import BookingDetail from "./BookingDetail";
-import BookingForm from "./BookingForm";
 import CardUserNotLogin from "../Card/CardUserNotLogin";
+import BookingDetail from "../../../pages/reservation/components/BookingDetail";
+import BookingForm from "../../../pages/reservation/components/BookingForm";
 
 function BookingAction({ onSuccess, onCancel }) {
     const [reservation, loading] = useReservation();

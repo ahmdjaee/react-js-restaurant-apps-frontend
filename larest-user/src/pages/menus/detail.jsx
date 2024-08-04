@@ -42,7 +42,8 @@ function Detail() {
 
       <Link
         to={-1}
-        className="absolute top-24 left-56 cursor-pointer text-primary font-semibold" >
+        className="absolute top-24 left-56 cursor-pointer text-primary font-semibold"
+      >
         &#x2B9C; Menu
       </Link>
       <img className="sm:w-5/12 xl:h-[26rem] rounded-lg object-cover" src={menu.image_large} alt="" />

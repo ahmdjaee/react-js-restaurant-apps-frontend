@@ -41,7 +41,7 @@ export default function Cart() {
 
   const setDebounceQuantity = useDebounced((quantity, id) => {
     handleUpdate(quantity, id)
-  }, 250)
+  }, 500)
 
   useEffect(() => {
     setItem({

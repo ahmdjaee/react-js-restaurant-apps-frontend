@@ -1,45 +1,35 @@
-import {
-    Button,
-    Checkbox,
-    Typography,
-} from "@mui/joy";
-import { useState } from "react";
-import { register } from "../../../services/UserService";
-import InputForm from "../../Elements/Input/InputForm";
-import CircularProgress from "../../Elements/Indicator/CircularProgress";
-import { Link } from "react-router-dom";
 
 export default function RegisterForm() {
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [alert, setAlert] = useState(false)
-    const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
+    // const [name, setName] = useState("")
+    // const [email, setEmail] = useState("")
+    // const [password, setPassword] = useState("")
+    // const [alert, setAlert] = useState(false)
+    // const [errors, setErrors] = useState({})
+    // const [loading, setLoading] = useState(false)
 
-    async function onRegister() {
-        const response = await register({ name, email, password })
-        setLoading(true)
+    // async function onRegister() {
+    //     const response = await register({ name, email, password })
+    //     setLoading(true)
 
-        if (response.code === 400) {
-            setErrors(response.data.errors)
-            setLoading(false)
-        }
+    //     if (response.code === 400) {
+    //         setErrors(response.data.errors)
+    //         setLoading(false)
+    //     }
 
-        if (response.code === 201) {
-            setLoading(false)
-            setAlert(true)
-            setTimeout(() => {
-                setAlert(false)
-                window.location.href = "/login";
-            }, 1000)
-            setErrors({})
-        }
-    }
+    //     if (response.code === 201) {
+    //         setLoading(false)
+    //         setAlert(true)
+    //         setTimeout(() => {
+    //             setAlert(false)
+    //             window.location.href = "/login";
+    //         }, 1000)
+    //         setErrors({})
+    //     }
+    // }
 
     return (
         <>
-            {loading && <CircularProgress />}
+            {/* {loading && <CircularProgress />}
             {alert && <div
                 className="absolute bottom-8 right-0 animate-right-slide-in block w-1/4 text-center p-4 mb-4 text-base leading-5 text-white bg-green-500 rounded-lg opacity-100 font-regular">
                 Successfully registered
@@ -110,7 +100,7 @@ export default function RegisterForm() {
                         <Link to="/login" className="font-medium text-gray-900"> Sign In</Link>
                     </Typography>
                 </form>
-            </div>
+            </div> */}
         </>
     )
 }

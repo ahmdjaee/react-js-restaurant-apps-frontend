@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 
-function Logo({ home }) {
+function Logo({ home, }) {
     return (
         <Link to={home} className=" flex items-center gap-5 " >
             <svg width="40" height="47" viewBox="0 0 48 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,8 @@ function Logo({ home }) {
                     </linearGradient>
                 </defs>
             </svg>
-            <p className='text-2xl font-bold text-gray-800 mt-2'>larest</p></Link>
+            <p className='text-2xl font-bold text-gray-800 mt-2 hidden sm:block'>larest</p>
+        </Link>
 
         // <Link to={home}>
         //     {/* <img src={logo} className='cursor-pointer' alt="Logo Restaurant" /> */}

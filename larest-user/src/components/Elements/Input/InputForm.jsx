@@ -4,23 +4,24 @@ import { useState } from "react";
 import TextError from "../Text/TextError";
 import { Input, Typography } from "@mui/joy";
 
-export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown, name }) {
+export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown, name, defaultValue }) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
         <div>
-            <Typography level="title-md" sx={{mb: 2}} color="blue-gray">
+            <Typography level="title-md" sx={{ mb: 2 }} color="blue-gray">
                 {title}
             </Typography>
             <Input
                 name={name}
+                defaultValue={defaultValue}
                 size="lg"
                 type={showPassword ? "text" : type}
                 placeholder={placeholder}
                 onKeyDown={onKeyDown}
                 value={value}
                 onChange={onChange}
-                sx={{fontSize: "16px"}}
+                sx={{ fontSize: "16px" }}
                 endDecorator={type === "password" && <i className="fas fa-eye cursor-pointer" aria-hidden="true" onClick={() => {
                     setShowPassword(!showPassword)
                 }}></i>}

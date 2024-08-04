@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Oops from "/assets/images/oops.png"
 
 export default function CardUserNotLogin({ onClose }) {
-    return <div className="text-center">
+    return <div className="text-center m-3">
         <IconButton sx={{ position: "absolute", top: 10, right: 10 }} onClick={onClose}>
             <i className="fa-solid fa-xmark"></i>
         </IconButton>

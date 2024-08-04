@@ -1,11 +1,11 @@
 import { Tab, TabList, Tabs, tabClasses } from "@mui/joy";
-import SearchInput from "../../components/Elements/Input/SearchInput";
+import SearchInput from "@/components/Elements/Input/SearchInput";
 import { useLoaderData } from "react-router-dom";
-import axiosClient from "../../services/axios";
+import axiosClient from "@/services/axios";
 import { useState } from "react";
-import CartMenuLayout from "../../components/Layouts/CardMenuLayout";
-import CardMenu from "../../components/Fragments/Card/CardMenu";
-import EmptyState from "../../components/Elements/Indicator/EmptyState";
+import CartMenuLayout from "@/components/Layouts/CardMenuLayout";
+import CardMenu from "@/components/Fragments/Card/CardMenu";
+import EmptyState from "@/components/Elements/Indicator/EmptyState";
 
 export async function loader() {
   const menus = await axiosClient.get('/menus');
@@ -30,7 +30,7 @@ export default function Menu() {
   return (
     <>
       <section className="bg-white sticky top-20 z-40 py-2">
-        <div className="flex items-center justify-between container">
+        <div className="flex flex-col space-y-3 sm:flex-row items-center justify-between container">
           <SearchInput fullWidth className={"me-5"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
             <TabList
@@ -58,7 +58,6 @@ export default function Menu() {
           <CartMenuLayout
             key={category}
             category={category.name ? category.name : null}
-
           >
             {
               filteredMenus
