@@ -1,8 +1,8 @@
-import { Tab, TabList, Tabs, tabClasses } from "@mui/joy";
+import { Option, Select, Tab, TabList, Tabs, tabClasses } from "@mui/joy";
 import SearchInput from "@/components/Elements/Input/SearchInput";
 import { useLoaderData } from "react-router-dom";
 import axiosClient from "@/services/axios";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import CartMenuLayout from "@/components/Layouts/CardMenuLayout";
 import CardMenu from "@/components/Fragments/Card/CardMenu";
 import EmptyState from "@/components/Elements/Indicator/EmptyState";
@@ -28,11 +28,22 @@ export default function Menu() {
   });
 
   return (
-    <>
-      <section className="bg-white sticky top-20 z-40 py-2">
-        <div className="flex flex-col space-y-3 sm:flex-row items-center justify-between container">
-          <SearchInput fullWidth className={"me-5"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
-          <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
+    <Fragment>
+      <section className="bg-white sticky top-0 z-40 py-3 px-3 sm:px-0">
+        <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container overflow-x-auto">
+          <SearchInput className={"sm:me-5 w-50"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
+          <Select
+            value={filterType}
+            onChange={(_, value) => setFilterType(value)}
+            sx={{ width: 300 }}
+            placeholder="Category"
+          >
+            <Option value={null}>All</Option>
+            {categories.map((category) => (
+              <Option value={category.name}>{category.name}</Option>
+            ))}
+          </Select>
+          {/* <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
             <TabList
               disableUnderline
               sx={{
@@ -50,7 +61,7 @@ export default function Menu() {
                 <Tab disableIndicator key={category.id} onClick={() => setFilterType(category.name)}>{category.name}</Tab>
               ))}
             </TabList>
-          </Tabs>
+          </Tabs> */}
         </div>
       </section>
       <section className="container flex flex-col gap-5">
@@ -73,7 +84,7 @@ export default function Menu() {
           </CartMenuLayout>
         ))}
       </section>
-    </>
+    </Fragment>
   )
 }
 

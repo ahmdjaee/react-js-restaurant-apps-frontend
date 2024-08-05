@@ -4,7 +4,7 @@ import LoginForm from "@/components/Fragments/Form/LoginForm";
 import RegisterForm from "@/components/Fragments/Form/RegisterForm.jsx";
 import Authentication from "@/pages/auth/authentication.jsx";
 import ErrorPageNotFound from '@/pages/errors/index.jsx';
-import About from "@/pages/about/about.jsx";
+import About from "@/pages/about/index.jsx";
 import Cart from "@/pages/carts/index.jsx";
 import Contact from '@/pages/contact/index.jsx';
 import Events, { loader as eventLoader } from "@/pages/events/index.jsx";

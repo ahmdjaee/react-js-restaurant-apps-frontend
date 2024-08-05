@@ -1,11 +1,11 @@
-import { Option, Select } from '@mui/joy';
-import React, { useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import EmptyState from '@/components/Elements/Indicator/EmptyState';
 import SearchInput from '@/components/Elements/Input/SearchInput';
 import axiosClient from '@/services/axios';
+import { Option, Select } from '@mui/joy';
+import { useState } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useLoaderData } from 'react-router-dom';
-import EmptyState from '@/components/Elements/Indicator/EmptyState';
 import EventCard from './components/EventCard';
 
 export async function loader() {
@@ -32,16 +32,25 @@ const Events = () => {
         showStatus={false}
         autoPlay
         infiniteLoop
-        className="rounded-lg overflow-hidden shadow-xl mb-8"
+        className="sm:rounded-lg overflow-hidden shadow-xl mb-8"
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button
               type="button"
               onClick={onClickHandler}
               title={label}
-              className="absolute top-1/2 transform -translate-y-1/2 left-0 z-10 bg-black/15 h-full text-center p-2 hover:bg-black/50"
+              className="absolute top-1/2 transform -translate-y-1/2 left-0 z-10 h-full text-center"
             >
-              <i class="fa-solid fa-angle-left fa-xl text-white" />
+              <svg className='size-12' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M9.293 11.293l4-4a1 1 0 0 1 1.414 1.414L11.414 12l3.293 3.293a1 1 0 1 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414z"
+                  style={{
+                    fill: "white",
+                    stroke: "gray",
+                    strokeWidth: 0.5,
+                  }}
+                />
+              </svg>
             </button>
           )
         }
@@ -51,16 +60,25 @@ const Events = () => {
               type="button"
               onClick={onClickHandler}
               title={label}
-              className="absolute top-1/2 transform -translate-y-1/2 right-0 z-10  bg-black/15 h-full text-center p-2 hover:bg-black/50"
+              className="absolute top-1/2 transform -translate-y-1/2 right-0 z-10 h-full text-center p-2 "
             >
-              <i class="fa-solid fa-angle-right fa-xl text-white" />
+              <svg className='size-12' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="m14.707 12.707-4 4a1 1 0 0 1-1.414-1.414L12.586 12 9.293 8.707a1 1 0 1 1 1.414-1.414l4 4a1 1 0 0 1 0 1.414z"
+                  style={{
+                    fill: "white",
+                    stroke: "gray", // Warna border
+                    strokeWidth: 0.5,  // Ketebalan border
+                  }}
+                />
+              </svg>
             </button>
           )
         }
       >
         {events.map((event, index) => (
           <div key={index} className="relative">
-            <img className="h-96 object-cover rounded-lg" src={event.image_large} alt={event.title} />
+            <img className="h-52 sm:h-96 object-cover" src={event.image_large} alt={event.title} />
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
               <h2 className="text-2xl font-bold">{event.title}</h2>
               <p>{event.date}</p>
@@ -70,11 +88,11 @@ const Events = () => {
         ))}
       </Carousel>
 
-      <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 rounded-lg shadow-md mb-8 text-white">
+      <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 sm:rounded-lg shadow-md mb-8 text-white">
         <p className="text-center text-lg">Jangan lewatkan event-event menarik di restoran kami! Kami menyediakan berbagai promo, konser, dan flash sale yang bisa Anda nikmati.</p>
       </div>
 
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-8 gap-5 sm:mx-0 mx-3">
         <SearchInput onChange={setSearchTerm} value={searchTerm} />
         <Select
           value={filterType}
@@ -91,7 +109,7 @@ const Events = () => {
       </div>
 
       <h1 className="text-4xl font-bold text-center mt-4">Upcoming Events</h1>
-      <div className="flex flex-wrap -mx-4 mt-4">
+      <div className="flex flex-wrap mx-auto sm:-mx-4 mt-4">
         {filteredEvents.length === 0
           ? <EmptyState />
           : filteredEvents.map((event, index) => (

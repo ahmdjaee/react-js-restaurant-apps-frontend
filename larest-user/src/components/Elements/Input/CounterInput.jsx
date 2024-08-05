@@ -24,7 +24,7 @@ export default function CounterInput({ value = 1, onChange, minValue = 1, maxVal
   return (
     <div className="custom-number-input h-10 w-20 sm:w-32">
       <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
-        <button type="button" onClick={decrement} className="bg-zinc-300 text-zinc-600 hover:text-zinc-700 hover:bg-zinc-400 h-full w-20 rounded-l cursor-pointer outline-none" data-action="decrement">
+        <button disabled={loading} type="button" onClick={decrement} className="bg-zinc-300 text-zinc-600 hover:text-zinc-700 hover:bg-zinc-400 h-full w-20 rounded-l cursor-pointer outline-none" data-action="decrement">
           {loading
             ? <i className="fa-solid fa-spinner animate-spin" />
             : <span className="m-auto text-2xl font-thin">−</span>
@@ -53,7 +53,7 @@ export default function CounterInput({ value = 1, onChange, minValue = 1, maxVal
             }
           }}
         />
-        <button type="button" onClick={increment} className="bg-zinc-300 text-zinc-600 hover:text-zinc-700 hover:bg-zinc-400 h-full w-20 rounded-r cursor-pointer" data-action="increment">
+        <button disabled={loading} type="button" onClick={increment} className="bg-zinc-300 text-zinc-600 hover:text-zinc-700 hover:bg-zinc-400 h-full w-20 rounded-r cursor-pointer" data-action="increment">
           {loading
             ? <i className="fa-solid fa-spinner animate-spin" />
             : <span className="m-auto text-2xl font-thin">+</span>

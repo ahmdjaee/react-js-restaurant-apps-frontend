@@ -11,21 +11,18 @@ const links = [
 ]
 export default function BottomNavBar() {
   return (
-    <div className="flex flex-col">
-      <div className="h-16 sm:h-0" />
-      <div className="sm:hidden fixed mt-auto bottom-0 left-0 z-50 w-full py-2 bg-white border-t border-gray-200">
-        <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
-          {links.map(([name, link, icon]) => (
-            <NavLink key={name} to={link} className={({ isActive }) => (
-              isActive
-                ? "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50  text-primary"
-                : "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50  text-gray-500")}
-            >
-              {icon}
-              <span className="text-sm text-gray ">{name}</span>
-            </NavLink>
-          ))}
-        </div>
+    <div className="sm:hidden sticky mt-auto bottom-0 left-0 z-50 w-full py-2 bg-white border-t border-gray-200">
+      <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
+        {links.map(([name, link, icon]) => (
+          <NavLink key={name} to={link} className={({ isActive }) => (
+            isActive
+              ? "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50  text-primary"
+              : "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50  text-gray-500")}
+          >
+            {icon}
+            <span className="text-sm text-gray ">{name}</span>
+          </NavLink>
+        ))}
       </div>
     </div>
   );

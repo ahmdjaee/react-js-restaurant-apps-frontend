@@ -30,7 +30,9 @@ function MainLayout() {
     <CartProvider>
       <TopProgressBar />
       <TopNavBar carts={carts} />
-      <Outlet />
+      <div className="flex-grow overflow-y-auto">
+        <Outlet />
+      </div>
       <BottomNavBar />
     </CartProvider>
   )
