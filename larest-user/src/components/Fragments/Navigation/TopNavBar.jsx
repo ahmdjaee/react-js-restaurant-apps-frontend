@@ -109,7 +109,7 @@ function CheckUser({ user, toggleDrawer, carts }) {
         />
       </Modal>
       <div className="flex gap-3 sm:gap-6 items-center">
-        <Link to={"/carts"}>
+        <Link to={user ? "/carts" : "/login"}>
           <IconButton>
             <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
               <MdOutlineLocalGroceryStore className='size-5 text-gray' />
