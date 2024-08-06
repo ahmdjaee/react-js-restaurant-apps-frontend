@@ -66,7 +66,7 @@ export default function Cart() {
   }, [state])
 
   return (
-    <section id="cartSection" className="overflow-x-clip bg-zinc-100 flex-grow sm:py-5">
+    <section id="cartSection" className="overflow-x-clip h-full bg-gray-100 flex-grow sm:py-5">
       <Snackbar
         color="success"
         variant="solid"

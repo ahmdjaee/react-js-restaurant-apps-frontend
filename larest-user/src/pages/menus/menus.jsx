@@ -31,7 +31,7 @@ export default function Menu() {
     <Fragment>
       <section className="bg-white sticky top-0 z-40 pb-3 px-3 sm:px-0">
         <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container">
-          <SearchInput className={"sm:me-5 w-[70%]"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
+          <SearchInput size={"w-[70%]"} className={"sm:me-5 "} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Select
             value={filterType}
             onChange={(_, value) => setFilterType(value)}
@@ -74,7 +74,11 @@ export default function Menu() {
               filteredMenus
                 .filter(menu => menu.category.name === category.name)
                 .length === 0
-                ? <EmptyState />
+                ? (
+                  <div className="flex justify-center">
+                    <EmptyState text={"No menu found"} />
+                  </div>
+                )
                 : filteredMenus
                   .filter(menu => menu.category.name === category.name)
                   .map((menu) => (

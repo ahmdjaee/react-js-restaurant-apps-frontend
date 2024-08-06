@@ -19,12 +19,13 @@ import Payment from "@/pages/payment/index.jsx";
 import Reservation, { loader as reservationLoader } from "@/pages/reservation";
 import Transaction from '@/pages/transactions/index.jsx';
 import Profile from "@/pages/user/profile.jsx";
+import SuccessRegister from "@/pages/auth/components/SuccessRegister";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<MainLayout />} loader={mainLoader}  >
-        <Route errorElement={<h2>Error</h2>}   >
+        <Route errorElement={<ErrorPageNotFound />}   >
           <Route index element={<Home />} loader={homeLoader} />
           <Route path="menus" element={<Menu />} loader={menuLoader} />
           <Route path="menus/:id" element={<Detail />} action={menuDetailAction} loader={menuDetailLoader} />
@@ -41,6 +42,7 @@ export const router = createBrowserRouter(
       <Route element={<Authentication />}>
         <Route path="login" element={<LoginForm />} />
         <Route path="register" element={<RegisterForm />} />
+        <Route path="register/success" element={<SuccessRegister />} />
       </Route>
 
       <Route element={<OrderLayout />} loader={reservationLoader}>

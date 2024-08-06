@@ -1,39 +1,46 @@
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator"
+import InputForm from "@/components/Elements/Input/InputForm"
+import { useStateContext } from "@/context/ContextProvider"
+import { actionCreate, actionPost, useCrudContext } from "@/context/CrudContextProvider"
+import axiosClient from "@/services/axios"
+import { ACTION } from "@/utils/action"
+import { Button, Checkbox, Typography } from "@mui/joy"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function RegisterForm() {
+  const navigate = useNavigate()
+  const { state, dispatch, } = useCrudContext()
+  const { setToken } = useStateContext();
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [alert, setAlert] = useState(false)
-  const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
 
   async function onRegister() {
-    const response = await register({ name, email, password })
-    setLoading(true)
+    await actionCreate("/users/register", { name, email, password }, dispatch)
+  }
 
-    if (response.code === 400) {
-      setErrors(response.data.errors)
-      setLoading(false)
-    }
-
-    if (response.code === 201) {
-      setLoading(false)
-      setAlert(true)
-      setTimeout(() => {
-        setAlert(false)
-        window.location.href = "/login";
-      }, 1000)
-      setErrors({})
+  async function login() {
+    try {
+      const response = await axiosClient.post("/users/login", { email, password });
+      if (response.status === 200) {
+        setToken(response.data.data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch({ type: ACTION.FAILED, payload: { errors: error?.response?.data?.errors } });
     }
   }
+  
+  useEffect(() => {
+    if (state.success === true) login();
+
+    return () => dispatch({ type: ACTION.RESET })
+  }, [state.success])
 
   return (
     <>
-      {loading && <CircularProgress />}
-      {alert && <div
-        className="absolute bottom-8 right-0 animate-right-slide-in block w-1/4 text-center p-4 mb-4 text-base leading-5 text-white bg-green-500 rounded-lg opacity-100 font-regular">
-        Successfully registered
-      </div>}
+      {state.loading && < FloatProgressIndicator />}
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
           Sign Up
@@ -46,27 +53,27 @@ export default function RegisterForm() {
             <InputForm
               title="Your Name"
               placeholder="John Doe"
-              value={name}
+              defaultValue={name}
               onChange={(e) => setName(e.target.value)}
-              errorsText={errors.name}
+              errorsText={state.error?.name}
             />
             <InputForm
               title="Your Email"
               type="email"
               placeholder="name@mail.com"
-              value={email}
+              defaultValue={email}
               onChange={(e) => setEmail(e.target.value)}
-              errorsText={errors.email}
+              errorsText={state.error?.email}
             />
             <InputForm
               title="Password"
               type="password"
               placeholder="********"
-              value={password}
+              defaultValue={password}
               onChange={(e) => setPassword(e.target.value)}
-              errorsText={errors.password}
+              errorsText={state.error?.password}
             >
-              {errors.password == null && <p className="text-xs absolute">&#9888; Password min 8 characters</p>}
+              {state.error?.password == null && <p className="text-xs absolute">&#9888; Password min 8 characters</p>}
             </InputForm>
           </div>
           <Checkbox

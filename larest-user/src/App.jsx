@@ -3,6 +3,7 @@ import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { router } from './routes/routes';
 import ContextProvider from "./context/ContextProvider";
 import TopProgressBar from "./components/Elements/Indicator/TopProgressBar";
+import CrudContextProvider from "./context/CrudContextProvider";
 
 const baseTheme = extendTheme({
   colorSchemes: {
@@ -48,8 +49,10 @@ export default function App() {
   return (
     <CssVarsProvider theme={baseTheme}>
       <ContextProvider>
-        <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
+        <CrudContextProvider>
+          <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
+        </CrudContextProvider>
       </ContextProvider>
-    </CssVarsProvider>
+    </CssVarsProvider >
   );
 }

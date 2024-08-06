@@ -2,5 +2,7 @@ export const ACTION = {
     CHANGE: "CHANGE",
     START: "START",
     SUCCESS: "SUCCESS",
-    ERROR: "ERROR"
+    FAILED: "FAILED",
+    RESET: "RESET",
+    SET_FORM_DATA: "SET_FORM_DATA"
 }

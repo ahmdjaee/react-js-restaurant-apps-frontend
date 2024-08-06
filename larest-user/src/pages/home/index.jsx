@@ -1,5 +1,4 @@
 import OvalButton from "@/components/Elements/Button/OvalButton"
-import CardCustomer from "@/components/Fragments/Card/CardCustomer"
 import CardMenu from "@/components/Fragments/Card/CardMenu"
 import Footer from "@/components/Fragments/Footer"
 import CartMenuLayout from "@/components/Layouts/CardMenuLayout"
@@ -46,11 +45,10 @@ export default function Home() {
         />
       </section>
 
-      <section className="bg-zinc-200 py-12 text-center">
+      <section className="bg-gray-100 py-12 text-center">
         <div className="container">
           <h1 className="text-5xl font-semibold my-5">Our Special Dishes</h1>
           <p className="sm:w-1/2 mx-auto mb-16">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique, ratione! Atque consectetur blanditiis molestias. Accusantium rerum at sed fuga mollitia.</p>
-
           <CartMenuLayout>
             <CardMenu menu={{
               name: "Lumpia",
@@ -148,10 +146,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex flex-col sm:flex-row container items-center py-12 gap-5">
-        <div>
-          <h1 className="text-5xl font-semibold">Our Expert Chefs</h1>
-          <p className="text-base my-16">Discover the culinary talents of our skilled and experienced chefs.</p>
+      <section className="flex flex-col sm:flex-row container items-center py-12 gap-3 sm:gap-5">
+        <div className="mx-3 sm:mx-0">
+          <h1 className="text-3xl text-center sm:text-start sm:text-5xl font-semibold">Our Expert Chefs</h1>
+          <p className="text-base my-8 sm:my-16">Discover the culinary talents of our skilled and experienced chefs.</p>
           <div className="grid sm:grid-cols-2 gap-y-8 gap-x-4">
             <div className="flex gap-3 items-start">
               <img className="py-2" src={Check} alt="Check mark" />
@@ -182,19 +180,6 @@ export default function Home() {
 
         <img className="w-2/5 order-first sm:order-last" src={Chef} alt="" />
       </section>
-
-      <section className="bg-zinc-200 py-12 text-center">
-        <div className="container">
-          <h1 className="text-5xl font-semibold">Our Happy Customers</h1>
-          <p className="text-base my-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
-          <div className="flex justify-center  gap-7">
-            <CardCustomer />
-            <CardCustomer />
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </div>
   )

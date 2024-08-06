@@ -17,6 +17,7 @@ import * as React from 'react';
 import { MdOutlineLocalGroceryStore, MdOutlineTableBar } from 'react-icons/md';
 import { Link, useLocation } from "react-router-dom";
 import BookingAction from '../Form/BookingAction';
+import { FaPen } from 'react-icons/fa6';
 
 function TopNavBar({ navLink = true, carts }) {
   const [open, setOpen] = React.useState(false);
@@ -38,7 +39,7 @@ function TopNavBar({ navLink = true, carts }) {
 
   return (
     <div className="sm:shadow-sm z-50 bg-white">
-      <nav className="container px-2 sm:px-0 py-2 sm:py-5 flex items-center justify-between ">
+      <nav className="container px-3 sm:px-0 py-2 sm:py-5 flex items-center justify-between ">
         <Logo home={"/"} />
         <NavLink />
         <CheckUser user={user} toggleDrawer={toggleDrawer} carts={carts} />
@@ -112,13 +113,15 @@ function CheckUser({ user, toggleDrawer, carts }) {
         <Link to={user ? "/carts" : "/login"}>
           <IconButton>
             <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
-              <MdOutlineLocalGroceryStore className='size-5 text-gray' />
+              <MdOutlineLocalGroceryStore className='size-5 sm:size-6 text-gray' />
             </Badge>
           </IconButton>
         </Link>
         <Link to={"reservation"}>
-          <IconButton variant={`${location.pathname === "/reservation" ? "solid" : "soft"}`} color={`${location.pathname === "/reservation" ? "primary" : "neutral"}`}>
-            <MdOutlineTableBar className={`size-5 ${location.pathname === "/reservation" ? "text-white" : "text-gray"}`} />
+          <IconButton variant={`${location.pathname === "/reservation" ? "solid" : "plain"}`} color={`${location.pathname === "/reservation" ? "primary" : "neutral"}`}>
+            <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+              <MdOutlineTableBar className={`size-5 sm:size-6 ${location.pathname === "/reservation" ? "text-white" : "text-gray"}`} />
+            </Badge>
           </IconButton>
         </Link>
         {user

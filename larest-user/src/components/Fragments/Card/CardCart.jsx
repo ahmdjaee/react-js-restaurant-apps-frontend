@@ -1,8 +1,8 @@
-import { IconButton, Textarea } from "@mui/joy";
-import TextCurrency from "../../Elements/Text/TextCurrency";
-import CounterInput from "../../Elements/Input/CounterInput";
-import { useEffect, useState } from "react";
+import CounterInput from "@/components/Elements/Input/CounterInput";
+import TextCurrency from "@/components/Elements/Text/TextCurrency";
 import { useCartContext } from "@/context/CartContext";
+import { IconButton, Textarea } from "@mui/joy";
+import { useEffect, useState } from "react";
 
 export default function CardCart({ cart, onDelete, onChangeQuantity }) {
   const { state } = useCartContext()
@@ -31,7 +31,7 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
       <img className="w-36 max-w-36 object-cover rounded-md" src={cart.menu.image} alt="" />
       <div className="px-5 flex-grow">
         <p className=" font-semibold">{cart.menu.name}</p>
-        <p className="text-sm ">{cart.menu.description}</p>
+        <p className="text-sm line-clamp-2">{cart.menu.description}</p>
         <Notes />
         {showNotes &&
           <Textarea

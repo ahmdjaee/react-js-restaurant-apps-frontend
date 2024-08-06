@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
-function SearchInput({ value, onChange, props, className, fullWidth }) {
+function SearchInput({ value, onChange, props, className, fullWidth, size }) {
     return (
-        <div {...props} className={`relative text-gray-600 ${className}` + (fullWidth ? ' w-full' : '')}>
-            <input className={`border border-gray-300 bg-white h-[38px] px-5 pr-16 rounded-lg text-sm focus:outline-none ` + (fullWidth ? ' w-full' : '')}
+        <div {...props} className={`relative text-gray-600 ${className} ${size} ${fullWidth ? 'w-full' : ''}`}>
+            <input className={`border border-gray-300 bg-white h-[38px] px-5 sm:pr-16 rounded-lg text-sm focus:outline-none w-full`}
                 type="search" name="search" value={value} onChange={(e) => onChange(e.target.value)} placeholder="Search" />
             <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
                 <svg className="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
