@@ -74,7 +74,7 @@
 }
 
 #root {
-    flex: 1 1 0%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -82,8 +82,5 @@
 
 body {
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
     height: 100dvh;
-    margin: 0;  
 }
