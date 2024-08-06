@@ -37,8 +37,8 @@ function TopNavBar({ navLink = true, carts }) {
   };
 
   return (
-    <div className="sm:shadow-sm z-50 bg-white shadow-md">
-      <nav className="container px-2 sm:px-0 py-3 sm:py-5 flex items-center justify-between ">
+    <div className="sm:shadow-sm z-50 bg-white">
+      <nav className="container px-2 sm:px-0 py-2 sm:py-5 flex items-center justify-between ">
         <Logo home={"/"} />
         <NavLink />
         <CheckUser user={user} toggleDrawer={toggleDrawer} carts={carts} />

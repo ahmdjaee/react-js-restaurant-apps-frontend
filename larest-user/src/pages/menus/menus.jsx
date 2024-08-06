@@ -29,13 +29,13 @@ export default function Menu() {
 
   return (
     <Fragment>
-      <section className="bg-white sticky top-0 z-40 py-3 px-3 sm:px-0">
-        <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container overflow-x-auto">
-          <SearchInput className={"sm:me-5 w-50"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
+      <section className="bg-white sticky top-0 z-40 pb-3 px-3 sm:px-0">
+        <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container">
+          <SearchInput className={"sm:me-5 w-[70%]"} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Select
             value={filterType}
             onChange={(_, value) => setFilterType(value)}
-            sx={{ width: 300 }}
+            sx={{ width: "30%" }}
             placeholder="Category"
           >
             <Option value={null}>All</Option>
