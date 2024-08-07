@@ -1,12 +1,11 @@
 
-import InputForm from "@/components/Elements/Input/InputForm";
-import CircularProgress from "@/components/Elements/Indicator/CircularProgress";
 import CustomSnackbar from "@/components/Elements/Indicator/CustomSnackbar";
-import { Link } from "react-router-dom";
-import { Button, Checkbox, Typography } from "@mui/joy";
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
+import InputForm from "@/components/Elements/Input/InputForm";
 import { useStateContext } from "@/context/AuthContextProvider";
-import { useNavigate } from "react-router-dom";
 import axiosClient from "@/services/axios";
+import { Button, Checkbox, Typography } from "@mui/joy";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ function LoginForm() {
 
   return (
     <>
-      {state.loading && <CircularProgress />}
+      {state.loading && <FloatProgressIndicator />}
       {state.errors.message &&
         < CustomSnackbar
           variant="error"

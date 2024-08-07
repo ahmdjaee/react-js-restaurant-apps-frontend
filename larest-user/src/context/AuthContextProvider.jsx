@@ -84,7 +84,7 @@ export default function AuthContextProvider({ children }) {
     _setToken(null)
     setUser(null)
     localStorage.removeItem("USER-TOKEN")
-    window.location.reload()
+    window.location.href = "/"
   }
 
   return (
