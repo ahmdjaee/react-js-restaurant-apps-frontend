@@ -47,8 +47,8 @@ const ReservationHistory = () => {
           <button className="text-gray-500">Completed (8)</button>
           <button className="text-gray-500">Cancelled (22)</button>
         </div>
-        <div className="flex flex-col sm:flex-row justify-between mb-4 space-y-4 sm:space-y-0">
-          <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} className="w-full sm:w-auto" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 space-y-4 sm:space-y-0">
+          <SearchInput value={searchTerm} onChange={setSearchTerm} className="w-full sm:w-auto" />
           <div className="flex space-x-2 items-center">
             <input type="date" className="p-2 border border-gray-300 rounded" />
             <span>To</span>
