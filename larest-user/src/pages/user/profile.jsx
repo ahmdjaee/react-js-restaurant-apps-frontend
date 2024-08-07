@@ -1,5 +1,5 @@
 import React from 'react'
-import { useStateContext } from '../../context/ContextProvider'
+import { useStateContext } from '../../context/AuthContextProvider'
 import { Avatar, Button, FormControl, FormLabel, Input } from '@mui/joy'
 
 function Profile() {

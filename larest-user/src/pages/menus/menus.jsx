@@ -28,8 +28,8 @@ export default function Menu() {
   });
 
   return (
-    <Fragment>
-      <section className="bg-white sticky top-0 z-40 pb-1 sm:pb-3 px-3 sm:px-0">
+    <>
+      <section className="bg-white sticky top-with-top-bar-height z-40 pb-1 sm:pb-3 px-3 sm:px-0">
         <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container">
           <SearchInput size={"w-[70%]"} className={"sm:me-5 "} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Select
@@ -43,25 +43,6 @@ export default function Menu() {
               <Option value={category.name}>{category.name}</Option>
             ))}
           </Select>
-          {/* <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
-            <TabList
-              disableUnderline
-              sx={{
-                p: 0.5,
-                gap: 0.5,
-                borderRadius: 'xl',
-                bgcolor: 'background.level1',
-                [`& .${tabClasses.root}[aria-selected="true"]`]: {
-                  boxShadow: 'sm',
-                  bgcolor: 'background.surface',
-                },
-              }}
-            >
-              {categories.map((category) => (
-                <Tab disableIndicator key={category.id} onClick={() => setFilterType(category.name)}>{category.name}</Tab>
-              ))}
-            </TabList>
-          </Tabs> */}
         </div>
       </section>
       <section className="container flex flex-col gap-5">
@@ -88,7 +69,7 @@ export default function Menu() {
           </CartMenuLayout>
         ))}
       </section>
-    </Fragment>
+    </>
   )
 }
 

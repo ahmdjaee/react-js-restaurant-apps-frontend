@@ -5,7 +5,7 @@ import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
 import TopProgressBar from "../Elements/Indicator/TopProgressBar"
 import axiosClient from "@/services/axios"
 import { useEffect } from "react"
-import { useStateContext } from "../../context/ContextProvider"
+import { useStateContext } from "../../context/AuthContextProvider"
 import useFetchData from "@/hooks/useFetch"
 
 export async function loader() {
@@ -30,7 +30,7 @@ function MainLayout() {
     <CartProvider>
       <TopProgressBar />
       <TopNavBar carts={carts} />
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1">
         <Outlet />
       </div>
       <BottomNavBar />

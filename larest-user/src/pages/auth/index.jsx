@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import AuthLayout from "../../components/Layouts/AuthLayout";
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../context/AuthContextProvider";
 
 function Authentication() {
   const { token } = useStateContext()

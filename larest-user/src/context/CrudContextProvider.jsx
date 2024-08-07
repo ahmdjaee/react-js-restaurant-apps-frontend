@@ -99,11 +99,11 @@ export const actionCreate = async (url, data, dispatch, contentType) => {
       return response.data;
     }
   } catch (error) {
-    // dispatch({
-    //   type: ACTION.FAILED,
-    //   error: error.response.data.errors,
-    //   message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
-    // })
+    dispatch({
+      type: ACTION.FAILED,
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+    })
   }
 }
 export const actionPost = async (url, data, dispatch, contentType) => {
@@ -116,8 +116,8 @@ export const actionPost = async (url, data, dispatch, contentType) => {
     });
     if (response.status === 200) {
       dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      return response.data;
     }
-    return response.data;
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
@@ -137,8 +137,8 @@ export const actionUpdate = async (url, data, dispatch, contentType) => {
     });
     if (response.status === 200) {
       dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      return response.data;
     }
-    return response.data;
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
@@ -154,8 +154,8 @@ export const actionDelete = async (url, dispatch) => {
     const response = await axiosClient.delete(url);
     if (response.status === 200) {
       dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      return response.data;
     }
-    return response.data;
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,

@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { router } from './routes/routes';
-import ContextProvider from "./context/ContextProvider";
+import AuthContextProvider from "./context/AuthContextProvider";
 import TopProgressBar from "./components/Elements/Indicator/TopProgressBar";
 import CrudContextProvider from "./context/CrudContextProvider";
 
@@ -48,11 +48,11 @@ const baseTheme = extendTheme({
 export default function App() {
   return (
     <CssVarsProvider theme={baseTheme}>
-      <ContextProvider>
+      <AuthContextProvider>
         <CrudContextProvider>
           <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
         </CrudContextProvider>
-      </ContextProvider>
+      </AuthContextProvider>
     </CssVarsProvider >
   );
 }

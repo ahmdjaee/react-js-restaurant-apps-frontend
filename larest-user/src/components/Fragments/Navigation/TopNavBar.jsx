@@ -1,8 +1,7 @@
 import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgressIndicator';
 import NavLink from '@/components/Elements/Link/NavLink';
 import Logo from "@/components/Elements/Logo/Logo";
-import { useStateContext } from '@/context/ContextProvider';
-import { actionDelete, useCrudContext } from '@/context/CrudContextProvider';
+import { actionLogout, useStateContext } from '@/context/AuthContextProvider';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { ACTION } from '@/utils/action';
 import { Avatar, Badge, Button, IconButton, Snackbar } from '@mui/joy';
@@ -25,8 +24,7 @@ function TopNavBar({ carts }) {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const { user, deleteTokenAndUser } = useStateContext();
-  const { state, dispatch } = useCrudContext();
+  const { user, deleteTokenAndUser, state, dispatch } = useStateContext();
 
   const toggleDrawer = (inOpen) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -37,7 +35,7 @@ function TopNavBar({ carts }) {
   };
 
   const handleLogout = async () => {
-    const data = await actionDelete("/users/logout", dispatch);
+    const data = await actionLogout("/users/logout", dispatch);
     if (data) {
       deleteTokenAndUser();
       setOpenDialog(false);
@@ -45,10 +43,10 @@ function TopNavBar({ carts }) {
   };
 
   return (
-    <Fragment>
+    <>
       {state.loading && <FloatProgressIndicator />}
-      <div className="sm:shadow-sm z-50 bg-white">
-        <nav className="container px-3 sm:px-0 py-2 sm:py-5 flex items-center justify-between ">
+      <header className="sm:shadow-sm sticky top-0 z-50 top-bar-height bg-white">
+        <nav className="container px-3 sm:px-0 h-[inherit]  flex items-center justify-between ">
           <Logo home={"/"} />
           <NavLink />
           <CheckUser user={user} toggleDrawer={toggleDrawer} carts={carts} />
@@ -102,8 +100,8 @@ function TopNavBar({ carts }) {
             </DialogActions>
           </ModalDialog>
         </Modal>
-      </div >
-      {/* <Snackbar
+      </header >
+      <Snackbar
         open={state.success || state.failed}
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
@@ -111,8 +109,8 @@ function TopNavBar({ carts }) {
         onClose={() => dispatch({ type: ACTION.RESET })}
       >
         {state.message}
-      </Snackbar > */}
-    </Fragment>
+      </Snackbar >
+    </>
   )
 }
 

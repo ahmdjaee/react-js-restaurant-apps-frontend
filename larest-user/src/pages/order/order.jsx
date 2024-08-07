@@ -1,28 +1,16 @@
-import { useEffect, useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { postReducer } from "../../reducer/postReducer";
-import { makeOrder } from "../../services/OrderService";
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
+import TextBetween from "@/components/Elements/Text/TextBetween";
+import TextCurrency from "@/components/Elements/Text/TextCurrency";
+import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
 import useFetchData from "@/hooks/useFetch";
 import { Box, Button, Modal, ModalDialog, Textarea, Typography } from "@mui/joy";
-import TextCurrency from "@/components/Elements/Text/TextCurrency";
-import TextBetween from "@/components/Elements/Text/TextBetween";
-import { ACTION } from "@/utils/action";
+import { useEffect, useState } from "react";
 
 export default function Order() {
   const [showModal, setShowModal] = useState(false);
-  // const [carts, loadingCarts] = useCarts();
-  // const totalPayment = carts?.reduce((accumulator, cart) => accumulator + cart.total_price, 0);
-  // const totalItem = carts?.reduce((accumulator, cart) => accumulator + cart.quantity, 0);
+  const { state, dispatch } = useCrudContext();
   const [loadingCarts, errorCarts, carts] = useFetchData("/carts");
   const [loadingReservation, errorReservation, reservation] = useFetchData("/reservations");
-
-  const navigate = useNavigate();
-
-  const [state, dispatch] = useReducer(postReducer, {
-    loading: false,
-    success: false,
-    errors: null
-  })
 
   useEffect(() => {
     // You can also change below url value to any script url you wish to load, 
@@ -45,7 +33,6 @@ export default function Order() {
 
   async function handleOrder() {
 
-    dispatch({ type: ACTION.START });
     const items = carts?.data.map((cart) => {
       return {
         menu_id: cart.menu.id,
@@ -54,45 +41,36 @@ export default function Order() {
       }
     })
 
-    try {
-      const { data } = await makeOrder({
-        items: items,
-        reservation_id: reservation.data.id,
-        status: "new",
-        total_payment: 20000
-      })
+    const { data } = await actionCreate("/orders", {
+      items: items,
+      reservation_id: reservation.data.id,
+      total_payment: 20000
+    }, dispatch)
 
-      if (data) {
-        window.snap.pay(data.token, {
-          onSuccess: function (result) {
-            /* You may add your own implementation here */
-            // navigate("/order/success")
-            console.log(result);
-          },
-          onPending: function (result) {
-            /* You may add your own implementation here */
-            alert("waiting your payment!"); console.log(result);
-          },
-          onError: function (result) {
-            /* You may add your own implementation here */
-            alert("payment failed!"); console.log(result);
-          },
-          onClose: function () {
-            /* You may add your own implementation here */
-            // alert('you closed the popup without finishing the payment');
-          }
-        });
-      }
-      // dispatch({ type: ACTION.SUCCESS })
-    } catch (error) {
-      // dispatch({ type: ACTION.ERROR, payload: { errors: error } });
-      console.log(error);
-
+    if (data) {
+      window.snap.pay(data.token, {
+        onSuccess: function (result) {
+          /* You may add your own implementation here */
+        },
+        onPending: function (result) {
+          /* You may add your own implementation here */
+          alert("waiting your payment!"); console.log(result);
+        },
+        onError: function (result) {
+          /* You may add your own implementation here */
+          alert("payment failed!"); console.log(result);
+        },
+        onClose: function () {
+          /* You may add your own implementation here */
+          alert('you closed the popup without finishing the payment');
+        }
+      });
     }
   }
 
   return (
     <>
+      {state.loading && <FloatProgressIndicator />}
       <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32 mb-8">
         <div className="px-4 pt-8">
           <p className="text-xl font-medium">Order Summary</p>

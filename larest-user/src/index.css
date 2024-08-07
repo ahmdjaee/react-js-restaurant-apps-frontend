@@ -83,5 +83,14 @@
 body {
     box-sizing: border-box;
     height: 100dvh;
-    overflow: auto;
+}
+
+@layer components {
+    .top-bar-height {
+        @apply h-[52px] sm:h-20
+    }
+
+    .top-with-top-bar-height {
+        @apply top-[52px] sm:top-20
+    }
 }

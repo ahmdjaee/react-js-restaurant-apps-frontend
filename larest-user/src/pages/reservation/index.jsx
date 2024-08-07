@@ -3,7 +3,7 @@ import BookingForm from './components/BookingForm'
 import axiosClient from '@/services/axios';
 import { useLoaderData } from 'react-router-dom';
 import BookingDetail from './components/BookingDetail';
-import { useStateContext } from '@/context/ContextProvider';
+import { useStateContext } from '@/context/AuthContextProvider';
 import CardUserNotLogin from '@/components/Fragments/Card/CardUserNotLogin';
 
 export async function loader() {

@@ -88,7 +88,7 @@ export default function Cart() {
               </div>
             ))
           ) : state?.carts?.length === 0 ? (
-            <EmptyState />
+            <EmptyState text={"Your cart is empty"} />
           )
             : state?.carts?.map((cart) => (
               <CardCart

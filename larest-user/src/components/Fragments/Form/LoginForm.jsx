@@ -4,7 +4,7 @@ import CircularProgress from "@/components/Elements/Indicator/CircularProgress";
 import CustomSnackbar from "@/components/Elements/Indicator/CustomSnackbar";
 import { Link } from "react-router-dom";
 import { Button, Checkbox, Typography } from "@mui/joy";
-import { useStateContext } from "@/context/ContextProvider";
+import { useStateContext } from "@/context/AuthContextProvider";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "@/services/axios";
 

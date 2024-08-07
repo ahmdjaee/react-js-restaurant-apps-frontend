@@ -1,8 +1,9 @@
 import useFetchData from "@/hooks/useFetch";
 import { Box, Button, Chip, CircularProgress, Input, Option, Select, Snackbar, Stack, Textarea, Typography } from "@mui/joy";
-import { useStateContext } from "../../../context/ContextProvider";
+import { useStateContext } from "../../../context/AuthContextProvider";
 import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
 import { ACTION } from "@/utils/action";
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 function getChipColor(text) {
   switch (text) {
     case "available":
@@ -29,6 +30,7 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
 
   return (
     <>
+      {state.loading ? <FloatProgressIndicator /> : null}
       <form className="sm:w-[50rem] " onSubmit={(e) => onSubmit(e)}>
         <div className="sm:grid sm:grid-cols-2 gap-x-5">
           <div className="flex flex-col">
@@ -159,7 +161,7 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
             Now you can continue your order
           </Typography>
           <Stack direction="row-reverse" spacing={1}>
-            <Button variant="solid" color="primary" onClick={() => setOpen(false)}>
+            <Button variant="solid" color="primary" onClick={() => { dispatch({ type: ACTION.RESET }); setOpen(false) }}>
               See menu
             </Button>
             <Button

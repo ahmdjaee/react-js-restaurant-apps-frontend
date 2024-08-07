@@ -31,17 +31,24 @@ const ReservationHistory = () => {
   };
 
   return (
-    <div className="container ">
-      <Card variant='plain'>
-        <h2 className="text-xl font-semibold mb-4">Reservation History</h2>
-        <div className="flex space-x-4 mb-4">
-          <button className="text-blue-500">All Reservations(50)</button>
-          <button className="text-gray-500">Pending(10)</button>
-          <button className="text-gray-500">Completed(8)</button>
-          <button className="text-gray-500">Cancelled(22)</button>
+    <div className="container mx-auto sm:my-4">
+      <Card variant="plain" className="shadow-md" sx={(theme) => ({
+        [theme.breakpoints.up('xs')]: {
+          padding: '32px',
+        },
+        [theme.breakpoints.only('xs')]: {
+          padding: '16px',
+        },
+      })}>
+        <Typography level="h4" className="mb-4 text-center">Reservation History</Typography>
+        <div className="flex flex-col sm:flex-row sm:space-x-4 mb-4">
+          <button className="text-blue-500">All Reservations (50)</button>
+          <button className="text-gray-500">Pending (10)</button>
+          <button className="text-gray-500">Completed (8)</button>
+          <button className="text-gray-500">Cancelled (22)</button>
         </div>
-        <div className="flex justify-between mb-4">
-          <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <div className="flex flex-col sm:flex-row justify-between mb-4 space-y-4 sm:space-y-0">
+          <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} className="w-full sm:w-auto" />
           <div className="flex space-x-2 items-center">
             <input type="date" className="p-2 border border-gray-300 rounded" />
             <span>To</span>
@@ -49,36 +56,23 @@ const ReservationHistory = () => {
           </div>
           <button className="p-2 bg-gray-200 rounded">Sort By</button>
         </div>
-        <table className="min-w-full bg-white">
-          <thead className='bg-gray-100'>
-            <tr>
-              <th className="text-left py-2">QR Code</th>
-              <th className="text-left py-2">Guest Name</th>
-              <th className="text-left py-2">Table Number</th>
-              <th className="text-left py-2">Reservation Time</th>
-              <th className="text-left py-2">Status</th>
-              <th className="text-left py-2">Total</th>
-              <th className="text-left py-2">Invoice</th>
-            </tr>
-          </thead>
-          <tbody className='px-2'>
-            {filteredReservations.map((reservation, index) => (
-              <tr key={index} className="border-b">
-                <td className="py-2">
-                  <QRCode value={reservation.id} size={64} />
-                </td>
-                <td className="py-2">{reservation.guestName}</td>
-                <td className="py-2">{reservation.tableNumber}</td>
-                <td className="py-2">{reservation.time}</td>
-                <td className={`py-2 ${reservation.status === 'Pending' ? 'text-orange-500' : reservation.status === 'Cancelled' ? 'text-red-500' : 'text-green-500'}`}>{reservation.status}</td>
-                <td className="py-2">{reservation.total}</td>
-                <td className="py-2 text-blue-500">
-                  {reservation.invoice && <button className="p-2 bg-gray-200 rounded" onClick={() => handleOpenModal(reservation)}>Invoice</button>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="space-y-4">
+          {filteredReservations.map((reservation, index) => (
+            <div key={index} className="border p-4 rounded-lg shadow-sm flex flex-col space-y-2">
+              <div className="flex justify-between items-center">
+                <QRCode value={reservation.id} size={64} />
+                <p className={`ml-2 ${reservation.status === 'Pending' ? 'text-orange-500' : reservation.status === 'Cancelled' ? 'text-red-500' : 'text-green-500'}`}>{reservation.status}</p>
+              </div>
+              <Typography><strong>Guest Name:</strong> {reservation.guestName}</Typography>
+              <Typography><strong>Table Number:</strong> {reservation.tableNumber}</Typography>
+              <Typography><strong>Reservation Time:</strong> {reservation.time}</Typography>
+              <Typography><strong>Total:</strong> {reservation.total}</Typography>
+              {reservation.invoice && (
+                <Button onClick={() => handleOpenModal(reservation)} variant="outlined">View Invoice</Button>
+              )}
+            </div>
+          ))}
+        </div>
       </Card>
       <InvoiceModal open={openModal} onClose={handleCloseModal} reservation={selectedReservation} />
     </div>
@@ -90,18 +84,19 @@ const InvoiceModal = ({ open, onClose, reservation }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={{ p: 4, bgcolor: 'background.paper', borderRadius: 1, width: '400px', margin: 'auto' }}>
-        <Typography level="h4" sx={{ mb: 2, textAlign: 'center' }}>Reservation Details</Typography>
+      <Box className="p-4 bg-white rounded-lg shadow-lg w-11/12 max-w-md mx-auto">
+        <Typography level="h4" className="mb-4 text-center">Reservation Details</Typography>
         <Typography><strong>Reservation ID:</strong> {reservation.id}</Typography>
         <Typography><strong>Guest Name:</strong> {reservation.guestName}</Typography>
         <Typography><strong>Table Number:</strong> {reservation.tableNumber}</Typography>
         <Typography><strong>Reservation Time:</strong> {reservation.time}</Typography>
         <Typography><strong>Status:</strong> {reservation.status}</Typography>
         <Typography><strong>Total:</strong> {reservation.total}</Typography>
-        <Button onClick={onClose} sx={{ mt: 2, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>Close</Button>
+        <Button onClick={onClose} className="mt-4 block mx-auto">Close</Button>
       </Box>
     </Modal>
   );
 };
 
 export default ReservationHistory;
+

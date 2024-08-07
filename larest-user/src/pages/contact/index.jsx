@@ -3,7 +3,7 @@ import WhatsAppButton from '@/assets/ChatOnWhatsAppButton/WhatsAppButtonGreenLar
 import ContactBg from '/assets/images/contact-bg.jpg'
 function Contact() {
   return (
-    <div className="container flex-grow grid md:grid-cols-2 pt-5 pb-10 shadow-lg">
+    <div className="container flex-grow grid md:grid-cols-2 sm:pt-5 pb-10 shadow-lg">
       <div className="flex flex-col min-h-96 items-center justify-between bg-center bg-cover bg-no-repeat text-white p-5" style={{ backgroundImage: `url(${ContactBg})` }}>
         <h1 className="text-5xl font-semibold">Contact Us</h1>
         <a className='w-fit mx-auto' aria-label="Chat on WhatsApp" target='_blank' href="https://wa.me/+62895331621985?text=Hello, I'm interested and want to ask about the products you sell."><img alt="Chat on WhatsApp" src={WhatsAppButton} /></a>

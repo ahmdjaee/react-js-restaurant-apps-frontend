@@ -50,8 +50,6 @@ export const router = createBrowserRouter(
         <Route path="order/payment" element={<Payment />} />
         <Route path="order/success" element={<Success />} />
       </Route>
-      <Route path="order/success" element={<Success />} />
-      <Route path="payment" element={<Payment />} />
 
       <Route path="*" element={<ErrorPageNotFound />} />
     </Route>
