@@ -1,7 +1,7 @@
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator"
 import InputForm from "@/components/Elements/Input/InputForm"
 import { useStateContext } from "@/context/ContextProvider"
-import { actionCreate, actionPost, useCrudContext } from "@/context/CrudContextProvider"
+import { actionCreate, useCrudContext } from "@/context/CrudContextProvider"
 import axiosClient from "@/services/axios"
 import { ACTION } from "@/utils/action"
 import { Button, Checkbox, Typography } from "@mui/joy"
@@ -31,7 +31,7 @@ export default function RegisterForm() {
       dispatch({ type: ACTION.FAILED, payload: { errors: error?.response?.data?.errors } });
     }
   }
-  
+
   useEffect(() => {
     if (state.success === true) login();
 

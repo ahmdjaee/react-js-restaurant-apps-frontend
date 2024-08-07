@@ -1,10 +1,8 @@
 import useFetchData from "@/hooks/useFetch";
-import { Box, Button, Chip, CircularProgress, Input, Option, Select, Textarea, Typography } from "@mui/joy";
-import { useReducer } from "react";
+import { Box, Button, Chip, CircularProgress, Input, Option, Select, Snackbar, Stack, Textarea, Typography } from "@mui/joy";
 import { useStateContext } from "../../../context/ContextProvider";
-import { postReducer } from "../../../reducer/postReducer";
-import { createReservation } from "../../../services/ReservationService";
-import { ACTION } from "../../../utils/action";
+import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
+import { ACTION } from "@/utils/action";
 function getChipColor(text) {
   switch (text) {
     case "available":
@@ -17,34 +15,20 @@ function getChipColor(text) {
 }
 
 
-
 export default function BookingForm({ onCancel, onSuccess, reservation }) {
   const { user } = useStateContext();
+  const { state, dispatch } = useCrudContext();
   const [loading, error, response] = useFetchData("/tables");
-  const [state, dispatch] = useReducer(postReducer, {
-    loading: false,
-    errors: null,
-    success: false
-  })
   async function onSubmit(e) {
     e.preventDefault();
-    dispatch({ type: ACTION.START });
+    const formData = new FormData(e.target);
+    const formJson = Object.fromEntries(formData.entries());
 
-    try {
-      const formData = new FormData(e.target);
-      const formJson = Object.fromEntries(formData.entries());
-      const response = await createReservation({ ...formJson });
-      dispatch({ type: ACTION.SUCCESS, payload: { data: response.data } });
-      onSuccess();
-    } catch (error) {
-      dispatch({ type: ACTION.ERROR, payload: { errors: error.data } });
-    }
-
+    await actionCreate("/reservations", formJson, dispatch);
   }
 
   return (
     <>
-      {state.loading && <CircularProgress />}
       <form className="sm:w-[50rem] " onSubmit={(e) => onSubmit(e)}>
         <div className="sm:grid sm:grid-cols-2 gap-x-5">
           <div className="flex flex-col">
@@ -94,9 +78,9 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
               ))}
             </Select>
             <Typography variant="h6" className="mt-3">Select an available table </Typography>
-            <Select 
-            name="table_id"
-             placeholder="Select table"
+            <Select
+              name="table_id"
+              placeholder="Select table"
               slotProps={{
                 listbox: {
                   placement: 'bottom-start',
@@ -104,7 +88,7 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
                 },
               }}
               defaultValue={reservation?.table?.id}
-              >
+            >
               {loading
                 ? <CircularProgress />
                 : <ListItemTable tables={response?.data} />
@@ -148,6 +132,46 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
           >RESERVE</Button>
         </footer>
       </form>
+      <Snackbar
+        open={state.failed}
+        color={"danger"}
+        variant="solid"
+        autoHideDuration={1500}
+      >
+        {state.message}
+      </Snackbar >
+      <Snackbar
+        autoHideDuration={5000}
+        variant="outlined"
+        color="neutral"
+        size="lg"
+        invertedColors
+        open={state.success}
+        onClose={() => { dispatch({ type: ACTION.RESET }); location.reload() }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={(theme) => ({
+          maxWidth: 360,
+        })}
+      >
+        <div>
+          <Typography level="title-lg">{state.message}</Typography>
+          <Typography sx={{ mt: 1, mb: 2 }}>
+            Now you can continue your order
+          </Typography>
+          <Stack direction="row-reverse" spacing={1}>
+            <Button variant="solid" color="primary" onClick={() => setOpen(false)}>
+              See menu
+            </Button>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => { dispatch({ type: ACTION.RESET }); location.reload() }}
+            >
+              Close
+            </Button>
+          </Stack>
+        </div>
+      </Snackbar>
     </>
   );
 }

@@ -46,7 +46,7 @@ function Detail() {
 
       <Link
         to={-1}
-        className="absolute top-24 left-56 cursor-pointer text-primary font-semibold"
+        className="hidden sm:block absolute top-24 left-56 cursor-pointer text-primary font-semibold"
       >
         &#x2B9C; Menu
       </Link>
@@ -54,7 +54,12 @@ function Detail() {
       <div className="p-3 w-full sm:w-5/12 flex flex-col flex-1">
         <h1 className="text-lg sm:text-5xl font-semibold">{menu.name}</h1>
         <p className="text-base sm:my-4">{menu.description}</p>
-        <TextCurrency fontWeight={"font-bold"} className="flex-1" style="mb-12" text={menu.price} />
+        <TextCurrency
+          fontWeight={"font-bold"}
+          className="flex-1"
+          style="mb-12"
+          text={menu.price}
+        />
         <Form className="flex sticky bottom-0 gap-5 sm:mt-5" method="post">
           <input type="hidden" name="menu_id" value={menu.id} />
           <CounterInput name={"quantity"} />

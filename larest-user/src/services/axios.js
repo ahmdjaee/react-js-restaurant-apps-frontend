@@ -6,7 +6,8 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(async (config) => {
     const token = localStorage.getItem("USER-TOKEN");
-    if (token) {
+    
+    if (token && config.headers) {
         config.headers.Authorization = token;
     }
     return config;

@@ -5,7 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 function Authentication() {
   const { token } = useStateContext()
 
-  if (token) return <Navigate to="/" />
+  if (token !== null) return <Navigate to="/" />
 
   return (
     <AuthLayout>

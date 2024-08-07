@@ -29,7 +29,7 @@ export default function Menu() {
 
   return (
     <Fragment>
-      <section className="bg-white sticky top-0 z-40 pb-3 px-3 sm:px-0">
+      <section className="bg-white sticky top-0 z-40 pb-1 sm:pb-3 px-3 sm:px-0">
         <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container">
           <SearchInput size={"w-[70%]"} className={"sm:me-5 "} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Select

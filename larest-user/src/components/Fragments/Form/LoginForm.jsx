@@ -19,10 +19,10 @@ function LoginForm() {
     dispatch({ type: "ACTION_START" })
     try {
       const response = await axiosClient.post("/users/login", formJson);
-      if (response.status === 200) {
-        navigate("/")
+      if (response.status === 200 && response?.data?.data?.token !== null) {
+        setToken(response.data.data.token);
         dispatch({ type: "ACTION_SUCCESS" })
-        setToken(response?.data?.data?.token);
+        navigate("/")
       }
     } catch (error) {
       dispatch({ type: "ACTION_ERROR", payload: { errors: error.response.data } })
@@ -32,7 +32,6 @@ function LoginForm() {
   return (
     <>
       {state.loading && <CircularProgress />}
-
       {state.errors.message &&
         < CustomSnackbar
           variant="error"
@@ -104,7 +103,6 @@ function LoginForm() {
         </form>
       </div>
     </>
-
   )
 }
 
