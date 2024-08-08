@@ -92,7 +92,7 @@ const Events = () => {
         <p className="text-center text-lg">Jangan lewatkan event-event menarik di restoran kami! Kami menyediakan berbagai promo, konser, dan flash sale yang bisa Anda nikmati.</p>
       </div> */}
 
-      <div className="flex justify-between items-center mb-8 gap-5 sm:mx-0 mx-3">
+      <div className="flex bg-white justify-between sticky top-with-top-bar-height z-40 items-center mb-8 gap-5 sm:mx-0 mx-3">
         <SearchInput onChange={setSearchTerm} value={searchTerm} />
         <Select
           value={filterType}
