@@ -4,6 +4,7 @@ import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgres
 import InputForm from "@/components/Elements/Input/InputForm";
 import { useStateContext } from "@/context/AuthContextProvider";
 import axiosClient from "@/services/axios";
+import { ACTION } from "@/utils/action";
 import { Button, Checkbox, Typography } from "@mui/joy";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,16 +16,16 @@ function LoginForm() {
     const formData = new FormData(e.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
 
-    dispatch({ type: "ACTION_START" })
+    dispatch({ type: ACTION.START })
     try {
       const response = await axiosClient.post("/users/login", formJson);
       if (response.status === 200 && response?.data?.data?.token !== null) {
         setToken(response.data.data.token);
-        dispatch({ type: "ACTION_SUCCESS" })
+        dispatch({ type: ACTION.SUCCESS })
         navigate("/")
       }
     } catch (error) {
-      dispatch({ type: "ACTION_ERROR", payload: { errors: error.response.data } })
+      dispatch({ type: ACTION.FAILED, payload: { errors: error.response.data } })
     }
   }
 
