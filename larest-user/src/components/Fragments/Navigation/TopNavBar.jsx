@@ -102,7 +102,7 @@ function TopNavBar({ carts }) {
         </Modal>
       </header >
       <Snackbar
-        open={state.success || state.failed}
+        open={state.success || state.failed || false}
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}

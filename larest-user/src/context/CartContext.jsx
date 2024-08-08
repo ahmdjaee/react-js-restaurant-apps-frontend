@@ -11,7 +11,7 @@ const CartContext = createContext({
     setItem: () => { }
 });
 
-export default function CartProvider({ children }) {
+export default function CartContextProvider({ children }) {
     const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE)
     const [openDialog, setOpenDialog] = useState(false)
     const [quantity, setQuantity] = useState(null)

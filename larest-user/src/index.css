@@ -93,4 +93,12 @@ body {
     .top-with-top-bar-height {
         @apply top-[52px] sm:top-20
     }
+
+    .bottom-bar-height {
+        @apply h-[62px]
+    }
+
+    .bottom-with-bottom-bar-height {
+        @apply bottom-[62px]
+    }
 }

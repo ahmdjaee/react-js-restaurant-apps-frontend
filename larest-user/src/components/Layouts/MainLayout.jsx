@@ -1,5 +1,5 @@
 import { Outlet, useLoaderData } from "react-router-dom"
-import CartProvider from "../../context/CartContext"
+import CartContextProvider from "@/context/CartContext"
 import TopNavBar from "../Fragments/Navigation/TopNavBar"
 import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
 import TopProgressBar from "../Elements/Indicator/TopProgressBar"
@@ -27,14 +27,14 @@ function MainLayout() {
   }, [user])
 
   return (
-    <CartProvider>
+    <CartContextProvider>
       <TopProgressBar />
       <TopNavBar carts={carts} />
       <div className="flex-1">
         <Outlet />
       </div>
       <BottomNavBar />
-    </CartProvider>
+    </CartContextProvider>
   )
 }
 

@@ -23,6 +23,9 @@ export default {
       }
     },
     extend: {
+      space: {
+        'bottom-bar-height': '62px',
+      },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
       },

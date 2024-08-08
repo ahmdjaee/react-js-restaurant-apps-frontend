@@ -83,8 +83,9 @@ export default function CrudContextProvider({ children }) {
 }
 
 
-export const 
-useCrudContext = () => useContext(CrudContext)
+export const useCrudContext = () => useContext(CrudContext)
+
+export const actionReset = () => ({ type: ACTION.RESET })
 
 export const actionCreate = async (url, data, dispatch, contentType) => {
   dispatch({ type: ACTION.START })

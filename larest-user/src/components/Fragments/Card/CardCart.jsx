@@ -27,10 +27,10 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
 
   return (
 
-    <div className="mb-2 bg-white rounded-lg h-40 p-2 sm:p-5 flex">
-      <img className="w-36 max-w-36 object-cover rounded-md" src={cart.menu.image} alt="" />
-      <div className="px-5 flex-grow">
-        <p className=" font-semibold">{cart.menu.name}</p>
+    <div className="mb-2 bg-white rounded-lg h-min sm:h-40 p-2 sm:p-5 flex">
+      <img className="w-28 h-28 sm:h-[inherit] sm:w-36 object-cover rounded-md" src={cart.menu.image} alt="" />
+      <div className="px-5 flex-1">
+        <p className="font-semibold">{cart.menu.name}</p>
         <p className="text-sm line-clamp-2">{cart.menu.description}</p>
         <Notes />
         {showNotes &&

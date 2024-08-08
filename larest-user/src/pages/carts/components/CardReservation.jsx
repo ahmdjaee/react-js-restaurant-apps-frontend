@@ -10,7 +10,7 @@ export default function CardReservation({ item, total }) {
   const [loading, error, response] = useFetchData('/reservations')
 
   return (
-    <div className="w-full sticky bottom-[-1px] sm:w-[22rem] sm:static bg-white rounded-lg h-min px-5 py-3 sm:py-7">
+    <div className="w-full sticky bottom-with-bottom-bar-height sm:w-[22rem] sm:static bg-white rounded-lg h-min px-5 py-3 sm:py-7">
       <Text className={"text-center font-bold"}>Detail Orders</Text>
       <div className="flex justify-between border-b sm:mt-5 py-1 sm:py-2">
         <Text>Items</Text>

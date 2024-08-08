@@ -88,9 +88,9 @@ const Events = () => {
         ))}
       </Carousel>
 
-      <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 sm:rounded-lg shadow-md mb-8 text-white">
+      {/* <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 sm:rounded-lg shadow-md mb-8 text-white">
         <p className="text-center text-lg">Jangan lewatkan event-event menarik di restoran kami! Kami menyediakan berbagai promo, konser, dan flash sale yang bisa Anda nikmati.</p>
-      </div>
+      </div> */}
 
       <div className="flex justify-between items-center mb-8 gap-5 sm:mx-0 mx-3">
         <SearchInput onChange={setSearchTerm} value={searchTerm} />

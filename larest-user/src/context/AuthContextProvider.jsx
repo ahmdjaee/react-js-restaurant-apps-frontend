@@ -106,8 +106,6 @@ export default function AuthContextProvider({ children }) {
 
 export const useStateContext = () => useContext(StateContext);
 
-
-
 export const actionLogout = async (url, dispatch) => {
   dispatch({ type: ACTION.START })
   try {

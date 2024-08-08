@@ -11,8 +11,8 @@ const links = [
 ]
 export default function BottomNavBar() {
   return (
-    <footer className="sm:hidden sticky bottom-0 left-0 z-50 w-full py-2 bg-white border-t border-gray-200">
-      <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
+    <footer className="sm:hidden sticky bottom-0 left-0 z-50 w-full bottom-bar-height bg-white border-t border-gray-200">
+      <div className="grid h-[inherit] max-w-lg grid-cols-5 mx-auto font-medium">
         {links.map(([name, link, icon]) => (
           <NavLink key={name} to={link} className={({ isActive }) => (
             isActive
