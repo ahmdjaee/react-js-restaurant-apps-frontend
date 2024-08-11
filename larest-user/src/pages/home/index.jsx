@@ -98,8 +98,8 @@ export default function Home() {
               {categories?.map((category) => (
                 <Link key={category.id} className="bg-white rounded-2xl cursor-pointer">
                   <div
-                    className="bg-cover bg-center h-64 rounded-t-2xl"
-                    style={{ backgroundImage: `url(${category?.image})` }}
+                    className="bg-cover bg-center h-64 md:h-48 lg:h-64 rounded-t-2xl"
+                    style={{ backgroundImage: `url(${category.image})` }}
                   >
                     <div className="backdrop-blur-sm rounded-[inherit] w-full h-full flex items-center justify-center">
                       <PiBowlFood className="text-white text-6xl" />
