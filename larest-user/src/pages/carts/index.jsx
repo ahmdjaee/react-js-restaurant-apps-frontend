@@ -1,6 +1,6 @@
 import CardCart from "@/components/Fragments/Card/CardCart"
 import DeleteDialogModal from "@/components/Fragments/Modal/DeleteDialogModal"
-import { useCartContext } from "@/context/CartContext"
+import { useCartContext } from "@/context/CartContextProvider"
 import { Snackbar } from "@mui/joy"
 import { useEffect, useState } from "react"
 import useDebounced from "@/hooks/useDebounce"

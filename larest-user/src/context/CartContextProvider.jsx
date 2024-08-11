@@ -13,7 +13,7 @@ const CartContext = createContext({
 
 export default function CartContextProvider({ children }) {
     const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE)
-    const [openDialog, setOpenDialog] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false) 
     const [quantity, setQuantity] = useState(null)
     const [item, setItem] = useState({})
 

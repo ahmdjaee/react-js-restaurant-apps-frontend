@@ -1,6 +1,6 @@
 import CounterInput from "@/components/Elements/Input/CounterInput";
 import TextCurrency from "@/components/Elements/Text/TextCurrency";
-import { useCartContext } from "@/context/CartContext";
+import { useCartContext } from "@/context/CartContextProvider";
 import { IconButton, Textarea } from "@mui/joy";
 import { useEffect, useState } from "react";
 

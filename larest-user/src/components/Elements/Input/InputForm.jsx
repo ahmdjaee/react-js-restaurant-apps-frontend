@@ -1,4 +1,3 @@
-// import { Input, Typography } from "@material-tailwind/react";
 import propType from "prop-types";
 import { useState } from "react";
 import TextError from "../Text/TextError";

@@ -1,5 +1,5 @@
 import { Outlet, useLoaderData } from "react-router-dom"
-import CartContextProvider from "@/context/CartContext"
+import CartContextProvider from "@/context/CartContextProvider"
 import TopNavBar from "../Fragments/Navigation/TopNavBar"
 import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
 import TopProgressBar from "../Elements/Indicator/TopProgressBar"

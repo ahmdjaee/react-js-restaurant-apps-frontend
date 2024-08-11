@@ -31,8 +31,7 @@ function Profile() {
             </div>
 
             <div class="flex justify-end mt-3">
-              <Button
-              >Save</Button>
+              <Button>Save</Button>
             </div>
 
           </div>

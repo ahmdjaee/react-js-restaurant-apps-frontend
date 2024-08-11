@@ -123,4 +123,25 @@ export const actionLogout = async (url, dispatch) => {
   }
 }
 
+export const actionLogin = async (url, data, dispatch, contentType) => {
+  dispatch({ type: ACTION.START })
+  try {
+    const response = await axiosClient.post(url, data, {
+      headers: {
+        'Content-Type': contentType || 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      return response.data;
+    }
+  } catch (error) {
+    dispatch({
+      type: ACTION.FAILED,
+      error: error?.response?.data?.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+    })
+  }
+}
+
 export { INITIAL_STATE, loginReducer }

@@ -2,10 +2,10 @@
 import CustomSnackbar from "@/components/Elements/Indicator/CustomSnackbar";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 import InputForm from "@/components/Elements/Input/InputForm";
-import { useStateContext } from "@/context/AuthContextProvider";
+import { actionLogin, useStateContext } from "@/context/AuthContextProvider";
 import axiosClient from "@/services/axios";
 import { ACTION } from "@/utils/action";
-import { Button, Checkbox, Typography } from "@mui/joy";
+import { Button, Checkbox, Snackbar, Typography } from "@mui/joy";
 import { Link, useNavigate } from "react-router-dom";
 
 function LoginForm() {
@@ -16,28 +16,16 @@ function LoginForm() {
     const formData = new FormData(e.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
 
-    dispatch({ type: ACTION.START })
-    try {
-      const response = await axiosClient.post("/users/login", formJson);
-      if (response.status === 200 && response?.data?.data?.token !== null) {
-        setToken(response.data.data.token);
-        dispatch({ type: ACTION.SUCCESS })
-        navigate("/")
-      }
-    } catch (error) {
-      dispatch({ type: ACTION.FAILED, payload: { errors: error.response.data } })
+    const { data } = await actionLogin('/users/login', formJson, dispatch);
+    if (data) {
+      setToken(data.token);
+      navigate("/")
     }
   }
 
   return (
     <>
       {state.loading && <FloatProgressIndicator />}
-      {state.errors.message &&
-        < CustomSnackbar
-          variant="error"
-          text={state.errors.message}
-        />
-      }
 
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
@@ -54,7 +42,7 @@ function LoginForm() {
               type="email"
               placeholder="name@mail.com"
               defaultValue={state.email}
-              errorsText={state.errors.email}
+              errorsText={state.error?.email}
             />
             <InputForm
               name={"password"}
@@ -62,7 +50,7 @@ function LoginForm() {
               type="password"
               placeholder="********"
               defaultValue={state.password}
-              errorsText={state.errors.password}
+              errorsText={state.error?.password}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleLogin()
               }}
@@ -102,6 +90,16 @@ function LoginForm() {
           </Typography>
         </form>
       </div>
+
+      <Snackbar
+        open={state.success || state.failed || false}
+        color={state.success ? "success" : state.failed ? "danger" : null}
+        variant="solid"
+        autoHideDuration={1500}
+        onClose={() => dispatch({ type: ACTION.RESET })}
+      >
+        {state.message}
+      </Snackbar >
     </>
   )
 }
