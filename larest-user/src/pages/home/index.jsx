@@ -99,13 +99,13 @@ export default function Home() {
                 <Link key={category.id} className="bg-white rounded-2xl cursor-pointer">
                   <div
                     className="bg-cover bg-center h-64 rounded-t-2xl"
-                    style={{ backgroundImage: `url(${category?.image})` }}
+                    style={{ backgroundImage: `url(https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)` }}
                   >
                     <div className="backdrop-blur-sm rounded-[inherit] w-full h-full flex items-center justify-center">
                       <PiBowlFood className="text-white text-6xl" />
                     </div>
                   </div>
-                  <h5 className="px-8 py-6 text-xl font-bold">{category?.name}</h5>
+                  <h5 className="px-8 py-6 text-xl font-bold">{category.name}</h5>
                 </Link>
               ))}
               {/* <div className="bg-white rounded-2xl cursor-pointer">
