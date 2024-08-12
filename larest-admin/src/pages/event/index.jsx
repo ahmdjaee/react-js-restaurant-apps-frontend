@@ -1,17 +1,14 @@
-import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import React, { useState } from 'react';
+import Badge from '@/components/Elements/Badge/Badge';
+import EmptyState from '@/components/Elements/Indicator/EmptyState';
+import SearchInput from '@/components/Elements/Input/SearchInput';
+import Table from '@/components/Fragments/Table/Table';
+import { actionDelete, actionGet, actionSetData, resetAction, useCrudContext } from '@/context/CrudContextProvider';
+import { formatDate } from '@/utils/helper';
+import { Button, Chip, IconButton, Snackbar } from '@mui/joy';
+import { useEffect, useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
-import Badge from '../../components/Elements/Badge/Badge';
-import EmptyState from '../../components/Elements/Indicator/EmptyState';
-import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
-import Table from '../../components/Fragments/Table/Table';
-import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
-import useFetchData from '../../hooks/useFetch';
-import { ACTION } from '../../utils/action';
-import { formatDate } from '../../utils/helper';
 import CreateEventForm from './components/CreateEventForm';
 import UpdateEventForm from './components/UpdateEventForm';
-import SearchInput from '../../components/Elements/Input/SearchInput';
 
 const getBadgeColor = (type) => {
   switch (type) {
@@ -31,34 +28,37 @@ const getBadgeColor = (type) => {
 };
 function Event() {
   const { state, dispatch } = useCrudContext();
-  const [url] = useState(`/events`);
-  const [loading, error, response] = useFetchData(url, state.data);
+  const { list, action, refetch, } = state;
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
 
-  const filteredEvents = response?.data?.filter((event) => {
+  useEffect(() => {
+    actionGet('/events', dispatch)
+  }, [refetch])
+
+  const filteredEvents = list?.data?.filter((event) => {
     return (
       event.title.toLowerCase().includes(search.toLowerCase())
     );
   });
-
+  
   const handleDelete = async (event) => {
     if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
     await actionDelete(`/admin/events/${event.id}`, dispatch);
   };
 
   const handleUpdateModal = (event) => {
-    dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
+    dispatch(actionSetData(event))
     setUpdateModal(true);
   }
 
   return (
     <>
-      {state.loading ? <FloatProgressIndicator /> : null}
       <Table
         title="Events"
         description={"List of all events"}
+        loading={list.loading}
         actions={
           <>
             <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
@@ -77,17 +77,9 @@ function Event() {
             <th className="pb-3 ps-3 text-nowrap text-end ">ACTIONS</th>
           </tr>
         </thead>
+
         <tbody>
-          {loading ? ( //NOTE - Add loading indicator
-            <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : error ? ( //NOTE - Add error indicator
+          {list.error ? ( //NOTE - Add error indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -96,7 +88,7 @@ function Event() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : filteredEvents?.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -106,7 +98,7 @@ function Event() {
               </td>
             </tr>
           ) : (
-            filteredEvents.map((event, index) => ( //NOTE - Add table rows
+            filteredEvents?.map((event, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="table-row"
@@ -161,21 +153,22 @@ function Event() {
             ))
           )}
         </tbody>
-      </Table>
+      </Table >
       <Snackbar
-        open={state.success || state.failed}
-        color={state.success ? "success" : state.failed ? "danger" : null}
+        open={action.success || action.failed}
+        color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar >
-      <CreateEventForm
+      < CreateEventForm
         open={createModal}
-        onClose={() => setCreateModal(false)}
+        onClose={() => setCreateModal(false)
+        }
       />
-      <UpdateEventForm
+      < UpdateEventForm
         open={updateModal}
         onClose={() => setUpdateModal(false)}
       />

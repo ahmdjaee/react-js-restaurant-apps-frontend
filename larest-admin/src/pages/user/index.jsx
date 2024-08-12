@@ -1,18 +1,17 @@
-import { Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
-import React, { useState } from "react";
+import { Avatar, Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
+import { useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
-import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
-import SearchInput from "../../components/Elements/Input/SearchInput";
-import Pagination from "../../components/Fragments/Pagination/Pagination";
-import Table from "../../components/Fragments/Table/Table";
-import { useStateContext } from "../../context/ContextProvider";
-import { actionDelete, useCrudContext } from "../../context/CrudContextProvider";
-import useFetchData from "../../hooks/useFetch";
-import { ACTION } from "../../utils/action";
-import { formatDate } from "../../utils/helper";
-import EmptyState from "../../components/Elements/Indicator/EmptyState";
-import useDebouncedCallback from "../../hooks/useDebounceCallback";
-import { SEARCH_TIMEOUT } from "../../utils/settings";
+import EmptyState from "@/components/Elements/Indicator/EmptyState";
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
+import SearchInput from "@/components/Elements/Input/SearchInput";
+import Pagination from "@/components/Fragments/Pagination/Pagination";
+import Table from "@/components/Fragments/Table/Table";
+import { actionDelete, useCrudContext } from "@/context/CrudContextProvider";
+import { ACTION } from "@/utils/action";
+import { formatDate } from "@/utils/helper";
+import { SEARCH_TIMEOUT } from "@/utils/settings";
+import useDebounced from "@/hooks/useDebounce";
+import useFetchData from "@/hooks/useFetch";
 
 function User() {
   const { state, dispatch } = useCrudContext();
@@ -24,7 +23,7 @@ function User() {
     await actionDelete(`/admin/users/${user.id}`, dispatch);
   };
 
-  const setSearchParams = useDebouncedCallback((value) => {
+  const setSearchParams = useDebounced((value) => {
     setUrl(`/admin/users?search=${value}`);
   }, SEARCH_TIMEOUT);
 
@@ -98,7 +97,7 @@ function User() {
                 <td className="p-3 max-w-64 pl-0">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
-                      <img src={user.photo || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
+                      <Avatar src={user.photo}/>
                     </div>
                     <span className="font-medium text-light-inverse text-md/normal">
                       {user.name}
@@ -141,7 +140,7 @@ function User() {
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

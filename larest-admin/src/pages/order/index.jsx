@@ -10,7 +10,7 @@ import SearchInput from '../../components/Elements/Input/SearchInput';
 import Pagination from '../../components/Fragments/Pagination/Pagination';
 import Table from '../../components/Fragments/Table/Table';
 import { useCrudContext } from '../../context/CrudContextProvider';
-import useDebouncedCallback from '../../hooks/useDebounceCallback';
+import useDebounced from '../../hooks/useDebounce';
 import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import { formatDate } from '../../utils/helper';
@@ -48,7 +48,7 @@ function Order() {
     // setUpdateModal(true);
   }
 
-  const debouncedSetUrl = useDebouncedCallback((value) => {
+  const debouncedSetUrl = useDebounced((value) => {
     setUrl(`admin/orders?search=${value}`);
   }, SEARCH_TIMEOUT);
 
@@ -176,7 +176,7 @@ function Order() {
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

@@ -72,7 +72,7 @@ function Category() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : filteredCategories.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -115,7 +115,7 @@ function Category() {
         color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

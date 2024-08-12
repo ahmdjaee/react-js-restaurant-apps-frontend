@@ -6,6 +6,7 @@ import { getMinDateTime } from '../../../utils/helper';
 
 function CreateEventForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
+  const { action } = state;
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -15,7 +16,7 @@ function CreateEventForm({ open, onClose }) {
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
+      <FloatCircularProgress loading={action.loading} />
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -91,7 +92,7 @@ function CreateEventForm({ open, onClose }) {
                   />
                 </FormControl>
 
-                <ImageUploader required name={"image"}/>
+                <ImageUploader required name={"image"} />
               </div>
             </div>
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Create</Button>

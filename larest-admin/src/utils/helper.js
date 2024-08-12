@@ -13,8 +13,15 @@ function formatDate(dateString) {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+function formateTime(timeString) {
+    const time = new Date(timeString);
+    const hours = String(time.getHours()).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
 const getMinDateTime = () => {
     return new Date().toISOString().slice(0, 16);
 };
 
-export { formatDate, getMinDateTime }
+export { formatDate, formateTime , getMinDateTime }

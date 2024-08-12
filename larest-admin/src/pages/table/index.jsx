@@ -40,7 +40,7 @@ function Tables() {
     if (!window.confirm(`Are you sure want to delete table: ${table.no}?`)) return;
     await actionDelete(`/admin/tables/${table.id}`, dispatch);
   };
-  
+
   const handleUpdateModal = (event) => {
     dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
     setUpdateModal(true);
@@ -86,7 +86,7 @@ function Tables() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : filteredTables.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -140,7 +140,7 @@ function Tables() {
         color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

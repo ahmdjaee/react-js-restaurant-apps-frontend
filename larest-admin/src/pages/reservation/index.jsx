@@ -1,17 +1,17 @@
 import { Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
 import React, { useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
-import EmptyState from '../../components/Elements/Indicator/EmptyState';
-import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
-import SearchInput from '../../components/Elements/Input/SearchInput';
-import Pagination from '../../components/Fragments/Pagination/Pagination';
-import Table from '../../components/Fragments/Table/Table';
-import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
-import useFetchData from '../../hooks/useFetch';
-import { ACTION } from '../../utils/action';
-import { formatDate } from '../../utils/helper';
-import useDebouncedCallback from '../../hooks/useDebounceCallback';
-import { SEARCH_TIMEOUT } from '../../utils/settings';
+import EmptyState from '@/components/Elements/Indicator/EmptyState';
+import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgressIndicator';
+import SearchInput from '@/components/Elements/Input/SearchInput';
+import Pagination from '@/components/Fragments/Pagination/Pagination';
+import Table from '@/components/Fragments/Table/Table';
+import { actionDelete, useCrudContext } from '@/context/CrudContextProvider';
+import useFetchData from '@/hooks/useFetch';
+import { ACTION } from '@/utils/action';
+import { formatDate, formateTime } from '@/utils/helper';
+import useDebounced from '@/hooks/useDebounce';
+import { SEARCH_TIMEOUT } from '@/utils/settings';
 
 function getChipColor(status) {
   switch (status) {
@@ -45,7 +45,7 @@ function Reservation() {
     // setUpdateModal(true);
   }
 
-  const debouncedSetUrl = useDebouncedCallback((value) => {
+  const debouncedSetUrl = useDebounced((value) => {
     setUrl(`admin/reservations?search=${value}`);
   }, SEARCH_TIMEOUT);
 
@@ -129,7 +129,7 @@ function Reservation() {
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {formatDate(reservation.time)}
+                    {formateTime(reservation.time)}
                   </span>
                 </td>
                 <td className="p-3 text-center">
@@ -170,7 +170,7 @@ function Reservation() {
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

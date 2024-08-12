@@ -7,4 +7,9 @@ export default defineConfig({
   build: {
     sourcemap: false,
   },
+  resolve: {
+    alias: {
+      '@': '/src/',
+    }
+  }
 })

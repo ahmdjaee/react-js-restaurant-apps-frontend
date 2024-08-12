@@ -8,24 +8,19 @@ import { getMinDateTime } from '../../../utils/helper';
 
 function UpdateEventForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
+  const { data } = state;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(formData.entries());
+    const formJson = Object.fromEntries(formData?.entries());
     formJson.active = formJson.active === 'true' ? 1 : 0;
-    await actionPost(`/admin/events/${state.id}`, formJson, dispatch, "multipart/form-data")
-      .then(() => onClose()); 
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    dispatch({ type: ACTION.CHANGE, name: name, value: value });
+    const success = await actionPost(`/admin/events/${data?.id}`, formJson, dispatch, "multipart/form-data")
+    if (success) onClose()
   }
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -47,8 +42,7 @@ function UpdateEventForm({ open, onClose }) {
                 <FormControl>
                   <FormLabel>Name</FormLabel>
                   <Input
-                    onChange={handleChange}
-                    value={state.title}
+                    defaultValue={data?.title}
                     required
                     name='title'
                     placeholder="Event title"
@@ -57,8 +51,7 @@ function UpdateEventForm({ open, onClose }) {
                 <FormControl>
                   <FormLabel>Description</FormLabel>
                   <Textarea
-                    onChange={handleChange}
-                    value={state.description}
+                    defaultValue={data?.description}
                     required
                     placeholder="Type in here…"
                     minRows={3}
@@ -70,8 +63,7 @@ function UpdateEventForm({ open, onClose }) {
                   <FormControl>
                     <FormLabel>Type</FormLabel>
                     <Select
-                      value={state.type}
-                      onChange={(_, value) => handleChange({ target: { name: 'type', value } })}
+                      defaultValue={data?.type}
                       required
                       name='type'
                       placeholder="Select event type"
@@ -86,8 +78,7 @@ function UpdateEventForm({ open, onClose }) {
                   <FormControl>
                     <FormLabel>Active</FormLabel>
                     <Select
-                      value={state.active}
-                      onChange={(_, value) => handleChange({ target: { name: 'active', value } })}
+                      defaultValue={data?.active}
                       required
                       name='active'
                       placeholder="Active status"
@@ -100,14 +91,13 @@ function UpdateEventForm({ open, onClose }) {
                 <FormControl>
                   <FormLabel>Event Start</FormLabel>
                   <Input
-                    value={state.event_start}
-                    onChange={handleChange}
+                    defaultValue={data?.event_start}
                     required
                     type="datetime-local"
                     name='event_start'
                     slotProps={{
                       input: {
-                        min: state.event_start ? state.event_start : getMinDateTime(),
+                        min: data?.event_start ? data?.event_start : getMinDateTime(),
                       },
                     }}
                   />
@@ -117,19 +107,19 @@ function UpdateEventForm({ open, onClose }) {
               <div className="flex flex-col gap-2 justify-between">
                 <FormControl>
                   <FormLabel>Event End</FormLabel>
-                  <Input onChange={handleChange}
-                    value={state.event_end}
+                  <Input
+                    defaultValue={data?.event_end}
                     required
                     name='event_end'
                     type="datetime-local"
                     slotProps={{
                       input: {
-                        min: state.event_end ? state.event_end : getMinDateTime(),
+                        min: data?.event_end ? data?.event_end : getMinDateTime(),
                       },
                     }}
                   />
                 </FormControl>
-                <ImageUploader  name={"image"} src={state.image} />
+                <ImageUploader name={"image"} src={data?.image} />
               </div>
             </div>
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>

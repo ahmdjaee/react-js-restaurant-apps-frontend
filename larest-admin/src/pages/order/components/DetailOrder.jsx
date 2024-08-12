@@ -1,10 +1,10 @@
 import { Breadcrumbs, Chip } from '@mui/joy'
 import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
-import CustomMainCard from '../../../components/Fragments/Card/CustomMainCard'
-import axiosClient from '../../../service/axios'
+import CustomMainCard from '@/components/Fragments/Card/CustomMainCard'
+import axiosClient from '@/service/axios'
 import QRCode from 'qrcode.react'
-import { formatDate } from '../../../utils/helper'
+import { formatDate } from '@/utils/helper'
 
 export async function loader({ params }) {
   const response = await axiosClient.get(`/orders/${params.id}`)

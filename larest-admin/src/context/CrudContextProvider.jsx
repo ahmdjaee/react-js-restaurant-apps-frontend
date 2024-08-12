@@ -2,16 +2,32 @@ import { createContext, useContext, useReducer, useState } from "react";
 import axiosClient from "../service/axios";
 import { ACTION } from "../utils/action";
 
-const INITIAL_STATE = {
+const INITIAL_KEY_STATE = {
   data: null,
-  message: "",
+  message: null,
   loading: false,
   error: null,
   success: false,
   failed: false
 }
 
+const INITIAL_STATE = {
+  list: {
+    data: null,
+    message: null,
+    loading: false,
+    error: null,
+    success: false,
+    failed: false,
+    refetch: false,
+  },
+  data: null,
+  action: INITIAL_KEY_STATE,
+}
+
+
 export function crudReducer(state, action) {
+  const { keyState } = action;
   switch (action.type) {
     case ACTION.CHANGE: {
       return {
@@ -19,42 +35,60 @@ export function crudReducer(state, action) {
         [action.name]: action.value
       }
     }
-    case ACTION.SET_FORM_DATA: {
-      return { ...state, ...action.formData };
-    }
     case ACTION.START: {
       return {
         ...state,
-        loading: true,
+        [keyState]: {
+          ...state[keyState],
+          loading: true,
+        },
       }
     }
     case ACTION.SUCCESS: {
       return {
         ...state,
-        loading: false,
-        success: true,
-        data: action.data,
-        message: action.message
+        [keyState]: {
+          loading: false,
+          success: true,
+          data: action.data,
+          message: action.message
+        }
+      }
+    }
+    case ACTION.SET_DATA: {
+      return {
+        ...state,
+        data: action.data
+      }
+    }
+    case ACTION.REFETCH: {
+      return {
+        ...state,
+        refetch: !state.refetch
       }
     }
     case ACTION.FAILED: {
       return {
         ...state,
-        loading: false,
-        success: false,
-        failed: true,
-        error: action.error,
-        message: action.message
+        [keyState]: {
+          loading: false,
+          success: false,
+          failed: true,
+          error: action.error,
+          message: action.message
+        }
       }
     }
-    case ACTION.RESET: {
+    case ACTION.RESET_ACTION: {
       return {
         ...state,
-        loading: false,
-        success: false,
-        failed: false,
-        error: null,
+        [keyState]: {
+          ...INITIAL_STATE[keyState],
+        },
       }
+    }
+    case ACTION.RESET_STATE: {
+      return INITIAL_STATE;
     }
     default:
       return state
@@ -63,8 +97,6 @@ export function crudReducer(state, action) {
 
 const CrudContext = createContext({
   state: INITIAL_STATE,
-  notificationMessage: "",
-  setNotificationMessage: () => { },
   dispatch: () => { },
 });
 
@@ -85,8 +117,33 @@ export default function CrudContextProvider({ children }) {
 
 export const useCrudContext = () => useContext(CrudContext)
 
+export const resetAction = () => ({ type: ACTION.RESET_ACTION, keyState: 'action' });
+export const resetState = () => ({ type: ACTION.RESET_STATE });
+export const actionSetData = (data) => ({ type: ACTION.SET_DATA, data: data });
+
+export const actionGet = async (url, dispatch) => {
+  dispatch({ type: ACTION.START, keyState: 'list' })
+  try {
+    const response = await axiosClient.get(url);
+    if (response.status === 200) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        keyState: 'list'
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type: ACTION.FAILED,
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'list'
+    })
+  }
+}
+
 export const actionCreate = async (url, data, dispatch, contentType) => {
-  dispatch({ type: ACTION.START })
+  dispatch({ type: ACTION.START, keyState: 'action' })
   try {
     const response = await axiosClient.post(url, data, {
       headers: {
@@ -94,18 +151,26 @@ export const actionCreate = async (url, data, dispatch, contentType) => {
       }
     });
     if (response.status === 201) {
-      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
     }
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
       error: error.response.data.errors,
-      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
     })
   }
 }
 export const actionPost = async (url, data, dispatch, contentType) => {
-  dispatch({ type: ACTION.START })
+  dispatch({ type: ACTION.START, keyState: 'action' })
   try {
     const response = await axiosClient.post(url, data, {
       headers: {
@@ -113,19 +178,27 @@ export const actionPost = async (url, data, dispatch, contentType) => {
       }
     });
     if (response.status === 200) {
-      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
     }
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error?.response?.data?.errors,
-      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
     })
   }
 }
 
 export const actionUpdate = async (url, data, dispatch, contentType) => {
-  dispatch({ type: ACTION.START })
+  dispatch({ type: ACTION.START, keyState: 'action' })
   try {
     const response = await axiosClient.put(url, data, {
       headers: {
@@ -133,29 +206,44 @@ export const actionUpdate = async (url, data, dispatch, contentType) => {
       }
     });
     if (response.status === 200) {
-      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
     }
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
       error: error.response.data.errors,
-      message: error.response.data.errors.message || 'Sorry! Something went wrong. App server error'
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
     })
   }
 }
 
 export const actionDelete = async (url, dispatch) => {
-  dispatch({ type: ACTION.START })
+  dispatch({ type: ACTION.START, keyState: 'action' })
   try {
     const response = await axiosClient.delete(url);
     if (response.status === 200) {
-      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
     }
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
       error: error.response.data.errors,
-      message: error.response.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
     })
   }
 }

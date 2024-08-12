@@ -2,7 +2,6 @@ import axios from "axios";
 
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL + "/api",
-    // baseURL: "https://larest.xyz/api",
 });
 
 axiosClient.interceptors.request.use(async (config) => {
@@ -18,6 +17,7 @@ axiosClient.interceptors.response.use((response) => {
 }, (error) => {
     if (error.response.status === 401) {
         localStorage.removeItem("ADMIN-TOKEN");
+        window.location.reload();
     }
     return Promise.reject(error);
 });

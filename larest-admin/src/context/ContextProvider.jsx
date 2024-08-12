@@ -86,7 +86,7 @@ function loginReducer(state, action) {
                 failed: true
             }
         }
-        case ACTION.RESET: {
+        case ACTION.RESET_ACTION: {
             return {
                 ...state,
                 loading: false,

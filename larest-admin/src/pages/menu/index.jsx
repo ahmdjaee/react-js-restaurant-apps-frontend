@@ -151,7 +151,7 @@ function Menu() {
         color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state.message}
       </Snackbar >

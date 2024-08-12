@@ -1,13 +1,11 @@
 
-import { Button, Card, Checkbox, Snackbar, Typography } from "@mui/joy";
-import { useState } from "react";
+import { Button, Checkbox, Snackbar, Typography } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
-import FloatProgressIndicator from "../../../components/Elements/Indicator/FloatProgressIndicator";
-import InputForm from "../../../components/Elements/Input/InputForm";
-import { useStateContext } from "../../../context/ContextProvider";
-import axiosClient from "../../../service/axios";
-import { actionPost } from "../../../context/CrudContextProvider";
-import { ACTION } from "../../../utils/action";
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
+import InputForm from "@/components/Elements/Input/InputForm";
+import { useStateContext } from "@/context/ContextProvider";
+import axiosClient from "@/service/axios";
+import { ACTION } from "@/utils/action";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -23,7 +21,7 @@ function LoginForm() {
       if (response.status === 200) {
         setToken(response.data.data.token);
         navigate("/users");
-        dispatch({ type: ACTION.RESET})
+        dispatch({ type: ACTION.RESET_ACTION})
       }
     } catch (error) {
       dispatch({ type: ACTION.FAILED, payload: { errors: error?.response?.data?.errors } });
@@ -93,7 +91,7 @@ function LoginForm() {
         color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state?.errors?.message}
       </Snackbar >
