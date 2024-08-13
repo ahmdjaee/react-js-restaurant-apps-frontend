@@ -1,12 +1,12 @@
 import { Avatar, Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "@/components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 import SearchInput from "@/components/Elements/Input/SearchInput";
 import Pagination from "@/components/Fragments/Pagination/Pagination";
 import Table from "@/components/Fragments/Table/Table";
-import { actionDelete, useCrudContext } from "@/context/CrudContextProvider";
+import { actionDelete, actionGet, resetAction, resetState, useCrudContext } from "@/context/CrudContextProvider";
 import { ACTION } from "@/utils/action";
 import { formatDate } from "@/utils/helper";
 import { SEARCH_TIMEOUT } from "@/utils/settings";
@@ -16,8 +16,18 @@ import useFetchData from "@/hooks/useFetch";
 function User() {
   const { state, dispatch } = useCrudContext();
   const [url, setUrl] = useState(`/admin/users`);
-  const [loading, error, response] = useFetchData(url, state.data);
+  const { list, action, refetch } = state;
 
+  useEffect(() => {
+    const controller = new AbortController();
+    actionGet(url, dispatch, controller.signal);
+    return () => { controller.abort() };
+  }, [url, refetch]);
+
+  useEffect(() => {
+    return () => dispatch(resetState())
+  }, [])
+  
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;
     await actionDelete(`/admin/users/${user.id}`, dispatch);
@@ -29,10 +39,11 @@ function User() {
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={action.loading} />
       <Table
         title="Users"
         description={"List of all users"}
+        loading={list.loading}
         actions={
           <>
             <SearchInput className={"me-3"} onChange={(val) => setSearchParams(val)} />
@@ -40,7 +51,7 @@ function User() {
             <Button>Create User</Button>
           </>
         }
-        footer={<Pagination response={response} setUrl={setUrl} />}
+        footer={<Pagination response={list} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
@@ -56,16 +67,7 @@ function User() {
           </tr>
         </thead>
         <tbody>
-          {loading ? ( //NOTE - Add loading indicator
-            <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : error ? ( //NOTE - Add error indicator
+          {list.error ? ( //NOTE - Add error indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -74,7 +76,7 @@ function User() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : list.data.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -83,66 +85,65 @@ function User() {
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
-          ) : (
-            response.data.map((user, index) => (
-              <tr
-                key={index}
-                className="table-row"
-              >
-                <td className="p-3 pl-0 h-min w-min">
-                  <div className="flex flex-col justify-start">
-                    <Checkbox />
+          ) : (list.data.map((user, index) => (
+            <tr
+              key={index}
+              className="table-row"
+            >
+              <td className="p-3 pl-0 h-min w-min">
+                <div className="flex flex-col justify-start">
+                  <Checkbox />
+                </div>
+              </td>
+              <td className="p-3 max-w-64 pl-0">
+                <div className="flex items-center">
+                  <div className="relative inline-block shrink-0 rounded-2xl me-3">
+                    <Avatar src={user.photo} />
                   </div>
-                </td>
-                <td className="p-3 max-w-64 pl-0">
-                  <div className="flex items-center">
-                    <div className="relative inline-block shrink-0 rounded-2xl me-3">
-                      <Avatar src={user.photo}/>
-                    </div>
-                    <span className="font-medium text-light-inverse text-md/normal">
-                      {user.name}
-                    </span>
-                  </div>
-                </td>
-                <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {user.email}
+                    {user.name}
                   </span>
-                </td>
-                <td className="p-3 text-start">
-                  <Chip variant="solid" color={user?.is_admin ? "primary" : "neutral"}>{user?.is_admin ? "Admin" : "User"}</Chip>
-                </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
-                    {formatDate(user.created_at)}
-                  </span>
-                </td>
-                <td className="p-3 text-end">
-                  <span className="font-medium text-light-inverse text-md/normal">
-                    {formatDate(user.updated_at)}
-                  </span>
-                </td>
-                <td className="p-3 pr-0 flex items-center justify-end">
-                  <IconButton>
-                    <BsPencilFill className="primary-with-hover" />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(user)}>
-                    <BsFillTrash3Fill className="danger-with-hover" />
-                  </IconButton>
-                </td>
-              </tr>
-            ))
+                </div>
+              </td>
+              <td className="p-3 text-start">
+                <span className="font-medium text-light-inverse text-md/normal">
+                  {user.email}
+                </span>
+              </td>
+              <td className="p-3 text-start">
+                <Chip variant="solid" color={user?.is_admin ? "primary" : "neutral"}>{user?.is_admin ? "Admin" : "User"}</Chip>
+              </td>
+              <td className="p-3 text-end">
+                <span className="font-medium text-light-inverse text-md/normal">
+                  {formatDate(user.created_at)}
+                </span>
+              </td>
+              <td className="p-3 text-end">
+                <span className="font-medium text-light-inverse text-md/normal">
+                  {formatDate(user.updated_at)}
+                </span>
+              </td>
+              <td className="p-3 pr-0 flex items-center justify-end">
+                <IconButton>
+                  <BsPencilFill className="primary-with-hover" />
+                </IconButton>
+                <IconButton onClick={() => handleDelete(user)}>
+                  <BsFillTrash3Fill className="danger-with-hover" />
+                </IconButton>
+              </td>
+            </tr>
+          ))
           )}
         </tbody>
       </Table>
       <Snackbar
-        open={state.success || state.failed}
-        color={state.success ? "success" : state.failed ? "danger" : null}
+        open={action.success || action.failed}
+        color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar >
     </>
   );

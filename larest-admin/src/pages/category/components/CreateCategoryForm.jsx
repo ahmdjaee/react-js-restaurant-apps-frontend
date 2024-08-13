@@ -15,7 +15,6 @@ function CreateCategoryForm({ open, onClose }) {
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '500px  ' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

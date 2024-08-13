@@ -1,7 +1,7 @@
 function EmptyState({ text }) {
     return (
         <div className="flex flex-col justify-center items-center pt-10">
-            <svg className="size-48" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
+            <svg className="size-36" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
                 viewBox="0 0 475 512.24"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">

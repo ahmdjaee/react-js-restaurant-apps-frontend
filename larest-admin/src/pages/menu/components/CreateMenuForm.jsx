@@ -1,11 +1,10 @@
-import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select, Textarea } from '@mui/joy';
+import { Button, CircularProgress, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select, Textarea } from '@mui/joy';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
-import { default as CircularProgress, default as FloatCircularProgress } from '../../../components/Elements/Indicator/FloatProgressIndicator';
 import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
 import useFetchData from '../../../hooks/useFetch';
 
 function CreateMenuForm({ open, onClose }) {
-  const { state, dispatch } = useCrudContext();
+  const { dispatch } = useCrudContext();
   const [loading, _, response] = useFetchData("/categories");
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,7 +15,6 @@ function CreateMenuForm({ open, onClose }) {
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '750px' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -70,7 +68,7 @@ function CreateMenuForm({ open, onClose }) {
                   </Select>
                 </FormControl>
 
-                <ImageUploader props={{required: true}} />
+                <ImageUploader props={{ required: true }} />
 
               </div>
             </div>

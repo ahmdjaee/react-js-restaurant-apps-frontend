@@ -2,10 +2,10 @@ import Badge from '@/components/Elements/Badge/Badge';
 import EmptyState from '@/components/Elements/Indicator/EmptyState';
 import SearchInput from '@/components/Elements/Input/SearchInput';
 import Table from '@/components/Fragments/Table/Table';
-import { actionDelete, actionGet, actionSetData, resetAction, useCrudContext } from '@/context/CrudContextProvider';
+import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from '@/context/CrudContextProvider';
 import { formatDate } from '@/utils/helper';
 import { Button, Chip, IconButton, Snackbar } from '@mui/joy';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import CreateEventForm from './components/CreateEventForm';
 import UpdateEventForm from './components/UpdateEventForm';
@@ -34,15 +34,21 @@ function Event() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    actionGet('/events', dispatch)
-  }, [refetch])
+    const controller = new AbortController();
+    actionGet('/events', dispatch, controller.signal);
+    return () => { controller.abort() };
+  }, [refetch,])
+
+  useEffect(() => {
+    return () => dispatch(resetState())
+  }, [])
 
   const filteredEvents = list?.data?.filter((event) => {
     return (
-      event.title.toLowerCase().includes(search.toLowerCase())
+      event?.title?.toLowerCase().includes(search.toLowerCase())
     );
   });
-  
+
   const handleDelete = async (event) => {
     if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
     await actionDelete(`/admin/events/${event.id}`, dispatch);

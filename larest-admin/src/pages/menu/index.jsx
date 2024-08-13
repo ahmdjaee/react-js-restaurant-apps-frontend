@@ -1,48 +1,56 @@
-import { Button, CircularProgress, IconButton, Option, Select, Snackbar } from "@mui/joy";
-import { useState } from "react";
+import { Button, IconButton, Option, Select, Snackbar } from "@mui/joy";
+import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
-import Table from "../../components/Fragments/Table/Table";
-import useFetchData from "../../hooks/useFetch";
-import CreateMenuForm from "./components/CreateMenuForm";
-import { actionDelete, useCrudContext } from "../../context/CrudContextProvider";
-import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
-import { ACTION } from "../../utils/action";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
-import UpdateMenuForm from "./components/UpdateMenuForm";
+import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
 import SearchInput from "../../components/Elements/Input/SearchInput";
+import Table from "../../components/Fragments/Table/Table";
+import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from "../../context/CrudContextProvider";
+import CreateMenuForm from "./components/CreateMenuForm";
+import UpdateMenuForm from "./components/UpdateMenuForm";
 
 function Menu() {
   const { state, dispatch } = useCrudContext();
-  const [loading, error, response] = useFetchData("/menus", state.data);
+  const { list, action, refetch } = state;
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState(null);
 
-  const filteredMenus = response?.data?.filter((menu) => {
+  useEffect(() => {
+    const controller = new AbortController();
+    actionGet('/menus', dispatch, controller.signal);
+    return () => { controller.abort() };
+  }, [refetch])
+
+  useEffect(() => {
+    return () => dispatch(resetState())
+  }, [])
+
+  const filteredMenus = list?.data?.filter((menu) => {
     return (
-      ( !filterType || menu.category.name === filterType) &&
-      menu.name.toLowerCase().includes(search.toLowerCase())
+      (!filterType || menu.category.name === filterType) &&
+      menu?.name?.toLowerCase().includes(search.toLowerCase())
     );
   });
 
   const handleDelete = async (menu) => {
     if (!window.confirm(`Are you sure want to delete menu: ${menu.name}?`)) return;
     await actionDelete(`/admin/menus/${menu.id}`, dispatch);
-    setNotificationMessage("Menu has been deleted");
   };
 
-  const handleUpdateModal = (event) => {
-    dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
+  const handleUpdateModal = (menu) => {
+    dispatch(actionSetData(menu));
     setUpdateModal(true);
   }
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={action.loading} />
       <Table
         title="Menu"
         description="List of all menu"
+        loading={list.loading}
         actions={
           <>
             <Select
@@ -71,16 +79,7 @@ function Menu() {
           </tr>
         </thead>
         <tbody>
-          {loading ? ( //NOTE - Add loading indicator
-            <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : error ? ( //NOTE - Add error indicator
+          {list.error ? ( //NOTE - Add error indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -89,7 +88,7 @@ function Menu() {
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : filteredMenus.length === 0 ? ( //NOTE - Add no data indicator
+          ) : filteredMenus?.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -98,7 +97,7 @@ function Menu() {
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
-          ) : filteredMenus.map((menu) => (
+          ) : filteredMenus?.map((menu) => (
             <tr key={menu.id} className="table-row">
               <td className="p-3 max-w-64 pl-0">
                 <div className="flex items-center">
@@ -122,7 +121,7 @@ function Menu() {
               </td>
               <td className="p-3 max-w-64 text-end">
                 <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
-                  {menu.category.name}
+                  {menu?.category?.name}
                 </span>
               </td>
               <td className="p-3 pr-0 max-w-64 text-end">
@@ -147,13 +146,13 @@ function Menu() {
         onClose={() => setUpdateModal(false)}
       />
       <Snackbar
-        open={state.success || state.failed}
-        color={state.success ? "success" : state.failed && "danger"}
+        open={action.success || action.failed}
+        color={action.success ? "success" : action.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar >
     </>
   );

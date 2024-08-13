@@ -19,7 +19,7 @@ function CustomMainCard({ children, header, description, actions, footer, classN
             {/* <!-- end card header --> */}
             {/* <!-- card body  --> */}
             <div className="flex-auto block py-8 pt-6 px-9">
-              <div className={`overflow-x-auto ${className} min-h-[15rem] relative`}>
+              <div className={`overflow-x-auto ${className} min-h-[10rem] relative`}>
                 {children}
               </div>
               {footer}

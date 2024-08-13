@@ -1,9 +1,10 @@
 import { createContext, useContext, useReducer, useState } from "react";
 import axiosClient from "../service/axios";
 import { ACTION } from "../utils/action";
+import { data } from "autoprefixer";
 
 const INITIAL_KEY_STATE = {
-  data: null,
+  data: {},
   message: null,
   loading: false,
   error: null,
@@ -13,7 +14,9 @@ const INITIAL_KEY_STATE = {
 
 const INITIAL_STATE = {
   list: {
-    data: null,
+    data: [],
+    links: null,
+    meta: null,
     message: null,
     loading: false,
     error: null,
@@ -21,7 +24,7 @@ const INITIAL_STATE = {
     failed: false,
     refetch: false,
   },
-  data: null,
+  data: {},
   action: INITIAL_KEY_STATE,
 }
 
@@ -51,6 +54,8 @@ export function crudReducer(state, action) {
           loading: false,
           success: true,
           data: action.data,
+          links: action.links,
+          meta: action.meta,
           message: action.message
         }
       }
@@ -71,6 +76,7 @@ export function crudReducer(state, action) {
       return {
         ...state,
         [keyState]: {
+          ...state[keyState],
           loading: false,
           success: false,
           failed: true,
@@ -85,6 +91,15 @@ export function crudReducer(state, action) {
         [keyState]: {
           ...INITIAL_STATE[keyState],
         },
+      }
+    }
+    case ACTION.RESET_LIST: {
+      return {
+        ...state,
+        [keyState]: {
+          ...state[keyState],
+          data: [],
+        }
       }
     }
     case ACTION.RESET_STATE: {
@@ -120,22 +135,28 @@ export const useCrudContext = () => useContext(CrudContext)
 export const resetAction = () => ({ type: ACTION.RESET_ACTION, keyState: 'action' });
 export const resetState = () => ({ type: ACTION.RESET_STATE });
 export const actionSetData = (data) => ({ type: ACTION.SET_DATA, data: data });
+export const resetList = () => ({ type: ACTION.RESET_LIST, keyState: 'list' });
 
-export const actionGet = async (url, dispatch) => {
+export const actionGet = async (url, dispatch, signal) => {
   dispatch({ type: ACTION.START, keyState: 'list' })
   try {
-    const response = await axiosClient.get(url);
-    if (response.status === 200) {
+    const response = await axiosClient.get(url, {
+      signal: signal,
+    });
+    if (response?.status === 200) {
       dispatch({
         type: ACTION.SUCCESS,
         data: response.data.data,
+        links: response.data.links,
+        meta: response.data.meta,
         keyState: 'list'
       })
     }
   } catch (error) {
+    if (axios.isCancel(error)) return;
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'list'
     })
@@ -190,7 +211,7 @@ export const actionPost = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'action'
     })

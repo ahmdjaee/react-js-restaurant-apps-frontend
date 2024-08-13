@@ -6,8 +6,8 @@ function Table({ children, footer, title, description, actions, loading }) {
   return (
     <CustomMainCard header={title} description={description} actions={actions}>
       <table className="w-full my-0 align-middle text-dark border-neutral-200">
-        {children}
         <TableLoadingIndicator loading={loading} />
+        {children}
       </table>
       {footer}
     </CustomMainCard>
