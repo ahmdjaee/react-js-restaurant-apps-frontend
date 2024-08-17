@@ -1,28 +1,24 @@
-import { Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import React, { useState } from 'react';
-import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import EmptyState from '@/components/Elements/Indicator/EmptyState';
 import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgressIndicator';
 import SearchInput from '@/components/Elements/Input/SearchInput';
 import Pagination from '@/components/Fragments/Pagination/Pagination';
 import Table from '@/components/Fragments/Table/Table';
-import { actionDelete, useCrudContext } from '@/context/CrudContextProvider';
-import useFetchData from '@/hooks/useFetch';
-import { ACTION } from '@/utils/action';
-import { formatDate, formateTime } from '@/utils/helper';
+import { actionGet, resetAction, resetState, useCrudContext } from '@/context/CrudContextProvider';
 import useDebounced from '@/hooks/useDebounce';
+import { formatDate, formatTime } from '@/utils/helper';
 import { SEARCH_TIMEOUT } from '@/utils/settings';
+import { Chip, IconButton, Snackbar } from '@mui/joy';
+import { useEffect, useState } from 'react';
+import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 
 function getChipColor(status) {
   switch (status) {
-    case "new":
-      return "primary";
-    case "checkout":
+    case "pending":
       return "warning";
-    case "paid":
-      return "success";
-    case "failed":
-      return "danger";
+    case "confirmed":
+      return "primary";
+    case "cancelled":
+      return "danger";;
     case "completed":
       return "success";
     default:
@@ -32,8 +28,18 @@ function getChipColor(status) {
 
 function Reservation() {
   const { state, dispatch } = useCrudContext();
+  const { list, action, refetch } = state;
   const [url, setUrl] = useState(`/admin/reservations`);
-  const [loading, error, response] = useFetchData(url, state.data);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    actionGet(url, dispatch, controller.signal);
+    return () => { controller.abort() };
+  }, [url, refetch]);
+
+  useEffect(() => {
+    return () => dispatch(resetState())
+  }, [])
 
   const handleDelete = async (event) => {
     // if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
@@ -51,12 +57,13 @@ function Reservation() {
 
   return (
     <>
-      {state.loading ? <FloatProgressIndicator /> : null}
+      <FloatProgressIndicator loading={action.loading} />
       <Table
         title="Reservations"
         description={"List of all reservation"}
+        loading={list.loading}
         actions={<SearchInput onChange={debouncedSetUrl} />}
-        footer={<Pagination response={response} setUrl={setUrl} />}
+        footer={<Pagination response={list} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
           <tr className="font-semibold text-[0.95rem] text-secondary-dark">
@@ -72,35 +79,26 @@ function Reservation() {
           </tr>
         </thead>
         <tbody>
-          {loading ? ( //NOTE - Add loading indicator
+          {list.error ? ( //NOTE - Add error indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : error ? ( //NOTE - Add error indicator
-            <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
+                colSpan={9}
               >
                 <EmptyState text={error} />
               </td>
             </tr>
-          ) : response.data.length === 0 ? ( //NOTE - Add no data indicator
+          ) : list?.data.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
-                colSpan={7}
+                colSpan={9}
               >
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
           ) : (
-            response.data.map((reservation, index) => ( //NOTE - Add table rows
+            list?.data.map((reservation, index) => ( //NOTE - Add table rows
               <tr
                 key={index}
                 className="table-row"
@@ -113,12 +111,12 @@ function Reservation() {
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-nowrap text-light-inverse text-md/normal">
-                    {reservation.user.name}
+                    {reservation.user?.name}
                   </span>
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {reservation.table.no}
+                    {reservation.table?.no}
                   </span>
                 </td>
 
@@ -129,7 +127,7 @@ function Reservation() {
                 </td>
                 <td className="p-3 text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
-                    {formateTime(reservation.time)}
+                    {formatTime(reservation.time)}
                   </span>
                 </td>
                 <td className="p-3 text-center">
@@ -140,7 +138,7 @@ function Reservation() {
                 <td className="p-3 text-center">
                   <span className="font-medium text-light-inverse text-md/normal">
                     <Chip
-                      variant='solid'
+                      variant='soft'
                       color={getChipColor(reservation.status)}
                     >
                       {reservation.status}
@@ -156,9 +154,6 @@ function Reservation() {
                   <IconButton onClick={() => handleUpdateModal(reservation)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(reservation)}>
-                    <BsFillTrash3Fill className="danger-with-hover" />
-                  </IconButton>
                 </td>
               </tr>
             ))
@@ -166,13 +161,13 @@ function Reservation() {
         </tbody>
       </Table>
       <Snackbar
-        open={state.success || state.failed}
-        color={state.success ? "success" : state.failed ? "danger" : null}
+        open={action.success || action.failed}
+        color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar >
     </>
   );

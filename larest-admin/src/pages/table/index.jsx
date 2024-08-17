@@ -1,10 +1,10 @@
 import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
 import EmptyState from '../../components/Elements/Indicator/EmptyState';
 import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
 import Table from '../../components/Fragments/Table/Table';
-import { actionDelete, useCrudContext } from '../../context/CrudContextProvider';
+import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from '../../context/CrudContextProvider';
 import useFetchData from '../../hooks/useFetch';
 import { ACTION } from '../../utils/action';
 import CreateTableForm from './components/CreateTableForm';
@@ -25,14 +25,25 @@ function getChipColor(status) {
 }
 function Tables() {
   const { state, dispatch } = useCrudContext();
-  const [loading, error, response] = useFetchData(`/tables`, state.data);
+  const { list, action, refetch } = state;
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
 
-  const filteredTables = response?.data?.filter((table) => {
+  useEffect(() => {
+    const controller = new AbortController();
+    actionGet('/tables', dispatch, controller.signal);
+    return () => { controller.abort() };
+  }, [refetch])
+
+  useEffect(() => {
+    return () => dispatch(resetState())
+  }, [])
+
+
+  const filteredTables = list?.data?.filter((table) => {
     return (
-      table.no.toLowerCase().includes(search.toLowerCase())
+      table?.no?.toLowerCase().includes(search.toLowerCase())
     );
   });
 
@@ -41,17 +52,18 @@ function Tables() {
     await actionDelete(`/admin/tables/${table.id}`, dispatch);
   };
 
-  const handleUpdateModal = (event) => {
-    dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
+  const handleUpdateModal = (table) => {
+    dispatch(actionSetData(table));
     setUpdateModal(true);
   };
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={action.loading} />
       <Table
         title="Tables"
         description={"List of all tables"}
+        loading={list.loading}
         actions={
           <>
             <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
@@ -68,16 +80,7 @@ function Tables() {
           </tr>
         </thead>
         <tbody>
-          {loading ? ( //NOTE - Add loading indicator
-            <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : error ? ( //NOTE - Add error indicator
+          {list.error ? ( //NOTE - Add error indicator
             <tr>
               <td
                 className="text-xl text-center overflow-hidden"
@@ -136,13 +139,13 @@ function Tables() {
         </tbody>
       </Table>
       <Snackbar
-        open={state.success || state.failed}
-        color={state.success ? "success" : state.failed && "danger"}
+        open={action.success || action.failed}
+        color={action.success ? "success" : action.failed && "danger"}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar >
       <CreateTableForm
         open={createModal}

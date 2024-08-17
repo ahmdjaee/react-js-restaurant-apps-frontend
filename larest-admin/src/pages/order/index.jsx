@@ -37,8 +37,7 @@ function Order() {
   const { state, dispatch } = useCrudContext();
   const { list, action, refetch } = state;
   const [url, setUrl] = useState(`admin/orders`);
-  // const [loading, error, response] = useFetchData(url, state.data);
-  
+
   useEffect(() => {
     const controller = new AbortController();
     actionGet(url, dispatch, controller.signal);
@@ -76,7 +75,8 @@ function Order() {
               <BsPrinter className='me-2' />
               Print
             </Button>
-            <SearchInput onChange={debouncedSetUrl} />
+            <SearchInput className={"me-2"} onChange={debouncedSetUrl} />
+            <Button onClick={() => { }}>Create Event</Button>
           </>
         }
         footer={<Pagination response={list} setUrl={setUrl} />}

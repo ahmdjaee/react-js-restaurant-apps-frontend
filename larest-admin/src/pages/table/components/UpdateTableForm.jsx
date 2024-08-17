@@ -1,20 +1,19 @@
-import { Button, Chip, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select } from '@mui/joy';
-import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
+import { Button, Chip, DialogContent, DialogTitle, FormControl, FormHelperText, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select } from '@mui/joy';
 import { actionUpdate, useCrudContext } from '../../../context/CrudContextProvider';
 
 function UpdateTableForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
+  const { data, action } = state;
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    await actionUpdate(`/admin/tables/${state.id}`, formJson, dispatch)
-      .then(() => onClose());
+    const success = await actionUpdate(`/admin/tables/${data.id}`, formJson, dispatch)
+    if (success) onClose()
   }
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '500px  ' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -31,20 +30,21 @@ function UpdateTableForm({ open, onClose }) {
             onSubmit={handleSubmit}
             className="w-full grid gap-2"
           >
-            <FormControl>
+            <FormControl error={action?.error?.name}>
               <FormLabel>Number table</FormLabel>
               <Input
-                defaultValue={state.no}
+                defaultValue={data.no}
                 required
                 name='no'
                 placeholder="Insert number table"
                 autoFocus
               />
+              <FormHelperText >{action?.error?.no}</FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Capacity</FormLabel>
               <Input
-                defaultValue={state.capacity}
+                defaultValue={data.capacity}
                 required
                 type='number'
                 name='capacity'
@@ -56,11 +56,12 @@ function UpdateTableForm({ open, onClose }) {
                 }}
                 endDecorator={<Chip variant='outlined' color='primary'>Person</Chip>}
               />
+              <FormHelperText >{action?.error?.capacity}</FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Status</FormLabel>
               <Select
-                defaultValue={state.status}
+                defaultValue={data.status}
                 required
                 name='status'
                 placeholder="Select status"

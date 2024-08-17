@@ -3,7 +3,7 @@ import FloatCircularProgress from '../../../components/Elements/Indicator/FloatP
 import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
 
 function CreateTableForm({ open, onClose }) {
-  const { state, dispatch } = useCrudContext();
+  const {  dispatch } = useCrudContext();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -13,7 +13,6 @@ function CreateTableForm({ open, onClose }) {
 
   return (
     <>
-      {state.loading && <FloatCircularProgress />}
       <Modal sx={{ filter: 'blur(0)' }} open={open} onClose={onClose}>
         <ModalDialog sx={{ width: '500px  ' }}>
           <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
