@@ -13,7 +13,7 @@ export async function loader({ params }) {
 
 function DetailOrder() {
   const order = useLoaderData()
-
+  
   return (
     <CustomMainCard
       header={

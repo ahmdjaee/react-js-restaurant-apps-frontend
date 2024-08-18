@@ -153,7 +153,7 @@ export const actionGet = async (url, dispatch, signal) => {
       })
     }
   } catch (error) {
-    if (axios.isCancel(error)) return;
+    if (error.name === "CanceledError") return;
     dispatch({
       type: ACTION.FAILED,
       error: error?.response?.data?.errors,

@@ -3,13 +3,15 @@ import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgres
 import SearchInput from '@/components/Elements/Input/SearchInput';
 import Pagination from '@/components/Fragments/Pagination/Pagination';
 import Table from '@/components/Fragments/Table/Table';
-import { actionGet, resetAction, resetState, useCrudContext } from '@/context/CrudContextProvider';
+import { actionGet, actionSetData, resetAction, resetState, useCrudContext } from '@/context/CrudContextProvider';
 import useDebounced from '@/hooks/useDebounce';
 import { formatDate, formatTime } from '@/utils/helper';
 import { SEARCH_TIMEOUT } from '@/utils/settings';
 import { Chip, IconButton, Snackbar } from '@mui/joy';
 import { useEffect, useState } from 'react';
 import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
+import UpdateReservationForm from './components/UpdateReservationForm';
+import DetailReservation from './components/DetailReservation';
 
 function getChipColor(status) {
   switch (status) {
@@ -30,6 +32,8 @@ function Reservation() {
   const { state, dispatch } = useCrudContext();
   const { list, action, refetch } = state;
   const [url, setUrl] = useState(`/admin/reservations`);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [detailModal, setDetailModal] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,9 +50,14 @@ function Reservation() {
     // await actionDelete(`/admin/events/${event.id}`, dispatch);
   };
 
-  const handleUpdateModal = (event) => {
-    // dispatch({ type: ACTION.SET_FORM_DATA, formData: event });
-    // setUpdateModal(true);
+  const handleUpdateModal = (reservation) => {
+    dispatch(actionSetData(reservation));
+    setUpdateModal(true);
+  }
+
+  const handleDetailModal = (reservation) => {
+    dispatch(actionSetData(reservation));
+    setDetailModal(true);
   }
 
   const debouncedSetUrl = useDebounced((value) => {
@@ -66,16 +75,16 @@ function Reservation() {
         footer={<Pagination response={list} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
-          <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-nowrap text-start">ID</th>
-            <th className="pb-3 px-3 text-nowrap text-start">USER</th>
-            <th className="pb-3 px-3 text-nowrap text-start">NUMBER TABLE</th>
-            <th className="pb-3 px-3 text-nowrap text-start">DATE</th>
-            <th className="pb-3 px-3 text-nowrap text-start">TIME</th>
-            <th className="pb-3 px-3 text-nowrap text-end">PERSON</th>
-            <th className="pb-3 px-3 text-nowrap text-center">STATUS</th>
-            <th className="pb-3 ps-3 text-nowrap text-start">NOTES</th>
-            <th className="pb-3 ps-3 text-nowrap text-end">ACTIONS</th>
+          <tr className="table-row-header">
+            <th className="text-nowrap text-start">ID</th>
+            <th className="text-nowrap text-start">USER</th>
+            <th className="text-nowrap text-center">TABLE</th>
+            <th className="text-nowrap text-start">DATE</th>
+            <th className="text-nowrap text-start">TIME</th>
+            <th className="text-nowrap text-center">PERSON</th>
+            <th className="text-nowrap text-center">STATUS</th>
+            <th className="text-nowrap text-start">NOTES</th>
+            <th className="text-nowrap text-end">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -102,9 +111,9 @@ function Reservation() {
               <tr
                 key={index}
                 className="table-row"
-              // onClick={() => handleUpdateModal(reservation)}
+                onClick={() => handleDetailModal(reservation)}
               >
-                <td className="p-3 pl-0 text-start">
+                <td className="p-3  text-start">
                   <span className="font-medium text-light-inverse text-md/normal">
                     {reservation.id}
                   </span>
@@ -114,7 +123,7 @@ function Reservation() {
                     {reservation.user?.name}
                   </span>
                 </td>
-                <td className="p-3 text-start">
+                <td className="p-3 text-center">
                   <span className="font-medium text-light-inverse text-md/normal">
                     {reservation.table?.no}
                   </span>
@@ -150,7 +159,7 @@ function Reservation() {
                     {reservation.notes}
                   </span>
                 </td>
-                <td className="p-3 pr-0 text-nowrap text-end">
+                <td className="p-3 text-nowrap text-end" onClick={(e) => e.stopPropagation()}>
                   <IconButton onClick={() => handleUpdateModal(reservation)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
@@ -160,6 +169,14 @@ function Reservation() {
           )}
         </tbody>
       </Table>
+      <DetailReservation
+        open={detailModal}
+        onClose={() => setDetailModal(false)}
+      />
+      <UpdateReservationForm
+        open={updateModal}
+        onClose={() => setUpdateModal(false)}
+      />
       <Snackbar
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}

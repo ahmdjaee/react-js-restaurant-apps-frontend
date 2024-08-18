@@ -30,7 +30,7 @@ function LoginForm() {
   
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={state?.loading} />
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
           Login

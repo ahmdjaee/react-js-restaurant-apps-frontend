@@ -41,8 +41,8 @@ function CreateMenuForm({ open, onClose }) {
                   <FormLabel>Description</FormLabel>
                   <Textarea
                     placeholder="Type in here…"
-                    minRows={3}
-                    maxRows={3}
+                    minRows={4}
+                    maxRows={4}
                     name='description'
                   />
                 </FormControl>
@@ -59,7 +59,7 @@ function CreateMenuForm({ open, onClose }) {
               <div className="flex flex-col gap-2 justify-between">
                 <FormControl>
                   <FormLabel>Category</FormLabel>
-                  <Select name='category_id' defaultValue="dog" placeholder="Select a category">
+                  <Select name='category_id' placeholder="Select a category" required>
                     {loading
                       ? <CircularProgress />
                       : response?.data.map((category) => (

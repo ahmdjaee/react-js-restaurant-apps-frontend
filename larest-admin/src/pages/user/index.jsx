@@ -1,22 +1,22 @@
-import { Avatar, Button, Checkbox, Chip, CircularProgress, IconButton, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
-import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "@/components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 import SearchInput from "@/components/Elements/Input/SearchInput";
 import Pagination from "@/components/Fragments/Pagination/Pagination";
 import Table from "@/components/Fragments/Table/Table";
-import { actionDelete, actionGet, resetAction, resetState, useCrudContext } from "@/context/CrudContextProvider";
-import { ACTION } from "@/utils/action";
+import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from "@/context/CrudContextProvider";
+import useDebounced from "@/hooks/useDebounce";
 import { formatDate } from "@/utils/helper";
 import { SEARCH_TIMEOUT } from "@/utils/settings";
-import useDebounced from "@/hooks/useDebounce";
-import useFetchData from "@/hooks/useFetch";
+import { Avatar, Button, Checkbox, Chip, IconButton, Snackbar } from "@mui/joy";
+import { useEffect, useState } from "react";
+import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
+import UpdateUserForm from "./components/UpdateUserForm";
 
 function User() {
   const { state, dispatch } = useCrudContext();
   const [url, setUrl] = useState(`/admin/users`);
   const { list, action, refetch } = state;
+  const [updateModal, setUpdateModal] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -27,11 +27,16 @@ function User() {
   useEffect(() => {
     return () => dispatch(resetState())
   }, [])
-  
+
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;
     await actionDelete(`/admin/users/${user.id}`, dispatch);
   };
+
+  const handleUpdateModal = (user) => {
+    dispatch(actionSetData(user));
+    setUpdateModal(true);
+  }
 
   const setSearchParams = useDebounced((value) => {
     setUrl(`/admin/users?search=${value}`);
@@ -54,16 +59,18 @@ function User() {
         footer={<Pagination response={list} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
-          <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-2 h-min w-min pe-3 text-start">
-              <Checkbox />
+          <tr className="table-row-header">
+            <th className="h-min w-min text-start">
+              <div className="flex flex-col justify-start">
+                <Checkbox />
+              </div>
             </th>
-            <th className="pb-3 min-w-24 px-3 text-start">NAME</th>
-            <th className="pb-3 min-w-24 px-3 text-start">EMAIL</th>
-            <th className="pb-3 min-w-24 px-3 text-start">ROLE</th>
-            <th className="pb-3 min-w-24 px-3 text-end "> CREATED AT</th>
-            <th className="pb-3 min-w-24 px-3 text-end ">UPDATED AT</th>
-            <th className="pb-3 min-w-24 ps-3 text-end ">ACTIONS</th>
+            <th className="min-w-24 text-start">NAME</th>
+            <th className="min-w-24 text-start">EMAIL</th>
+            <th className="min-w-24 text-start">ROLE</th>
+            <th className="min-w-24 text-end "> CREATED AT</th>
+            <th className="min-w-24 text-end ">UPDATED AT</th>
+            <th className="min-w-24 text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -89,13 +96,14 @@ function User() {
             <tr
               key={index}
               className="table-row"
+              onClick={() => handleUpdateModal(user)}
             >
-              <td className="p-3 pl-0 h-min w-min">
+              <td className="p-3 h-min w-min">
                 <div className="flex flex-col justify-start">
                   <Checkbox />
                 </div>
               </td>
-              <td className="p-3 max-w-64 pl-0">
+              <td className="p-3 max-w-64 ">
                 <div className="flex items-center">
                   <div className="relative inline-block shrink-0 rounded-2xl me-3">
                     <Avatar src={user.photo} />
@@ -123,8 +131,8 @@ function User() {
                   {formatDate(user.updated_at)}
                 </span>
               </td>
-              <td className="p-3 pr-0 flex items-center justify-end">
-                <IconButton>
+              <td className="p-3 flex items-center justify-end" onClick={(event) => event.stopPropagation()}>
+                <IconButton onClick={() => handleUpdateModal(user)}>
                   <BsPencilFill className="primary-with-hover" />
                 </IconButton>
                 <IconButton onClick={() => handleDelete(user)}>
@@ -136,6 +144,10 @@ function User() {
           )}
         </tbody>
       </Table>
+      <UpdateUserForm
+        open={updateModal}
+        onClose={() => setUpdateModal(false)}
+      />
       <Snackbar
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}

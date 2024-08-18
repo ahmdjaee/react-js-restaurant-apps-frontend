@@ -50,8 +50,8 @@ function UpdateMenuForm({ open, onClose }) {
                   <Textarea
                     defaultValue={data?.description}
                     placeholder="Type in here…"
-                    minRows={3}
-                    maxRows={3}
+                    minRows={4}
+                    maxRows={4}
                     name='description'
                   />
                 </FormControl>
@@ -82,7 +82,7 @@ function UpdateMenuForm({ open, onClose }) {
               <div className="flex flex-col gap-2 justify-between">
                 <FormControl>
                   <FormLabel>Category</FormLabel>
-                  <Select name='category_id' defaultValue={data?.category?.id} placeholder="Select a category">
+                  <Select name='category_id' defaultValue={data?.category?.id} placeholder="Select a category" required>
                     {loading
                       ? <CircularProgress />
                       : response?.data?.map((category) => (

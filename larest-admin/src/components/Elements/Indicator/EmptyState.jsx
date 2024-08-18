@@ -1,10 +1,9 @@
 function EmptyState({ text }) {
     return (
         <div className="flex flex-col justify-center items-center pt-10">
-            <svg className="size-36" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
+            <svg className="size-36" xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="475px" height="512px" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
                 viewBox="0 0 475 512.24"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+                xmlnsXlink="http://www.w3.org/1999/xlink">
                 <g id="Layer_x0020_1">
                     <metadata id="CorelCorpID_0Corel-Layer" />
                     <path fill="#C28F60" d="M0 417.58l202.44 26.17c-5.92,-16.29 -9.15,-33.86 -9.15,-52.19 0,-42.23 17.12,-80.46 44.79,-108.13 27.67,-27.66 65.9,-44.78 108.12,-44.78 42.22,0 80.46,17.12 108.13,44.78 5.83,5.84 11.19,12.15 16.02,18.85l1.39 -261.39 -299.87 -40.89 -171.87 77.98 0 339.6z" />

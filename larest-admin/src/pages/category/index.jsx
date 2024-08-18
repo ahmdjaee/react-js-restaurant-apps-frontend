@@ -60,9 +60,9 @@ function Category() {
         }
       >
         <thead className="align-bottom">
-          <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-start">NAME</th>
-            <th className="pb-3 ps-3 text-end">ACTION</th>
+          <tr className="table-row-header">
+            <th className="text-start">NAME</th>
+            <th className="text-end">ACTION</th>
           </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@ function Category() {
                 key={index}
                 className="table-row"
               >
-                <td className="p-3 max-w-64 pl-0">
+                <td className="p-3 max-w-64">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img src={category.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
@@ -100,7 +100,7 @@ function Category() {
                     </span>
                   </div>
                 </td>
-                <td className="p-3 pr-0 text-nowrap text-end">
+                <td className="p-3 text-nowrap text-end">
                   <IconButton onClick={() => handleUpdateModal(category)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>

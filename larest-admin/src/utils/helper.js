@@ -22,9 +22,12 @@ function formatTime(timeString = '') {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-
 const getMinDateTime = () => {
     return new Date().toISOString().slice(0, 16);
 };
 
-export { formatDate, formatTime , getMinDateTime }
+const formatCurrency = (value) => {
+    return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value);
+}
+
+export { formatDate, formatTime , getMinDateTime, formatCurrency} 

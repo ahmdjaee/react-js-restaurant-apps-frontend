@@ -73,14 +73,14 @@ function Event() {
         }
       >
         <thead className="align-bottom">
-          <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-nowrap text-start">TITLE</th>
-            <th className="pb-3 px-3 text-nowrap text-start">DESCRIPTION</th>
-            <th className="pb-3 px-3 text-nowrap text-start">TYPE</th>
-            <th className="pb-3 px-3 text-nowrap text-start">EVENT START</th>
-            <th className="pb-3 px-3 text-nowrap text-end "> EVENT END</th>
-            <th className="pb-3 px-3 text-nowrap text-end ">ACTIVE</th>
-            <th className="pb-3 ps-3 text-nowrap text-end ">ACTIONS</th>
+          <tr className="table-row-header">
+            <th className="text-nowrap text-start">TITLE</th>
+            <th className="text-nowrap text-start">DESCRIPTION</th>
+            <th className="text-nowrap text-start">TYPE</th>
+            <th className="text-nowrap text-start">EVENT START</th>
+            <th className="text-nowrap text-end "> EVENT END</th>
+            <th className="text-nowrap text-end ">ACTIVE</th>
+            <th className="text-nowrap text-end ">ACTIONS</th>
           </tr>
         </thead>
 
@@ -110,7 +110,7 @@ function Event() {
                 className="table-row"
               // onClick={() => handleUpdateModal(event)}
               >
-                <td className="p-3 max-w-64 pl-0">
+                <td className="p-3 max-w-64">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img src={event.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
@@ -147,7 +147,7 @@ function Event() {
                     {event.active ? "Active" : "Inactive"}
                   </Chip>
                 </td>
-                <td className="p-3 pr-0 text-nowrap text-end">
+                <td className="p-3 text-nowrap text-end">
                   <IconButton onClick={() => handleUpdateModal(event)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>

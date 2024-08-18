@@ -72,11 +72,11 @@ function Tables() {
         }
       >
         <thead className="align-bottom">
-          <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-            <th className="pb-3 pe-3 text-start">NUMBER TABLE</th>
-            <th className="pb-3 px-3 text-start">CAPACITY</th>
-            <th className="pb-3 px-3 text-start">STATUS</th>
-            <th className="pb-3 ps-3 text-end ">ACTIONS</th>
+          <tr className="table-row-header">
+            <th className="text-start">NUMBER TABLE</th>
+            <th className="text-start">CAPACITY</th>
+            <th className="text-start">STATUS</th>
+            <th className="text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +104,7 @@ function Tables() {
                 key={index}
                 className="table-row"
               >
-                <td className="p-3 pl-0">
+                <td className="p-3">
                   <div className="flex flex-col justify-start">
                     <span className="font-semibold text-light-inverse text-md/normal">
                       {table.no}
@@ -120,12 +120,12 @@ function Tables() {
                   <Chip
                     color={getChipColor(table.status)}
                     onClick={function () { }}
-                    variant="outlined"
+                    variant="soft"
                   >
                     {table.status}
                   </Chip>
                 </td>
-                <td className="p-3 pr-0 flex items-center justify-end">
+                <td className="p-3 flex items-center justify-end">
                   <IconButton onClick={() => handleUpdateModal(table)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
