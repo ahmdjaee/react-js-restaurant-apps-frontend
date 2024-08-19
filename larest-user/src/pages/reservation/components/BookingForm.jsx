@@ -15,8 +15,7 @@ function getChipColor(text) {
   }
 }
 
-
-export default function BookingForm({ onCancel, onSuccess, reservation }) {
+export default function BookingForm({ onCancel, reservation }) {
   const { user } = useStateContext();
   const { state, dispatch } = useCrudContext();
   const [loading, error, response] = useFetchData("/tables");
@@ -30,8 +29,8 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
 
   return (
     <>
-      {state.loading ? <FloatProgressIndicator /> : null}
-      <form className="sm:w-[50rem] " onSubmit={(e) => onSubmit(e)}>
+      <FloatProgressIndicator loading={state.loading} />
+      <form className="sm:w-[50rem] mx-auto sm:mt-5" onSubmit={(e) => onSubmit(e)}>
         <div className="sm:grid sm:grid-cols-2 gap-x-5">
           <div className="flex flex-col">
             <Typography variant="h6">Your name</Typography>
@@ -107,7 +106,7 @@ export default function BookingForm({ onCancel, onSuccess, reservation }) {
               </div>
             </div>
             <Typography variant="h6" className="mt-3">Leave us your notes</Typography>
-            <Textarea defaultValue={reservation?.notes} minRows={3} placeholder="Notes" name="notes" />
+            <Textarea defaultValue={reservation?.notes} minRows={3} maxRows={4} placeholder="Notes" name="notes" />
           </div>
           <div >
             <Typography variant="h6" className="">Restaurant Plan</Typography>

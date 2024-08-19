@@ -33,13 +33,12 @@ export default function Order() {
 
   async function handleOrder() {
 
-    const items = carts?.data.map((cart) => {
-      return {
-        menu_id: cart.menu.id,
-        quantity: cart.quantity,
-        price: cart.total_price
-      }
+    const items = carts?.data?.items.map((cart) => {
+      return cart;
     })
+
+    console.log(items);
+    
 
     const { data } = await actionCreate("/orders", {
       items: items,
@@ -70,7 +69,7 @@ export default function Order() {
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={state.loading} />
       <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32 mb-8">
         <div className="px-4 pt-8">
           <p className="text-xl font-medium">Order Summary</p>
@@ -86,7 +85,7 @@ export default function Order() {
                   </div>
                 </div>
               ))
-              : carts?.data.map(cart => (
+              : carts?.data?.items.map(cart => (
                 <div key={cart.id} className="flex  rounded-lg bg-white sm:flex-row">
                   <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src={cart.menu.image} alt="" />
                   <div className="flex flex-grow flex-col px-4 py-4">

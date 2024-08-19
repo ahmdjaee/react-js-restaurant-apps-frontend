@@ -1,24 +1,15 @@
-import { Outlet, useLoaderData } from "react-router-dom"
-import CartContextProvider from "@/context/CartContextProvider"
-import TopNavBar from "../Fragments/Navigation/TopNavBar"
-import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
-import TopProgressBar from "../Elements/Indicator/TopProgressBar"
-import axiosClient from "@/services/axios"
-import { useEffect } from "react"
-import { useStateContext } from "../../context/AuthContextProvider"
+import CartContextProvider, { actionGet, useCartContext } from "@/context/CartContextProvider"
 import useFetchData from "@/hooks/useFetch"
-
-export async function loader() {
-  try {
-    const carts = await axiosClient.get('/carts')
-    return { carts: carts?.data?.data };
-  } catch (error) {
-    return { carts: [] };
-  }
-}
+import { useEffect } from "react"
+import { Outlet } from "react-router-dom"
+import { useStateContext } from "../../context/AuthContextProvider"
+import TopProgressBar from "../Elements/Indicator/TopProgressBar"
+import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
+import TopNavBar from "../Fragments/Navigation/TopNavBar"
 
 function MainLayout() {
-  const { carts } = useLoaderData();
+  const { state, dispatch } = useCartContext();
+  const { list, refetch } = state;
   const [__, _, user] = useFetchData('/users/current');
   const { setUser } = useStateContext();
 
@@ -26,15 +17,21 @@ function MainLayout() {
     setUser(user?.data)
   }, [user])
 
+  useEffect(() => {
+    const controller = new AbortController();
+    actionGet('/carts', dispatch, controller.signal)
+    return () => { controller.abort() };
+  }, [refetch])
+
   return (
-    <CartContextProvider>
+    <>
       <TopProgressBar />
-      <TopNavBar carts={carts} />
+      <TopNavBar carts={list?.data} />
       <div className="flex-1">
         <Outlet />
       </div>
       <BottomNavBar />
-    </CartContextProvider>
+    </>
   )
 }
 

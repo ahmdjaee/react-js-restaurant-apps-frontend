@@ -1,9 +1,9 @@
 import CounterInput from "@/components/Elements/Input/CounterInput";
 import TextCurrency from "@/components/Elements/Text/TextCurrency";
+import { actionAddToCart, resetAction, useCartContext } from "@/context/CartContextProvider";
 import axiosClient from "@/services/axios";
-import { Button, Skeleton, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
-import { Form, Link, useActionData, useLoaderData, useNavigation } from "react-router-dom";
+import { Button, Snackbar } from "@mui/joy";
+import { Link, useLoaderData } from "react-router-dom";
 
 export async function loader({ params }) {
   const menu = await axiosClient.get(`/menus/${params.id}`);
@@ -24,24 +24,25 @@ export async function action({ request }) {
 }
 function Detail() {
   const { menu } = useLoaderData();
-  const action = useActionData();
-  const navigation = useNavigation();
-  const [snackbar, setSnackbar] = useState(false);
-
-  useEffect(() => {
-    if (action?.success || action?.error) setSnackbar(true);
-  }, [action]);
+  const { state, dispatch } = useCartContext();
+  const { action } = state;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formJson = Object.fromEntries(formData.entries());
+    await actionAddToCart(`/carts`, formJson, dispatch);
+  }
 
   return (
     <div className="container flex flex-col sm:flex-row sm:justify-center items-center h-full sm:gap-10 ">
       <Snackbar
-        open={snackbar}
-        color={action?.success ? "success" : action?.error ? "danger" : null}
+        open={action?.success || action?.failed}
+        color={action?.success ? "success" : action?.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => setSnackbar(false)}
+        onClose={() => dispatch(resetAction())}
       >
-        {action?.success ? "Successfully added to cart" : action?.error.message}
+        {action?.message}
       </Snackbar>
 
       <Link
@@ -60,7 +61,7 @@ function Detail() {
           style="mb-12"
           text={menu.price}
         />
-        <Form className="flex sticky bottom-0 gap-5 sm:mt-5" method="post">
+        <form className="flex sticky bottom-0 gap-5 sm:mt-5" onSubmit={handleSubmit}>
           <input type="hidden" name="menu_id" value={menu.id} />
           <CounterInput name={"quantity"} />
           <Button
@@ -68,13 +69,13 @@ function Detail() {
             disabled={false}
             color="dark"
             fullWidth
-            loading={navigation.state === "submitting"}
+            loading={action.loading}
             loadingPosition="start"
             type="submit"
           >
             Add To Cart
           </Button>
-        </Form>
+        </form>
       </div>
     </div>
   )

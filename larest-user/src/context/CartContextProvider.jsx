@@ -1,114 +1,245 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
+import axiosClient from "@/services/axios";
+import { ACTION } from "@/utils/action"; 
+
+const INITIAL_KEY_STATE = {
+  data: {},
+  message: null,
+  loading: false,
+  error: null,
+  success: false,
+  failed: false
+}
+
+const INITIAL_STATE = {
+  list: {
+    data: {},
+    links: null,
+    meta: null,
+    message: null,
+    loading: false,
+    error: null,
+    success: false,
+    failed: false,
+  },
+  data: {},
+  loading : true,
+  refetch: false,
+  action: INITIAL_KEY_STATE,
+}
+
+
+export function crudReducer(state, action) {
+  const { keyState } = action;
+  switch (action.type) {
+    case ACTION.CHANGE: {
+      return {
+        ...state,
+        [action.name]: action.value
+      }
+    }
+    case ACTION.START: {
+      return {
+        ...state,
+        [keyState]: {
+          ...state[keyState],
+          loading: true,
+        },
+      }
+    }
+    case ACTION.SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        [keyState]: {
+          loading: false,
+          success: true,
+          data: action.data,
+          links: action.links,
+          meta: action.meta,
+          message: action.message
+        }
+      }
+    }
+    case ACTION.SET_DATA: {
+      return {
+        ...state,
+        data: action.data
+      }
+    }
+    case ACTION.REFETCH: {
+      return {
+        ...state,
+        refetch: !state.refetch
+      }
+    }
+    case ACTION.FAILED: {
+      return {
+        ...state,
+        loading: false,
+        [keyState]: {
+          ...state[keyState],
+          loading: false,
+          success: false,
+          failed: true,
+          error: action.error,
+          message: action.message
+        }
+      }
+    }
+    case ACTION.RESET_ACTION: {
+      return {
+        ...state,
+        [keyState]: {
+          ...INITIAL_STATE[keyState],
+        },
+      }
+    }
+    case ACTION.RESET_LIST: {
+      return {
+        ...state,
+        [keyState]: {
+          ...state[keyState],
+          data: [],
+        }
+      }
+    }
+    case ACTION.RESET_STATE: {
+      return INITIAL_STATE;
+    }
+    default:
+      return state
+  }
+}
 
 const CartContext = createContext({
-    state: {},
-    dispatch: () => { },
-    openDialog: false,
-    setOpenDialog: () => { },
-    quantity: null,
-    setQuantity: () => { },
-    item: {},
-    setItem: () => { }
+  state: INITIAL_STATE,
+  dispatch: () => { },
 });
 
-export default function CartContextProvider({ children }) {
-    const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE)
-    const [openDialog, setOpenDialog] = useState(false) 
-    const [quantity, setQuantity] = useState(null)
-    const [item, setItem] = useState({})
 
-    return (
-        <CartContext.Provider value={{
-            openDialog,
-            setOpenDialog,
-            quantity,
-            setQuantity,
-            state,
-            dispatch,
-            item,
-            setItem
-        }}>
-            {children}
-        </CartContext.Provider>
-    )
+export default function CartContextProvider({ children }) {
+  const [state, dispatch] = useReducer(crudReducer, INITIAL_STATE);
+
+  return (
+    <CartContext.Provider value={{
+      state,
+      dispatch,
+    }}>
+      {children}
+    </CartContext.Provider>
+  )
 }
+
 
 export const useCartContext = () => useContext(CartContext)
 
-const INITIAL_STATE = {
-    carts: null,
-    error: null,
-    loading: true,
-    submitting: false,
-    success: false,
-    dialog: null,
-    message: null
+export const resetAction = () => ({ type: ACTION.RESET_ACTION, keyState: 'action' });
+export const resetState = () => ({ type: ACTION.RESET_STATE });
+export const actionSetData = (data) => ({ type: ACTION.SET_DATA, data: data });
+export const resetList = () => ({ type: ACTION.RESET_LIST, keyState: 'list' });
+
+export const actionGet = async (url, dispatch, signal) => {
+  dispatch({ type: ACTION.START, keyState: 'list' })
+  try {
+    const response = await axiosClient.get(url, {
+      signal: signal,
+    });
+    if (response?.status === 200) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        links: response.data.links,
+        meta: response.data.meta,
+        keyState: 'list'
+      })
+    }
+  } catch (error) {
+    if (error?.name === "CanceledError") return;
+    dispatch({
+      type: ACTION.FAILED,
+      error: error?.response?.data?.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'list'
+    })
+  }
 }
 
-function cartReducer(state, action) {
-    switch (action.type) {
-        case "START":
-            return {
-                ...state,
-                loading: true,
-            }
-        case "SUBMIT":
-            return {
-                ...state,
-                submitting: true,
-            }
-        case "ADD":
-            return {
-                ...state,
-                carts: [...state.carts, action.payload]
-            }
-        case "SET_CART":
-            return {
-                ...state,
-                carts: action.payload,
-                loading: false
-            }
-        case "UPDATE":
-            return {
-                ...state,
-                success: true,
-                submitting: false,
-                message: action.message,
-                carts: state.carts.map(cart => {
-                    if (cart.id === action.payload.id) {
-                        return action.payload
-                    }
-                    return cart
-                })
-            }
-        case "DELETE":
-            return {
-                ...state,
-                carts: state.carts.filter(cart => cart.id !== action.payload),
-                success: true,
-                dialog: false,
-                message: action.message
-
-            }
-        case "ERROR":
-            return {
-                ...state,
-                error: action.payload,
-                loading: false
-            }
-        case "SUCCESS":
-            return {
-                ...state,
-                success: true,
-                loading: false
-            }
-        case "RESET":
-            return {
-                ...state,
-                submitting: false,
-                success: false,
-            }
-        default:
-            return state
+export const actionAddToCart = async (url, data, dispatch, contentType) => {
+  dispatch({ type: ACTION.START, keyState: 'action' })
+  try {
+    const response = await axiosClient.post(url, data, {
+      headers: {
+        'Content-Type': contentType || 'application/json'
+      }
+    });
+    if (response.status === 201) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
     }
+  } catch (error) {
+    dispatch({
+      type: ACTION.FAILED,
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
+    })
+  }
+}
+export const actionUpdateCart = async (url, data, dispatch, contentType) => {
+  dispatch({ type: ACTION.START, keyState: 'action' })
+  try {
+    const response = await axiosClient.patch(url, data, {
+      headers: {
+        'Content-Type': contentType || 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
+    }
+  } catch (error) {
+    dispatch({
+      type: ACTION.FAILED,
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
+    })
+  }
+}
+
+export const actionDeleteCart = async (url, dispatch) => {
+  dispatch({ type: ACTION.START, keyState: 'action' })
+  try {
+    const response = await axiosClient.delete(url);
+    if (response.status === 200) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data.data,
+        message: response.data.message,
+        keyState: 'action'
+      })
+      dispatch({ type: ACTION.REFETCH })
+      return response.data;
+    }
+  } catch (error) {
+    dispatch({
+      type: ACTION.FAILED,
+      error: error.response.data.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
+      keyState: 'action'
+    })
+  }
 }

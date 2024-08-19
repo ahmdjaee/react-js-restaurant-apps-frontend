@@ -1,8 +1,13 @@
-export const ACTION = {
+const ACTION = {
     CHANGE: "CHANGE",
     START: "START",
     SUCCESS: "SUCCESS",
     FAILED: "FAILED",
-    RESET: "RESET",
-    SET_FORM_DATA: "SET_FORM_DATA"
+    RESET_ACTION: "RESET_ACTION",
+    SET_DATA: "SET_DATA",
+    REFETCH: "REFETCH",
+    RESET_STATE: "RESET_STATE",
+    RESET_LIST: "RESET_LIST"
 }
+
+export { ACTION }

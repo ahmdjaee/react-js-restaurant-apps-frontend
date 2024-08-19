@@ -29,7 +29,7 @@ export default function Menu() {
 
   return (
     <>
-      <section className="bg-white sticky top-with-top-bar-height z-40 pb-1 sm:pb-3 px-3 sm:px-0">
+      <section className="bg-white sticky top-with-top-bar-height z-40 sm:pt-2 px-3 sm:px-0">
         <div className="flex flex-row gap-3 sm:flex-row items-center justify-between container">
           <SearchInput size={"w-[70%]"} className={"sm:me-5 "} onChange={(value) => setSearchTerm(value)} value={searchTerm} />
           <Select
@@ -38,36 +38,31 @@ export default function Menu() {
             sx={{ width: "30%" }}
             placeholder="Category"
           >
-            <Option value={null}>All</Option>
+            <Option value={""}>All</Option>
             {categories.map((category) => (
-              <Option value={category.name}>{category.name}</Option>
+              <Option key={category.id} value={category.name}>{category.name}</Option>
             ))}
           </Select>
         </div>
       </section>
-      <section className="container flex flex-col gap-5">
-        {categories.map((category) => (
-          <CartMenuLayout
-            key={category}
-            category={category.name ? category.name : null}
-          >
-            {
-              filteredMenus
-                .filter(menu => menu.category.name === category.name)
-                .length === 0
-                ? (
-                  <div className="flex justify-center">
-                    <EmptyState text={"No menu found"} />
-                  </div>
-                )
-                : filteredMenus
-                  .filter(menu => menu.category.name === category.name)
-                  .map((menu) => (
-                    <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`} />
-                  ))
-            }
-          </CartMenuLayout>
-        ))}
+      <section className="container flex flex-col gap-5 mt-2 sm:mt-0">
+        {categories.every(category =>
+          filteredMenus.filter(menu => menu.category.name === category.name).length === 0
+        ) ? (
+          <EmptyState text="Oops! No menus found" />
+        ) : (
+          categories.map((category) => {
+            const categoryMenus = filteredMenus.filter(menu => menu.category.name === category.name);
+
+            return categoryMenus.length > 0 ? (
+              <CartMenuLayout key={category.id} category={category.name}>
+                {categoryMenus.map((menu) => (
+                  <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`} />
+                ))}
+              </CartMenuLayout>
+            ) : null;
+          })
+        )}
       </section>
     </>
   )

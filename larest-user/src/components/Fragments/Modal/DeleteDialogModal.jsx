@@ -10,6 +10,7 @@ function DeleteDialogModal({
         cancel: 'Cancel',
         icon: <i className="fa-solid fa-warning" />
     },
+    loading,
     onCancel,
     onDelete
 }) {
@@ -25,7 +26,7 @@ function DeleteDialogModal({
                     {props.content}
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="solid" color="danger" onClick={onDelete}>
+                    <Button loading={loading} loadingPosition='start' variant="solid" color="danger" onClick={onDelete}>
                         {props.delete}
                     </Button>
                     <Button variant="plain" color="neutral" onClick={onCancel}>

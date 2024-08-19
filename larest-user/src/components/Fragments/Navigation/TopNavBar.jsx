@@ -2,6 +2,7 @@ import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgres
 import NavLink from '@/components/Elements/Link/NavLink';
 import Logo from "@/components/Elements/Logo/Logo";
 import { actionLogout, useStateContext } from '@/context/AuthContextProvider';
+import { useCartContext } from '@/context/CartContextProvider';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { ACTION } from '@/utils/action';
 import { Avatar, Badge, Button, IconButton, Snackbar } from '@mui/joy';
@@ -16,11 +17,11 @@ import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { MdOutlineLocalGroceryStore, MdOutlineTableBar } from 'react-icons/md';
 import { Link } from "react-router-dom";
 
-function TopNavBar({ carts }) {
+function TopNavBar() {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -44,12 +45,12 @@ function TopNavBar({ carts }) {
 
   return (
     <>
-      {state.loading && <FloatProgressIndicator />}
+      <FloatProgressIndicator loading={state.loading}/>
       <header className="sm:shadow-sm sticky top-0 z-50 top-bar-height bg-white">
-        <nav className="container px-3 sm:px-0 h-[inherit]  flex items-center justify-between ">
+        <nav className="container px-3 sm:px-0 h-[inherit] flex items-center justify-between ">
           <Logo home={"/"} />
           <NavLink />
-          <CheckUser user={user} toggleDrawer={toggleDrawer} carts={carts} />
+          <CheckUser user={user} toggleDrawer={toggleDrawer} />
         </nav >
 
         {/* Side Drawer */}
@@ -116,13 +117,15 @@ function TopNavBar({ carts }) {
 
 export default TopNavBar
 
-function CheckUser({ user, toggleDrawer }) {
+function CheckUser({ user, toggleDrawer, }) {
+  const { state } = useCartContext();
+  const { list } = state;
   const sm = useMediaQuery('(min-width: 640px)');
   return (
     <div className="flex gap-3 sm:gap-6 items-center">
       <Link to={user ? "/carts" : "/login"}>
         <IconButton>
-          <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+          <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={list.data.total_quantity ?? 0}>
             <MdOutlineLocalGroceryStore className='size-5 sm:size-6 text-gray' />
           </Badge>
         </IconButton>
@@ -147,12 +150,8 @@ function CheckUser({ user, toggleDrawer }) {
             <div className="lg:hidden">
               <Avatar
                 onClick={toggleDrawer(true)}
-                alt="Remy Sharp"
                 size={sm ? "md" : "sm"}
-                src={`${user.photo !== null
-                  ? user.photo
-                  : "https://static-00.iconduck.com/assets.00/avatar-default-icon-2048x2048-h6w375ur.png"}`
-                }
+                src={user.photo}
               />
             </div>
           </>

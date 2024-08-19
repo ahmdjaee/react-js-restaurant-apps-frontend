@@ -5,11 +5,12 @@ import { IconButton, Textarea } from "@mui/joy";
 import { useEffect, useState } from "react";
 
 export default function CardCart({ cart, onDelete, onChangeQuantity }) {
-  const { state } = useCartContext()
+  const { state } = useCartContext();
+  const { action } = state;
 
-  const [showNotes, setShowNotes] = useState(false)
-  const [notes, setNotes] = useState("")
-  const [quantity, setQuantity] = useState(cart.quantity)
+  const [showNotes, setShowNotes] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [quantity, setQuantity] = useState(cart.quantity);
 
   useEffect(() => {
     setQuantity(cart.quantity)
@@ -52,7 +53,7 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
           <TextCurrency text={cart.menu.price} className="flex-grow text-base"></TextCurrency>
           <CounterInput
             value={quantity}
-            loading={state.submitting}
+            loading={action.loading}
             onChange={(e) => {
               setQuantity(e);
               onChangeQuantity(e);

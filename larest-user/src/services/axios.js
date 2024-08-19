@@ -16,7 +16,7 @@ axiosClient.interceptors.request.use(async (config) => {
 axiosClient.interceptors.response.use((response) => {
     return response;
 }, (error) => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
         localStorage.removeItem("USER-TOKEN");
     }
     return Promise.reject(error);

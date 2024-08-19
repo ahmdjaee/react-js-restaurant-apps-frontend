@@ -1,84 +1,43 @@
+import EmptyState from "@/components/Elements/Indicator/EmptyState"
+import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator"
 import CardCart from "@/components/Fragments/Card/CardCart"
 import DeleteDialogModal from "@/components/Fragments/Modal/DeleteDialogModal"
-import { useCartContext } from "@/context/CartContextProvider"
-import { Snackbar } from "@mui/joy"
-import { useEffect, useState } from "react"
+import { actionDeleteCart, actionUpdateCart, resetAction, useCartContext } from "@/context/CartContextProvider"
 import useDebounced from "@/hooks/useDebounce"
-import axiosClient from "@/services/axios"
+import { Snackbar } from "@mui/joy"
+import { useState } from "react"
 import CardReservation from "./components/CardReservation"
-import EmptyState from "@/components/Elements/Indicator/EmptyState"
 
 export default function Cart() {
-
   const [id, setId] = useState(null)
-  const { state, dispatch, openDialog, setOpenDialog, item, setItem } = useCartContext()
-
-  useEffect(() => {
-    const fetchCarts = async () => {
-      try {
-        const response = await axiosClient.get("/carts");
-        dispatch({ type: "SET_CART", payload: response.data.data })
-      } catch (error) {
-        dispatch({ type: "ERROR", payload: error })
-      }
-    };
-
-    fetchCarts();
-    return () => dispatch({ type: "RESET" })
-  }, []);
-
-  async function handleUpdate(quantity, id) {
-    dispatch({ type: "SUBMIT" })
-    try {
-      const response = await axiosClient.patch(`/carts/${id}`, { quantity })
-      if (response.status === 200) {
-        dispatch({ type: "UPDATE", payload: response?.data?.data, message: response?.data?.message })
-      }
-    } catch (error) {
-      dispatch({ type: "ERROR", payload: error })
-    }
-  }
+  const { state, dispatch } = useCartContext()
+  const { list, action, loading } = state
+  const [deleteDialog, setDeleteDialog] = useState(false)
 
   const setDebounceQuantity = useDebounced((quantity, id) => {
-    handleUpdate(quantity, id)
+    actionUpdateCart(`/carts/${id}`, { quantity, id }, dispatch)
   }, 500)
 
-  useEffect(() => {
-    setItem({
-      qty: state.carts?.reduce((prev, cart) => prev + cart.quantity, 0),
-      totalPrice: state.carts?.reduce((prev, cart) => prev + cart.total_price, 0)
-    })
-  }, [state.carts])
-
-  async function onDelete() {
-    try {
-      const response = await axiosClient.delete(`/carts/${id}`)
-      if (response.status === 200) {
-        dispatch({ type: "DELETE", payload: id, message: response?.data?.message })
-      }
-    } catch (error) {
-      dispatch({ type: "ERROR", payload: error })
-    }
+  const handleDelete = async () => {
+    const success = await actionDeleteCart(`/carts/${id}`, dispatch)
+    if (success) setDeleteDialog(false)
   }
-
-  useEffect(() => {
-    state.success && setOpenDialog(false)
-  }, [state])
 
   return (
     <section id="cartSection" className="overflow-x-clip h-full bg-gray-100 flex-grow sm:py-5">
+      <FloatProgressIndicator loading={loading} />
       <Snackbar
         color="success"
         variant="solid"
-        open={state.success}
+        open={action.success}
         autoHideDuration={2000}
-        onClose={() => dispatch({ type: "RESET" })}
+        onClose={() => dispatch(resetAction())}
       >
-        {state.message}
+        {action.message}
       </Snackbar>
       <div className="container h-full sm:pb-5 flex flex-col md:flex-row gap-10">
         <div className="flex-grow h-min">
-          {state.loading ? (
+          {/* (
             Array.from({ length: 4 }, (_, i) => (
               <div key={i} className="w-full mb-2" >
                 <div className="bg-white flex-grow rounded-lg h-40 p-5 flex ">
@@ -87,29 +46,30 @@ export default function Cart() {
                 </div>
               </div>
             ))
-          ) : state?.carts?.length === 0 ? (
+          ) :  */}
+          {list?.data?.length === 0 ? (
             <EmptyState text={"Your cart is empty"} />
-          )
-            : state?.carts?.map((cart) => (
-              <CardCart
-                key={cart.id}
-                cart={cart}
-                onChangeQuantity={(e) => setDebounceQuantity(e, cart.id)}
-                onDelete={() => {
-                  setOpenDialog(true)
-                  setId(cart.id)
-                }}
-              />
-            ))
+          ) : list?.data?.items?.map((cart) => (
+            <CardCart
+              key={cart.id}
+              cart={cart}
+              onChangeQuantity={(e) => setDebounceQuantity(e, cart.id)}
+              onDelete={() => {
+                setDeleteDialog(true)
+                setId(cart.id)
+              }}
+            />
+          ))
           }
         </div>
-        {(state?.carts?.length > 0) && <CardReservation item={item.qty && item.qty} total={item.totalPrice} />}
+        {(list?.data?.items?.length > 0) && <CardReservation item={list?.data?.total_quantity} total={232323} />}
       </div>
       <DeleteDialogModal
-        dialog={openDialog}
-        onClose={() => setOpenDialog(false)}
-        onCancel={() => setOpenDialog(false)}
-        onDelete={onDelete}
+        dialog={deleteDialog}
+        loading={action.loading}
+        onClose={() => setDeleteDialog(false)}
+        onCancel={() => setDeleteDialog(false)}
+        onDelete={handleDelete}
       />
     </section>
   )

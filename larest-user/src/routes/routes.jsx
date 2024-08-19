@@ -2,7 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 
 import LoginForm from "@/components/Fragments/Form/LoginForm";
 import RegisterForm from "@/components/Fragments/Form/RegisterForm.jsx";
-import MainLayout, { loader as mainLoader } from '@/components/Layouts/MainLayout.jsx';
+import MainLayout from '@/components/Layouts/MainLayout.jsx';
 import OrderLayout from "@/components/Layouts/OrderLayout.jsx";
 import About from "@/pages/about/index.jsx";
 import Authentication from "@/pages/auth/index.jsx";
@@ -24,7 +24,7 @@ import SuccessRegister from "@/pages/auth/components/SuccessRegister";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<MainLayout />} loader={mainLoader}  >
+      <Route path="/" element={<MainLayout />} >
         <Route errorElement={<ErrorPageNotFound />}   >
           <Route index element={<Home />} loader={homeLoader} />
           <Route path="menus" element={<Menu />} loader={menuLoader} />

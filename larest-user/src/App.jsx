@@ -4,6 +4,7 @@ import { router } from './routes/routes';
 import AuthContextProvider from "./context/AuthContextProvider";
 import TopProgressBar from "./components/Elements/Indicator/TopProgressBar";
 import CrudContextProvider from "./context/CrudContextProvider";
+import CartContextProvider from "./context/CartContextProvider";
 
 const baseTheme = extendTheme({
   colorSchemes: {
@@ -50,7 +51,9 @@ export default function App() {
     <CssVarsProvider theme={baseTheme}>
       <AuthContextProvider>
         <CrudContextProvider>
-          <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
+          <CartContextProvider>
+            <RouterProvider fallbackElement={<TopProgressBar />} router={router} />
+          </CartContextProvider>
         </CrudContextProvider>
       </AuthContextProvider>
     </CssVarsProvider >
