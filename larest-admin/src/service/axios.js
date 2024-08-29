@@ -17,7 +17,7 @@ axiosClient.interceptors.response.use((response) => {
 }, (error) => {
     if (error?.response?.status === 401) {
         localStorage.removeItem("ADMIN-TOKEN");
-        window.location.reload();
+        window.location.href = "/login";
     }
     return Promise.reject(error);
 });

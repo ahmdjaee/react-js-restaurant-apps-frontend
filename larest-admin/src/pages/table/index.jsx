@@ -86,7 +86,7 @@ function Tables() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={7}
               >
-                <EmptyState text={error} />
+                <EmptyState text={list.message} />
               </td>
             </tr>
           ) : filteredTables.length === 0 ? ( //NOTE - Add no data indicator

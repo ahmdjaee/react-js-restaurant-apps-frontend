@@ -1,42 +1,49 @@
-import { Button, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import React, { useEffect, useState } from 'react';
-import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
-import EmptyState from '../../components/Elements/Indicator/EmptyState';
-import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
-import Table from '../../components/Fragments/Table/Table';
-import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from '../../context/CrudContextProvider';
-import useFetchData from '../../hooks/useFetch';
-import { ACTION } from '../../utils/action';
-import CreateCategoryForm from './components/CreateCategoryForm';
-import UpdateCategoryForm from './components/UpdateCategoryForm';
-import SearchInput from '../../components/Elements/Input/SearchInput';
-import { list } from 'postcss';
+import { Button, IconButton, Snackbar } from "@mui/joy";
+import { useEffect, useState } from "react";
+import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
+import EmptyState from "../../components/Elements/Indicator/EmptyState";
+import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
+import SearchInput from "../../components/Elements/Input/SearchInput";
+import Table from "../../components/Fragments/Table/Table";
+import {
+  actionDelete,
+  actionGet,
+  actionSetData,
+  resetAction,
+  resetState,
+  useCrudContext,
+} from "../../context/CrudContextProvider";
+import CreateCategoryForm from "./components/CreateCategoryForm";
+import UpdateCategoryForm from "./components/UpdateCategoryForm";
 
 function Category() {
   const { state, dispatch } = useCrudContext();
   const { list, action, refetch } = state;
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
-    actionGet('/categories', dispatch, controller.signal);
-    return () => { controller.abort() };
-  }, [refetch,])
+    actionGet("/categories", dispatch, controller.signal);
+    return () => {
+      controller.abort();
+    };
+  }, [refetch]);
 
   useEffect(() => {
-    return () => dispatch(resetState())
-  }, [])
+    return () => dispatch(resetState());
+  }, []);
 
   const filteredCategories = list?.data?.filter((category) => {
-    return (
-      category?.name?.toLowerCase().includes(search.toLowerCase())
-    );
+    return category?.name?.toLowerCase().includes(search.toLowerCase());
   });
 
   const handleDelete = async (category) => {
-    if (!window.confirm(`Are you sure want to delete category: ${category.name}?`)) return;
+    if (
+      !window.confirm(`Are you sure want to delete category: ${category.name}?`)
+    )
+      return;
     await actionDelete(`/admin/categories/${category.id}`, dispatch);
   };
 
@@ -54,8 +61,14 @@ function Category() {
         loading={list.loading}
         actions={
           <>
-            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
-            <Button onClick={() => setCreateModal(true)}>Create Category</Button>
+            <SearchInput
+              className={"me-3"}
+              value={search}
+              onChange={(val) => setSearch(val)}
+            />
+            <Button onClick={() => setCreateModal(true)}>
+              Create Category
+            </Button>
           </>
         }
       >
@@ -68,32 +81,27 @@ function Category() {
         <tbody>
           {list.error ? ( //NOTE - Add error indicator
             <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
-                <EmptyState text={error} />
+              <td className="text-xl text-center overflow-hidden" colSpan={7}>
+                <EmptyState text={list.message} />
               </td>
             </tr>
           ) : filteredCategories.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
+              <td className="text-xl text-center overflow-hidden" colSpan={7}>
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
           ) : (
             filteredCategories.map((category, index) => (
-              <tr
-                key={index}
-                className="table-row"
-              >
+              <tr key={index} className="table-row">
                 <td className="p-3 max-w-64">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
-                      <img src={category.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
+                      <img
+                        src={category.image}
+                        className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl"
+                        alt=""
+                      />
                     </div>
                     <span className="font-medium text-light-inverse text-md/normal">
                       {category.name}
@@ -121,7 +129,7 @@ function Category() {
         onClose={() => dispatch(resetAction())}
       >
         {action.message}
-      </Snackbar >
+      </Snackbar>
       <CreateCategoryForm
         open={createModal}
         onClose={() => setCreateModal(false)}
@@ -134,4 +142,4 @@ function Category() {
   );
 }
 
-export default Category
+export default Category;

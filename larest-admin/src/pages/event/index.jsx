@@ -91,7 +91,7 @@ function Event() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={7}
               >
-                <EmptyState text={error} />
+                 <EmptyState text={list.message} />
               </td>
             </tr>
           ) : filteredEvents?.length === 0 ? ( //NOTE - Add no data indicator
@@ -126,7 +126,9 @@ function Event() {
                   </span>
                 </td>
                 <td className="p-3  text-start">
-                  <Badge color={getBadgeColor(event.type)} text={event.type}></Badge>
+                  <Badge color={getBadgeColor(event.type)}>
+                    {event.type}
+                  </Badge>
                 </td>
                 <td className="p-3  text-start">
                   <span className="font-medium text-light-inverse text-md/normal">

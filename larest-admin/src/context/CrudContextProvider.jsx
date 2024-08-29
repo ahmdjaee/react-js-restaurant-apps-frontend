@@ -1,7 +1,6 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
 import axiosClient from "../service/axios";
 import { ACTION } from "../utils/action";
-import { data } from "autoprefixer";
 
 const INITIAL_KEY_STATE = {
   data: {},
@@ -22,9 +21,9 @@ const INITIAL_STATE = {
     error: null,
     success: false,
     failed: false,
-    refetch: false,
   },
   data: {},
+  refetch: false,
   action: INITIAL_KEY_STATE,
 }
 
@@ -153,7 +152,7 @@ export const actionGet = async (url, dispatch, signal) => {
       })
     }
   } catch (error) {
-    if (error.name === "CanceledError") return;
+    if (error?.name === "CanceledError") return;
     dispatch({
       type: ACTION.FAILED,
       error: error?.response?.data?.errors,
@@ -184,7 +183,7 @@ export const actionCreate = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'action'
     })

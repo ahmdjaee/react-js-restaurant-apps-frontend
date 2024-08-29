@@ -94,7 +94,7 @@ function Reservation() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={9}
               >
-                <EmptyState text={error} />
+                <EmptyState text={list.message} />
               </td>
             </tr>
           ) : list?.data.length === 0 ? ( //NOTE - Add no data indicator

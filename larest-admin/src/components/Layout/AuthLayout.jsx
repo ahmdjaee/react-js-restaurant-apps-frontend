@@ -11,7 +11,7 @@ function AuthLayout({ children }) {
     }
 
     return (
-        <div className="relative container flex justify-center h-screen">
+        <div className="relative flex justify-center h-screen ">
             {children}
         </div>
     )

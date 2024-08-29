@@ -1,7 +1,7 @@
 function CustomMainCard({ children, header, description, actions, footer, className }) {
   return (
-    <div className="flex flex-wrap -mx-3 mb-5">
-      <div className="w-full max-w-full px-3 mb-6 mx-auto">
+    <div className="flex flex-wrap -mx-3">
+      <div className="w-full max-w-full px-3 mx-auto">
         <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-lg bg-white m-5">
           <div className="relative flex flex-col min-w-0 break-words border bg-clip-border rounded-lg border-stone-200 bg-light/30">
             {/* <!-- card header --> */}

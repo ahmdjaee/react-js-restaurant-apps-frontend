@@ -80,7 +80,7 @@ function User() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={7}
               >
-                <EmptyState text={error} />
+                <EmptyState text={list.message} />
               </td>
             </tr>
           ) : list.data.length === 0 ? ( //NOTE - Add no data indicator
@@ -98,7 +98,7 @@ function User() {
               className="table-row"
               onClick={() => handleUpdateModal(user)}
             >
-              <td className="p-3 h-min w-min">
+              <td className="p-3 h-min w-min" onClick={(e) => e.stopPropagation()}>
                 <div className="flex flex-col justify-start">
                   <Checkbox />
                 </div>

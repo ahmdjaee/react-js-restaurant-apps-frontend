@@ -84,8 +84,8 @@ function Order() {
       >
         <thead className="align-bottom">
           <tr className="table-row-header">
-            <th className="text-nowrap text-center">ID</th>
             <th className="text-nowrap text-start">QR</th>
+            <th className="text-nowrap text-start">ORDER ID</th>
             <th className="text-nowrap text-start">USER</th>
             <th className="text-nowrap text-center">RESERVATION ID</th>
             <th className="text-nowrap text-start">STATUS</th>
@@ -101,7 +101,7 @@ function Order() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={8}
               >
-                <EmptyState text={error} />
+                 <EmptyState text={list.message} />
               </td>
             </tr>
           ) : list.data.length === 0 ? ( //NOTE - Add no data indicator
@@ -120,13 +120,13 @@ function Order() {
               to={`/orders/${order.id}`}
               onClick={() => navigate(`/orders/${order.id}`)}
             >
-              <td className="p-3 text-center">
+              <td className="p-3 ">
+                <QRCode value={order.id} size={50} />
+              </td>
+              <td className="p-3 text-start">
                 <span className="font-medium text-light-inverse text-md/normal">
                   {order.id}
                 </span>
-              </td>
-              <td className="p-3 ">
-                <QRCode value={order.id} size={50} />
               </td>
               <td className="p-3 text-start">
                 <span className="font-medium text-light-inverse text-md/normal">
@@ -141,7 +141,7 @@ function Order() {
               <td className="p-3 text-start">
                 <span className="font-medium text-light-inverse text-md/normal">
                   <Chip
-                    variant='solid'
+                    variant='soft'
                     color={getChipColor(order.status)}
                   >
                     {order.status}
@@ -174,10 +174,6 @@ function Order() {
           )}
         </tbody>
       </Table>
-      <UpdateOrderForm
-        open={updateModal}
-        onClose={() => setUpdateModal(false)}
-      />
       <Snackbar
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}

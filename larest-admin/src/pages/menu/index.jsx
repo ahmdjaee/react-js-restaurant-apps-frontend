@@ -1,4 +1,6 @@
-import { Button, IconButton, Option, Select, Snackbar } from "@mui/joy";
+import Badge from "@/components/Elements/Badge/Badge";
+import { formatCurrency } from "@/utils/helper";
+import { Button, Chip, IconButton, Option, Select, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
@@ -8,6 +10,30 @@ import Table from "../../components/Fragments/Table/Table";
 import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from "../../context/CrudContextProvider";
 import CreateMenuForm from "./components/CreateMenuForm";
 import UpdateMenuForm from "./components/UpdateMenuForm";
+const getBadgeColor = (type = '') => {
+  switch (type) {
+    case 'Promo':
+      return 'from-green-400 to-green-600';
+    case 'Special':
+      return 'from-blue-400 to-blue-600';
+    case 'New':
+      return 'from-red-400 to-red-600';
+    case 'Hot':
+      return 'from-yellow-400 to-yellow-600';
+    case 'Best Seller':
+      return 'from-purple-400 to-purple-600';
+    case 'Featured':
+      return 'from-pink-400 to-pink-600';
+    case 'Sale':
+      return 'from-gray-400 to-gray-600';
+    case 'Flash Sale':
+      return 'from-gray-400 to-gray-600';
+    default:
+      return 'from-gray-400 to-gray-500';
+  }
+};
+
+const tags = ['Promo', 'Special', 'New', 'Hot', 'Best Seller', 'Featured', 'Sale', 'Flash Sale'];
 
 function Menu() {
   const { state, dispatch } = useCrudContext();
@@ -15,7 +41,10 @@ function Menu() {
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
-  const [filterType, setFilterType] = useState(null);
+  const [filter, setFilter] = useState({
+    categories: null,
+    tags: [],
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,10 +58,12 @@ function Menu() {
 
   const filteredMenus = list?.data?.filter((menu) => {
     return (
-      (!filterType || menu.category.name === filterType) &&
+      (!filter.categories || menu.category.name === filter.categories) &&
       menu?.name?.toLowerCase().includes(search.toLowerCase())
     );
   });
+
+  const categories = [...new Set(list?.data?.map((menu) => menu?.category?.name))];
 
   const handleDelete = async (menu) => {
     if (!window.confirm(`Are you sure want to delete menu: ${menu.name}?`)) return;
@@ -53,16 +84,31 @@ function Menu() {
         loading={list.loading}
         actions={
           <>
+          <a className="text-blue-600 font-medium cursor-pointer me-3">Reset</a>
             <Select
-              value={filterType}
-              onChange={(_, value) => setFilterType(value)}
+              // value={filter}
+              // onChange={(_, value) => setFilter(value)}
+              sx={{ width: 150, marginRight: "12px" }}
+              placeholder="Tag"
+            >
+              {tags.map((tag) => (
+                <Option key={tag} value={tag}>
+                  {tag}
+                </Option>
+              ))}
+            </Select>
+            <Select
+              value={filter.categories}
+              onChange={(_, value) => setFilter({...filter, categories: value })}
               sx={{ width: 150, marginRight: "12px" }}
               placeholder="Category"
             >
-              <Option value="">All</Option>
-              <Option value="Food">Food</Option>
-              <Option value="Drink">Drink</Option>
-              <Option value="Dessert">Dessert</Option>
+              <Option value={null}>All</Option>
+              {categories.map((category) => (
+                <Option key={category} value={category}>
+                  {category}
+                </Option>
+              ))}
             </Select>
             <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
             <Button onClick={() => setCreateModal(true)}>Create Menu</Button>
@@ -71,11 +117,14 @@ function Menu() {
       >
         <thead className="align-bottom">
           <tr className="table-row-header">
-            <th className="max-w-64 text-start">NAME</th>
-            <th className="max-w-64 text-start ">DESCRIPTION</th>
-            <th className="max-w-64 text-end">PRICE</th>
-            <th className="max-w-64 text-end ">CATEGORY</th>
-            <th className="max-w-64 text-end ">ACTIONS</th>
+            <th className=" text-start">NAME</th>
+            <th className=" text-start ">DESCRIPTION</th>
+            <th className=" text-start ">TAGS</th>
+            <th className=" text-start">PRICE</th>
+            <th className=" text-center">STOCK</th>
+            <th className=" text-end ">CATEGORY</th>
+            <th className=" text-end ">ACTIVE</th>
+            <th className=" text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -85,7 +134,7 @@ function Menu() {
                 className="text-xl text-center overflow-hidden"
                 colSpan={7}
               >
-                <EmptyState text={error} />
+                <EmptyState text={list.message} />
               </td>
             </tr>
           ) : filteredMenus?.length === 0 ? ( //NOTE - Add no data indicator
@@ -99,32 +148,66 @@ function Menu() {
             </tr>
           ) : filteredMenus?.map((menu) => (
             <tr key={menu.id} className="table-row">
-              <td className="p-3 max-w-64">
+              <td className="p-3 ">
                 <div className="flex items-center">
                   <div className="relative inline-block shrink-0 rounded-2xl me-3">
                     <img src={menu.image} className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="" />
                   </div>
-                  <div className="flex flex-col justify-start">
-                    <a className="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary">{menu.name}</a>
+                  <div className="flex flex-col justify-start overflow-hidden">
+                    <span className="font-medium">{menu.name}</span>
                   </div>
                 </div>
               </td>
-              <td className="p-3 max-w-64 text-start">
-                <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
+              <td className="p-3 max-w-64  text-start">
+                <span className="line-clamp-2 font-medium">
                   {menu.description}
                 </span>
               </td>
-              <td className="p-3 max-w-64 text-end">
-                <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
-                  Rp {menu.price}
+              <td className="p-3 text-start ">
+                <div className="text-nowrap flex items-center gap-2">
+                  {menu.tags
+                    ? (
+                      menu.tags.split(',').map((tag, index) =>
+                        index === 0 ? (
+                          <Badge key={index} color={getBadgeColor(tag)}>
+                            {tag}
+                          </Badge>
+                        ) : index === 1 ? (
+                          <p key={index} className="text-sm text-zinc-500 font-medium">
+                            +{menu.tags.split(',').length - 1} more
+                          </p>
+                        ) : null
+                      )
+                    ) : (
+                      <Badge color={getBadgeColor()}>N/A</Badge>
+                    )}
+                </div>
+              </td>
+              <td className="p-3  text-start">
+                <span className="line-clamp-2 font-medium">
+                  {formatCurrency(menu.price)}
                 </span>
               </td>
-              <td className="p-3 max-w-64 text-end">
-                <span className="line-clamp-2 font-semibold text-light-inverse text-md/normal">
-                  {menu?.category?.name}
+              <td className="p-3  text-center">
+                <span className="line-clamp-2 font-medium">
+                  {menu.stock}
                 </span>
               </td>
-              <td className="p-3 max-w-64 text-end">
+              <td className="p-3  text-end">
+                <span className="line-clamp-2 font-medium">
+                  {menu.category?.name}
+                </span>
+              </td>
+              <td className="p-3 text-end">
+                <Chip
+                  color={menu.active ? "primary" : "danger"}
+                  onClick={function () { }}
+                  variant="solid"
+                >
+                  {menu.active ? "Active" : "Inactive"}
+                </Chip>
+              </td>
+              <td className="p-3  text-end text-nowrap">
                 <IconButton onClick={() => handleUpdateModal(menu)}>
                   <BsPencilFill className="primary-with-hover" />
                 </IconButton>
@@ -140,10 +223,12 @@ function Menu() {
       <CreateMenuForm
         open={createModal}
         onClose={() => setCreateModal(false)}
+        tags={tags}
       />
       <UpdateMenuForm
         open={updateModal}
         onClose={() => setUpdateModal(false)}
+        tags={tags}
       />
       <Snackbar
         open={action.success || action.failed}

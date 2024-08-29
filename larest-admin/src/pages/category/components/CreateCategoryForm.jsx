@@ -1,4 +1,4 @@
-import { Button, DialogContent, DialogTitle, FormControl, FormLabel, IconButton, Input, Modal, ModalDialog } from '@mui/joy';
+import { Button, DialogContent, DialogTitle, FormControl, FormHelperText, FormLabel, IconButton, Input, Modal, ModalDialog } from '@mui/joy';
 import ImageUploader from '../../../components/Elements/Image/ImageUploader';
 import FloatCircularProgress from '../../../components/Elements/Indicator/FloatProgressIndicator';
 import { actionCreate, useCrudContext } from '../../../context/CrudContextProvider';
@@ -39,6 +39,7 @@ function CreateCategoryForm({ open, onClose }) {
                 placeholder="Insert category name"
                 autoFocus
               />
+              <FormHelperText sx={{ color: 'red' }}>{state.action.error?.name}</FormHelperText>
             </FormControl>
             <ImageUploader props={{ required: true }} name={"image"} />
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Create</Button>
