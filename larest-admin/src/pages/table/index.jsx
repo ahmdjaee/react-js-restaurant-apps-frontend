@@ -102,21 +102,21 @@ function Tables() {
             filteredTables.map((table, index) => (
               <tr
                 key={index}
-                className="table-row"
+                className="table-row-body"
               >
-                <td className="p-3">
+                <td className="">
                   <div className="flex flex-col justify-start">
-                    <span className="font-semibold text-light-inverse text-md/normal">
+                    <span >
                       {table.no}
                     </span>
                   </div>
                 </td>
-                <td className="p-3 text-start">
-                  <span className="font-medium text-light-inverse text-md/normal">
+                <td className=" text-start">
+                  <span>
                     {table.capacity} person
                   </span>
                 </td>
-                <td className="p-3 text-start">
+                <td className=" text-start">
                   <Chip
                     color={getChipColor(table.status)}
                     onClick={function () { }}
@@ -125,7 +125,7 @@ function Tables() {
                     {table.status}
                   </Chip>
                 </td>
-                <td className="p-3 flex items-center justify-end">
+                <td className=" flex items-center justify-end">
                   <IconButton onClick={() => handleUpdateModal(table)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>

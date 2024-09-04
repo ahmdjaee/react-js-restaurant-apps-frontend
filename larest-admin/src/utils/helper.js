@@ -1,17 +1,18 @@
 function formatDate(dateString = '') {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = months[date.getMonth()];
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     // Check if time component is present
     if (dateString?.includes('T') || dateString?.includes(' ')) {
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
+        return `${day} ${month} ${year} ${hours}:${minutes}`;
     }
 
-    return `${year}-${month}-${day}`;
+    return `${day} ${month} ${year}`;
 }
 
 function formatTime(timeString = '') {

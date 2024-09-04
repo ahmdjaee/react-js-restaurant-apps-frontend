@@ -1,18 +1,30 @@
-import { Input, Typography } from "@mui/joy";
+import { FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import propType from "prop-types";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import TextError from "../Text/TextError";
 
-export default function InputForm({ title, type, placeholder, value, onChange, errorsText, children, onKeyDown, name, defaultValue }) {
-  const [showPassword, setShowPassword] = useState(false)
+export default function InputForm({
+  title,
+  type,
+  placeholder,
+  value,
+  onChange,
+  errorsText,
+  children,
+  onKeyDown,
+  name,
+  defaultValue,
+  required = false,
+  autoComplete = "off",
+}) {
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div>
-      <Typography level="title-md" sx={{ mb: 2 }} color="blue-gray">
-        {title}
-      </Typography>
+    <FormControl>
+      <FormLabel>{title}</FormLabel>
       <Input
+        required={required}
         defaultValue={defaultValue}
         name={name}
         size="lg"
@@ -22,12 +34,18 @@ export default function InputForm({ title, type, placeholder, value, onChange, e
         value={value}
         onChange={onChange}
         sx={{ fontSize: "16px" }}
-        endDecorator={(type === "password") ? <EyeIcon onClick={() => setShowPassword(!showPassword)} /> : null}
+        endDecorator={
+          type === "password" ? (
+            <EyeIcon onClick={() => setShowPassword(!showPassword)} />
+          ) : null
+        }
+        autoComplete={autoComplete}
       />
-      {errorsText && errorsText.map((error, index) => <TextError key={index} text={error} />)}
+      {errorsText &&
+        errorsText.map((error, index) => <TextError key={index} text={error} />)}
       {children}
-    </div >
-  )
+    </FormControl>
+  );
 }
 
 InputForm.propTypes = {
@@ -37,22 +55,29 @@ InputForm.propTypes = {
   value: propType.string,
   onChange: propType.func,
   errorsText: propType.array,
-  children: propType.node
-}
+  children: propType.node,
+};
 
 function EyeIcon({ onClick }) {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   if (showPassword === true) {
-    return <FaEyeSlash onClick={() => {
-      setShowPassword(!showPassword)
-      onClick()
-    }} />
+    return (
+      <FaEyeSlash
+        onClick={() => {
+          setShowPassword(!showPassword);
+          onClick();
+        }}
+      />
+    );
   } else {
-    return <FaEye onClick={() => {
-      setShowPassword(!showPassword)
-      onClick()
-    }} />
+    return (
+      <FaEye
+        onClick={() => {
+          setShowPassword(!showPassword);
+          onClick();
+        }}
+      />
+    );
   }
 }
-

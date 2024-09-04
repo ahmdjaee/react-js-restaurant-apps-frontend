@@ -35,14 +35,26 @@ body {
         @apply text-zinc-500 hover:text-zinc-600;
     }
 
-    .table-row {
+    .table-row-body{
         @apply border-b border-dashed last:border-b-0 hover:bg-slate-50 hover:cursor-pointer
     }
+
+    .table-row-body td {
+        @apply p-3
+    }
+
+    .table-row-body td span {
+        @apply font-medium text-sm
+    }
+
 
     .table-row-header {
         @apply font-semibold text-[0.95rem] bg-slate-50
     }
 
+    
+
+    
     .table-row-header th {
         @apply p-3
     }
