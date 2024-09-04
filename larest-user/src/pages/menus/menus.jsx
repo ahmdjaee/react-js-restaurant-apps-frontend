@@ -1,23 +1,19 @@
-import { Option, Select, Tab, TabList, Tabs, tabClasses } from "@mui/joy";
-import SearchInput from "@/components/Elements/Input/SearchInput";
-import { useLoaderData } from "react-router-dom";
-import axiosClient from "@/services/axios";
-import { Fragment, useState } from "react";
-import CartMenuLayout from "@/components/Layouts/CardMenuLayout";
-import CardMenu from "@/components/Fragments/Card/CardMenu";
 import EmptyState from "@/components/Elements/Indicator/EmptyState";
+import SearchInput from "@/components/Elements/Input/SearchInput";
+import CardMenu from "@/components/Fragments/Card/CardMenu";
+import CartMenuLayout from "@/components/Layouts/CardMenuLayout";
+import axiosClient from "@/services/axios";
+import { Option, Select } from "@mui/joy";
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
 export async function loader() {
   const menus = await axiosClient.get('/menus');
-  const categories = await axiosClient.get('/categories');
 
-  return {
-    menus: menus?.data?.data,
-    categories: categories?.data?.data,
-  };
+  return { menus: menus?.data?.data };
 }
 export default function Menu() {
-  const { menus, categories } = useLoaderData();
+  const { menus } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState(null);
   const filteredMenus = menus?.filter((menu) => {
@@ -26,6 +22,9 @@ export default function Menu() {
       menu.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+  const filteredCategories = [...new Set(filteredMenus.map(menu => menu.category.name))];
+  const categories = [...new Set(menus.map(menu => menu.category.name))];
 
   return (
     <>
@@ -40,13 +39,23 @@ export default function Menu() {
           >
             <Option value={""}>All</Option>
             {categories.map((category) => (
-              <Option key={category.id} value={category.name}>{category.name}</Option>
+              <Option key={category} value={category}>{category}</Option>
             ))}
           </Select>
         </div>
       </section>
       <section className="container flex flex-col gap-5 mt-2 sm:mt-0">
-        {categories.every(category =>
+        {filteredCategories.length === 0
+          ? <EmptyState text="Oops! No menus found" />
+          : filteredCategories.map((category) => (
+            <CartMenuLayout key={category} category={category}>
+              {filteredMenus.filter(menu => menu.category.name === category).map((menu) => (
+                <CardMenu key={menu.id} menu={menu} link={`/menus/${menu.id}`} />
+              ))}
+            </CartMenuLayout>
+          ))
+        }
+        {/* {categories.every(category =>
           filteredMenus.filter(menu => menu.category.name === category.name).length === 0
         ) ? (
           <EmptyState text="Oops! No menus found" />
@@ -62,7 +71,7 @@ export default function Menu() {
               </CartMenuLayout>
             ) : null;
           })
-        )}
+        )} */}
       </section>
     </>
   )

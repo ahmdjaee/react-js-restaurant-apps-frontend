@@ -10,18 +10,6 @@ export async function loader({ params }) {
   return { menu: menu?.data?.data };
 }
 
-export async function action({ request }) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-
-  try {
-    const response = await axiosClient.post('/carts', data);
-    if (response.status !== 201) return { success: false };
-    return { success: true };
-  } catch (error) {
-    return { error: error.response.data.errors }
-  }
-}
 function Detail() {
   const { menu } = useLoaderData();
   const { state, dispatch } = useCartContext();
@@ -51,7 +39,7 @@ function Detail() {
       >
         &#x2B9C; Menu
       </Link>
-      <img className="sm:w-5/12 xl:h-[26rem] sm:rounded-lg object-cover" src={menu.image_large} alt="" />
+      <img className="sm:w-5/12 h-[26rem] sm:rounded-lg object-cover bg-zinc-100" src={menu.image_large} alt="" />
       <div className="p-3 w-full sm:w-5/12 flex flex-col flex-1">
         <h1 className="text-lg sm:text-5xl font-semibold">{menu.name}</h1>
         <p className="text-base sm:my-4">{menu.description}</p>

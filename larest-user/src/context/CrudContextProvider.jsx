@@ -47,7 +47,7 @@ export function crudReducer(state, action) {
         message: action.message
       }
     }
-    case ACTION.RESET: {
+    case ACTION.RESET_ACTION: {
       return {
         ...state,
         loading: false,
@@ -85,7 +85,7 @@ export default function CrudContextProvider({ children }) {
 
 export const useCrudContext = () => useContext(CrudContext)
 
-export const actionReset = () => ({ type: ACTION.RESET })
+export const actionReset = () => ({ type: ACTION.RESET_ACTION })
 
 export const actionCreate = async (url, data, dispatch, contentType) => {
   dispatch({ type: ACTION.START })
@@ -102,7 +102,7 @@ export const actionCreate = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }
@@ -143,8 +143,8 @@ export const actionUpdate = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
-      message: error.response.data.errors.message || 'Sorry! Something went wrong. App server error'
+      error: error?.response?.data?.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }
 }
@@ -160,8 +160,8 @@ export const actionDelete = async (url, dispatch) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
-      message: error.response.data?.errors?.message || 'Sorry! Something went wrong. App server error'
+      error: error?.response?.data?.errors,
+      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
     })
   }
 }

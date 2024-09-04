@@ -28,9 +28,9 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
 
   return (
 
-    <div className="mb-2 bg-white rounded-lg h-min sm:h-40 p-2 sm:p-5 flex">
-      <img className="w-28 h-28 sm:h-[inherit] sm:w-36 object-cover rounded-md" src={cart.menu.image} alt="" />
-      <div className="px-5 flex-1">
+    <div className="mb-2 bg-white rounded-lg h-min sm:h-min p-2 sm:p-5 flex">
+      <img className="w-28 h-28 sm:h-32 sm:w-32 object-cover rounded-md" src={cart.menu.image} alt="" />
+      <div className="px-5 flex-1 flex flex-col">
         <p className="font-semibold">{cart.menu.name}</p>
         <p className="text-sm line-clamp-2">{cart.menu.description}</p>
         <Notes />
@@ -49,7 +49,7 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
               flexGrow: 1
             }} />
         }
-        <div className="flex justify-end items-center gap-3">
+        <div className="flex items-center gap-3 mt-auto">
           <TextCurrency text={cart.menu.price} className="flex-grow text-base"></TextCurrency>
           <CounterInput
             value={quantity}
@@ -65,6 +65,5 @@ export default function CardCart({ cart, onDelete, onChangeQuantity }) {
         </div>
       </div>
     </div>
-
   )
 }

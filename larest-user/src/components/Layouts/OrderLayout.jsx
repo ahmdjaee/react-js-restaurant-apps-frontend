@@ -3,11 +3,11 @@ import Logo from "../Elements/Logo/Logo";
 import { MdArrowBack } from "react-icons/md";
 
 export default function OrderLayout() {
-  const { reservation } = useLoaderData();
+  // const { reservation } = useLoaderData();
 
-  if (!reservation) {
-    return <Navigate to="/" replace={true} />
-  }
+  // if (!reservation) {
+  //   return <Navigate to="/" replace={true} />
+  // }
   return (
     <>
       <div className="flex items-center border-b bg-white top-bar-height sticky top-0 z-50 flex-row sm:px-10 lg:px-20 xl:px-32 sm:justify-normal justify-between px-3">

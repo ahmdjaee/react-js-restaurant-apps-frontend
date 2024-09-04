@@ -1,7 +1,7 @@
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator"
 import InputForm from "@/components/Elements/Input/InputForm"
-import { useStateContext } from "@/context/AuthContextProvider"
-import { actionCreate, useCrudContext } from "@/context/CrudContextProvider"
+import { actionRegister, useStateContext } from "@/context/AuthContextProvider"
+import { useCrudContext } from "@/context/CrudContextProvider"
 import axiosClient from "@/services/axios"
 import { ACTION } from "@/utils/action"
 import { Button, Checkbox, Typography } from "@mui/joy"
@@ -10,14 +10,15 @@ import { Link, useNavigate } from "react-router-dom"
 
 export default function RegisterForm() {
   const navigate = useNavigate()
-  const { state, dispatch, } = useCrudContext()
+  const { state, dispatch, } = useStateContext()
   const { setToken } = useStateContext();
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   async function onRegister() {
-    await actionCreate("/users/register", { name, email, password }, dispatch)
+    const success = await actionRegister("/users/register", { name, email, password }, dispatch);
+    if (success) login();
   }
 
   async function login() {
@@ -32,15 +33,8 @@ export default function RegisterForm() {
     }
   }
 
-  useEffect(() => {
-    if (state.success === true) login();
-
-    return () => dispatch({ type: ACTION.RESET })
-  }, [state.success])
-
   return (
-    <>
-      {state.loading && < FloatProgressIndicator />}
+    <FloatProgressIndicator loading={state.loading}>
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
           Sign Up
@@ -64,6 +58,9 @@ export default function RegisterForm() {
               defaultValue={email}
               onChange={(e) => setEmail(e.target.value)}
               errorsText={state.error?.email}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onRegister()
+              }}
             />
             <InputForm
               title="Password"
@@ -72,6 +69,9 @@ export default function RegisterForm() {
               defaultValue={password}
               onChange={(e) => setPassword(e.target.value)}
               errorsText={state.error?.password}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onRegister()
+              }}
             >
               {state.error?.password == null && <p className="text-xs absolute">&#9888; Password min 8 characters</p>}
             </InputForm>
@@ -108,6 +108,6 @@ export default function RegisterForm() {
           </Typography>
         </form>
       </div>
-    </>
+    </FloatProgressIndicator>
   )
 }

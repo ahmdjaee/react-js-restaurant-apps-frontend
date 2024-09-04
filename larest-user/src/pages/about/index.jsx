@@ -4,7 +4,7 @@ function About() {
    return (
       <div className="container flex flex-col items-center text-center sm:py-5   ">
          <section>
-            <div className="w-full am:rounded-xl h-80 bg-slate-100 bg-about-us bg-no-repeat bg-center bg-cover"></div>
+            <div className="w-full sm:rounded-xl h-80 bg-slate-100 bg-about-us bg-no-repeat bg-center bg-cover"></div>
             <h1 className="text-5xl font-bold my-8 text-primary">GREAT INDONESIAN FOOD COMES FIRST</h1>
             <div className="sm:px-28">
                <p className="my-3">Every day, millions of guests visit our restaurants across Indonesia. They do so because our establishments are known for serving high-quality, great tasting, and affordable Indonesian cuisine. Founded in 2000, we have grown to become one of the largest Indonesian food chains in the country.</p>

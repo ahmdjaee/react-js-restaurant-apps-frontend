@@ -62,7 +62,7 @@ export default function Cart() {
           ))
           }
         </div>
-        {(list?.data?.items?.length > 0) && <CardReservation item={list?.data?.total_quantity} total={232323} />}
+        {(list?.data?.items?.length > 0) && <CardReservation item={list?.data?.total_quantity} total={list?.data?.total_price} />}
       </div>
       <DeleteDialogModal
         dialog={deleteDialog}

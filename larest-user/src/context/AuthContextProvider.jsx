@@ -1,11 +1,14 @@
 import axiosClient from "@/services/axios";
 import { ACTION } from "@/utils/action";
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
+
 const INITIAL_STATE = {
-  email: "",
-  password: "",
-  errors: [],
+  data: {},
+  error: [],
   loading: false,
+  success: false,
+  failed: false,
+  message: null
 }
 
 function loginReducer(state, action) {
@@ -16,7 +19,7 @@ function loginReducer(state, action) {
         [action.name]: action.value
       }
     }
-    case ACTION.SET_FORM_DATA: {
+    case ACTION.SET_DATA: {
       return { ...state, ...action.formData };
     }
     case ACTION.START: {
@@ -44,7 +47,7 @@ function loginReducer(state, action) {
         message: action.message
       }
     }
-    case ACTION.RESET: {
+    case ACTION.RESET_ACTION: {
       return {
         ...state,
         loading: false,
@@ -61,7 +64,7 @@ function loginReducer(state, action) {
 const StateContext = createContext({
   user: null,
   token: null,
-  state: null,
+  state: INITIAL_STATE,
   setUser: () => { },
   setToken: () => { },
   dispatch: () => { },
@@ -69,9 +72,10 @@ const StateContext = createContext({
 });
 
 export default function AuthContextProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [token, _setToken] = useState(localStorage.getItem("USER-TOKEN"))
-  const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE)
+  const [user, setUser] = useState(null);
+  const [token, _setToken] = useState(localStorage.getItem("USER-TOKEN"));
+  // const token = localStorage.getItem("USER-TOKEN");
+  const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE);
 
   const setToken = (tokenValue) => {
     if (tokenValue) {
@@ -80,12 +84,31 @@ export default function AuthContextProvider({ children }) {
     }
   }
 
+  const getAccessToken = () => {
+    return localStorage.getItem("USER-TOKEN");
+  }
+
   const deleteTokenAndUser = () => {
     _setToken(null)
     setUser(null)
     localStorage.removeItem("USER-TOKEN")
     window.location.href = "/"
   }
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("USER-TOKEN");
+  //   if (!token) {
+  //     deleteTokenAndUser();
+  //   }
+
+  //   window.addEventListener("storage", () => {
+  //     const token = localStorage.getItem("USER-TOKEN");
+  //     if (!token) {
+  //       deleteTokenAndUser();
+  //     }
+  //   });
+  // }, [])
+
 
   return (
     <StateContext.Provider
@@ -96,6 +119,7 @@ export default function AuthContextProvider({ children }) {
         setUser,
         setToken,
         dispatch,
+        getAccessToken,
         deleteTokenAndUser
       }}
     >
@@ -105,6 +129,7 @@ export default function AuthContextProvider({ children }) {
 }
 
 export const useStateContext = () => useContext(StateContext);
+export const resetAction = () => ({ type: ACTION.RESET_ACTION });
 
 export const actionLogout = async (url, dispatch) => {
   dispatch({ type: ACTION.START })
@@ -115,11 +140,18 @@ export const actionLogout = async (url, dispatch) => {
       return response.data;
     }
   } catch (error) {
-    dispatch({
-      type: ACTION.FAILED,
-      error: error.response.data.errors,
-      message: error.response.data?.errors?.message || 'Sorry! Something went wrong. App server error'
-    })
+    if (error?.response?.status === 400) {
+      dispatch({
+        type: ACTION.FAILED,
+        error: error?.response?.data?.errors,
+        message: error?.response?.data?.errors?.message
+      })
+    } else {
+      dispatch({
+        type: ACTION.FAILED,
+        message: 'Sorry! Something went wrong. App server error'
+      })
+    }
   }
 }
 
@@ -132,15 +164,89 @@ export const actionLogin = async (url, data, dispatch, contentType) => {
       }
     });
     if (response.status === 200) {
-      dispatch({ type: ACTION.SUCCESS, data: response.data, message: response.data.message })
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data,
+        message: response.data.message
+      })
       return response.data;
     }
   } catch (error) {
-    dispatch({
-      type: ACTION.FAILED,
-      error: error?.response?.data?.errors,
-      message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error'
-    })
+    if (error?.response?.status === 400) {
+      dispatch({
+        type: ACTION.FAILED,
+        error: error?.response?.data?.errors,
+        message: error?.response?.data?.errors?.message
+      })
+    } else {
+      dispatch({
+        type: ACTION.FAILED,
+        message: 'Sorry! Something went wrong. App server error'
+      })
+    }
+  }
+}
+export const actionUpdateProfile = async (url, data, dispatch, contentType) => {
+  dispatch({ type: ACTION.START })
+  try {
+    const response = await axiosClient.post(url, data, {
+      headers: {
+        'Content-Type': contentType || 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data,
+        message: response.data.message
+      })
+      return response.data;
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      dispatch({
+        type: ACTION.FAILED,
+        error: error?.response?.data?.errors,
+        message: error?.response?.data?.errors?.message
+      })
+    } else {
+      dispatch({
+        type: ACTION.FAILED,
+        message: 'Sorry! Something went wrong. App server error'
+      })
+    }
+  }
+}
+
+export const actionRegister = async (url, data, dispatch, contentType) => {
+  dispatch({ type: ACTION.START })
+  try {
+    const response = await axiosClient.post(url, data, {
+      headers: {
+        'Content-Type': contentType || 'application/json'
+      }
+    });
+    if (response.status === 201) {
+      dispatch({
+        type: ACTION.SUCCESS,
+        data: response.data,
+        message: response.data.message
+      })
+      return response.data;
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      dispatch({
+        type: ACTION.FAILED,
+        error: error?.response?.data?.errors,
+        message: error?.response?.data?.errors?.message
+      })
+    } else {
+      dispatch({
+        type: ACTION.FAILED,
+        message: 'Sorry! Something went wrong. App server error'
+      })
+    }
   }
 }
 

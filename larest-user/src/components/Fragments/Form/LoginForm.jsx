@@ -1,10 +1,6 @@
-
-import CustomSnackbar from "@/components/Elements/Indicator/CustomSnackbar";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 import InputForm from "@/components/Elements/Input/InputForm";
-import { actionLogin, useStateContext } from "@/context/AuthContextProvider";
-import axiosClient from "@/services/axios";
-import { ACTION } from "@/utils/action";
+import { actionLogin, resetAction, useStateContext } from "@/context/AuthContextProvider";
 import { Button, Checkbox, Snackbar, Typography } from "@mui/joy";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -24,9 +20,7 @@ function LoginForm() {
   }
 
   return (
-    <>
-      {state.loading && <FloatProgressIndicator />}
-
+    <FloatProgressIndicator loading={state.loading} >
       <div className="m-auto">
         <Typography level="h3" sx={{ fontWeight: "bold" }} color="blue-gray">
           Login
@@ -41,7 +35,6 @@ function LoginForm() {
               title="Your Email"
               type="email"
               placeholder="name@mail.com"
-              defaultValue={state.email}
               errorsText={state.error?.email}
             />
             <InputForm
@@ -49,7 +42,6 @@ function LoginForm() {
               title="Password"
               type="password"
               placeholder="********"
-              defaultValue={state.password}
               errorsText={state.error?.password}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleLogin()
@@ -92,15 +84,15 @@ function LoginForm() {
       </div>
 
       <Snackbar
-        open={state.success || state.failed || false}
+        open={state.success || (state.failed && state.message)}
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch(resetAction())}
       >
         {state.message}
-      </Snackbar >
-    </>
+      </Snackbar>
+    </FloatProgressIndicator>
   )
 }
 

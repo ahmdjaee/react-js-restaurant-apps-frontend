@@ -3,11 +3,11 @@ import TextCurrency from "@/components/Elements/Text/TextCurrency";
 import useFetchData from "@/hooks/useFetch";
 import { Box, Button, Modal, ModalDialog, Typography } from "@mui/joy";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function CardReservation({ item, total }) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false);
-  const [loading, error, response] = useFetchData('/reservations')
+  const [__, _, response] = useFetchData('/reservations')
 
   return (
     <div className="w-full sticky bottom-with-bottom-bar-height sm:w-[22rem] sm:static bg-white rounded-lg h-min px-5 py-3 sm:py-7">

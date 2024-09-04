@@ -11,7 +11,7 @@ import Contact from '@/pages/contact/index.jsx';
 import ErrorPageNotFound from '@/pages/errors/index.jsx';
 import Events, { loader as eventLoader } from "@/pages/events/index.jsx";
 import Home, { loader as homeLoader } from "@/pages/home";
-import Detail, { action as menuDetailAction, loader as menuDetailLoader } from '@/pages/menus/detail.jsx';
+import Detail, { loader as menuDetailLoader } from '@/pages/menus/detail.jsx';
 import Menu, { loader as menuLoader } from '@/pages/menus/menus.jsx';
 import Order from '@/pages/order/order.jsx';
 import Success from "@/pages/order/success.jsx";
@@ -20,35 +20,47 @@ import Reservation, { loader as reservationLoader } from "@/pages/reservation";
 import Transaction from '@/pages/transactions/index.jsx';
 import Profile from "@/pages/user/profile.jsx";
 import SuccessRegister from "@/pages/auth/components/SuccessRegister";
+import AuthRoute from "./AuthRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<MainLayout />} >
         <Route errorElement={<ErrorPageNotFound />}   >
+          {/* Public Route */}
           <Route index element={<Home />} loader={homeLoader} />
           <Route path="menus" element={<Menu />} loader={menuLoader} />
-          <Route path="menus/:id" element={<Detail />} action={menuDetailAction} loader={menuDetailLoader} />
+          <Route path="menus/:id" element={<Detail />} loader={menuDetailLoader} />
           <Route path="events" element={<Events />} loader={eventLoader} />
           <Route path="about" element={<About />} />
           <Route path="reservation" element={<Reservation />} loader={reservationLoader} />
           <Route path="contact" element={<Contact />} />
-          <Route path="carts" element={<Cart />} />
-          <Route path="transactions" element={<Transaction />} />
-          <Route path="profile" element={<Profile />} />
+
+          {/* Protected Route */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="carts" element={<Cart />} />
+            <Route path="transactions" element={<Transaction />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Route>
       </Route>
 
-      <Route element={<Authentication />}>
-        <Route path="login" element={<LoginForm />} />
-        <Route path="register" element={<RegisterForm />} />
-        <Route path="register/success" element={<SuccessRegister />} />
+      {/* Protected Route */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<OrderLayout />} loader={reservationLoader}>
+          <Route path="order" element={<Order />} />
+          <Route path="order/payment" element={<Payment />} />
+          <Route path="order/success" element={<Success />} />
+        </Route>
       </Route>
 
-      <Route element={<OrderLayout />} loader={reservationLoader}>
-        <Route path="order" element={<Order />} />
-        <Route path="order/payment" element={<Payment />} />
-        <Route path="order/success" element={<Success />} />
+      <Route element={<AuthRoute />}>
+        <Route element={<Authentication />}>
+          <Route path="login" element={<LoginForm />} />
+          <Route path="register" element={<RegisterForm />} />
+          <Route path="register/success" element={<SuccessRegister />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<ErrorPageNotFound />} />

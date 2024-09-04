@@ -1,12 +1,7 @@
-import { Navigate, Outlet } from "react-router-dom";
-import AuthLayout from "../../components/Layouts/AuthLayout";
-import { useStateContext } from "../../context/AuthContextProvider";
+import { Outlet } from "react-router-dom";
+import AuthLayout from "@/components/Layouts/AuthLayout";
 
 function Authentication() {
-  const { token } = useStateContext()
-
-  if (token !== null) return <Navigate to="/" />
-
   return (
     <AuthLayout>
       <Outlet />

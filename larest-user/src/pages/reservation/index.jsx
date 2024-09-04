@@ -22,7 +22,7 @@ function Reservation() {
   if (!user && !reservation) return < CardUserNotLogin />
 
   return (
-    <div className="sm:container p-5 sm:p-0">
+    <div className="sm:container p-5 sm:p-0 h-full">
       {reservation && hide
         ? <BookingDetail reservation={reservation} onEdit={() => setHide(false)} />
         : <BookingForm reservation={reservation} onCancel={() => (hide) ? navigate(-1) : setHide(true)} />

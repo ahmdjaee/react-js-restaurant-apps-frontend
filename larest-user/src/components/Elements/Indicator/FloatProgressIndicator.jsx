@@ -1,12 +1,14 @@
-export default function FloatProgressIndicator({ loading }) {
-  if (!loading) return null;
+export default function FloatProgressIndicator({ loading, children }) {
+
   return (
-    <div className="w-screen h-full z-[99999] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-15">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
-        <div className="flex items-center justify-center">
-          <div>
-            <style jsx>
-              {`.loader {
+    <>
+      {loading && (
+        <div className="w-screen h-full z-[99999] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-15">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+            <div className="flex items-center justify-center">
+              <div>
+                <style>
+                  {`.loader {
                     width: 60px;
                     aspect-ratio: 1;
                     color: #ffa516;
@@ -40,11 +42,14 @@ export default function FloatProgressIndicator({ loading }) {
                     100%   {transform:scale(var(--s,1)) perspective(150px) rotateX(-180deg);background:#f03355}
                     }
                 `}
-            </style>
-            <div className="loader"></div>
+                </style>
+                <div className="loader"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+      {children}
+    </>
   )
 }

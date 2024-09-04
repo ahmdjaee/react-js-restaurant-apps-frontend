@@ -18,6 +18,7 @@ axiosClient.interceptors.response.use((response) => {
 }, (error) => {
     if (error?.response?.status === 401) {
         localStorage.removeItem("USER-TOKEN");
+        // window.location.reload();
     }
     return Promise.reject(error);
 });

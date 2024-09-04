@@ -1,7 +1,7 @@
 import useFetchData from "@/hooks/useFetch";
 import { Box, Button, Chip, CircularProgress, Input, Option, Select, Snackbar, Stack, Textarea, Typography } from "@mui/joy";
 import { useStateContext } from "../../../context/AuthContextProvider";
-import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
+import { actionCreate, actionReset, useCrudContext } from "@/context/CrudContextProvider";
 import { ACTION } from "@/utils/action";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 function getChipColor(text) {
@@ -30,7 +30,7 @@ export default function BookingForm({ onCancel, reservation }) {
   return (
     <>
       <FloatProgressIndicator loading={state.loading} />
-      <form className="sm:w-[50rem] mx-auto sm:mt-5" onSubmit={(e) => onSubmit(e)}>
+      <form className="sm:w-[50rem] mx-auto sm:mt-14" onSubmit={(e) => onSubmit(e)}>
         <div className="sm:grid sm:grid-cols-2 gap-x-5">
           <div className="flex flex-col">
             <Typography variant="h6">Your name</Typography>
@@ -121,16 +121,15 @@ export default function BookingForm({ onCancel, reservation }) {
         </div>
         <footer className="mt-5 sm:mt-0 flex justify-end gap-5 item-center">
           <Button
-            variant="outlined"
-            color="red"
+            variant="plain"
             onClick={onCancel}
-          >CANCEL</Button>
+          >Cancel</Button>
 
           <Button
             className="bg-primary w-40"
             disabled={false}
             type="submit"
-          >RESERVE</Button>
+          >Reserve</Button>
         </footer>
       </form>
       <Snackbar
@@ -138,6 +137,7 @@ export default function BookingForm({ onCancel, reservation }) {
         color={"danger"}
         variant="solid"
         autoHideDuration={1500}
+        onClose={() => dispatch(actionReset())}
       >
         {state.message}
       </Snackbar >
@@ -148,7 +148,7 @@ export default function BookingForm({ onCancel, reservation }) {
         size="lg"
         invertedColors
         open={state.success}
-        onClose={() => { dispatch({ type: ACTION.RESET }); location.reload() }}
+        onClose={() => { dispatch(actionReset()); location.reload() }}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         sx={(theme) => ({
           maxWidth: 360,

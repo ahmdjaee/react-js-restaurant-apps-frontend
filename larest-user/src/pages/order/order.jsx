@@ -3,11 +3,12 @@ import TextBetween from "@/components/Elements/Text/TextBetween";
 import TextCurrency from "@/components/Elements/Text/TextCurrency";
 import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
 import useFetchData from "@/hooks/useFetch";
+import axiosClient from "@/services/axios";
 import { Box, Button, Modal, ModalDialog, Textarea, Typography } from "@mui/joy";
 import { useEffect, useState } from "react";
 
 export default function Order() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);  
   const { state, dispatch } = useCrudContext();
   const [loadingCarts, errorCarts, carts] = useFetchData("/carts");
   const [loadingReservation, errorReservation, reservation] = useFetchData("/reservations");
@@ -34,16 +35,17 @@ export default function Order() {
   async function handleOrder() {
 
     const items = carts?.data?.items.map((cart) => {
-      return cart;
+      return {
+        menu_id: cart.menu.id,
+        price: cart.menu.price,
+        quantity: cart.quantity,
+        name: cart.menu.name
+      }
     })
-
-    console.log(items);
-    
 
     const { data } = await actionCreate("/orders", {
       items: items,
       reservation_id: reservation.data.id,
-      total_payment: 20000
     }, dispatch)
 
     if (data) {
@@ -62,9 +64,15 @@ export default function Order() {
         onClose: function () {
           /* You may add your own implementation here */
           alert('you closed the popup without finishing the payment');
+          handleClose(data.id);
         }
       });
     }
+  }
+
+  const handleClose = async (id) => {
+    // cancel order
+    await axiosClient.delete(`/orders/${id}`);
   }
 
   return (
@@ -119,19 +127,19 @@ export default function Order() {
                   <TextBetween leftText="Date" rightText={reservation.data.date} />
                   <TextBetween leftText="Time" rightText={reservation.data.time} />
                   <TextBetween leftText="Note" />
-                  <Textarea value={reservation?.data?.notes} minRows={3} maxRows={3} readOnly sx={{ boxShadow: "none" }} />
+                  <Textarea value={reservation?.data?.notes} minRows={3} maxRows={3} disabled sx={{ boxShadow: "none" }} />
                 </>
               }
             </div>
             <div className="mt-6 border-t border-b py-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Total Item</p>
-                {/* <p className="font-semibold text-gray-900">x{totalItem}</p> */}
+                <p className="font-semibold text-gray-900">x{carts?.data?.total_quantity}</p>
               </div>
             </div>
             <div className="mt-6 flex items-center justify-between">
               <p className="text-sm font-medium text-gray-900">Total payment</p>
-              {/* <TextCurrency className="text-2xl" fontWeight="font-semibold" color="text-gray-900" text={totalPayment} /> */}
+              <TextCurrency className="text-2xl" fontWeight="font-semibold" color="text-gray-900" text={carts?.data?.total_price} />
             </div>
           </div>
           <Button color="dark" onClick={handleOrder} size="lg" sx={{ my: 2, }} fullWidth>Place Older</Button>

@@ -1,10 +1,9 @@
 import FloatProgressIndicator from '@/components/Elements/Indicator/FloatProgressIndicator';
 import NavLink from '@/components/Elements/Link/NavLink';
 import Logo from "@/components/Elements/Logo/Logo";
-import { actionLogout, useStateContext } from '@/context/AuthContextProvider';
+import { actionLogout, resetAction, useStateContext } from '@/context/AuthContextProvider';
 import { useCartContext } from '@/context/CartContextProvider';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import { ACTION } from '@/utils/action';
 import { Avatar, Badge, Button, IconButton, Snackbar } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import DialogActions from '@mui/joy/DialogActions';
@@ -18,6 +17,7 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { useState } from 'react';
+import { FaPencil } from 'react-icons/fa6';
 import { MdOutlineLocalGroceryStore, MdOutlineTableBar } from 'react-icons/md';
 import { Link } from "react-router-dom";
 
@@ -103,11 +103,11 @@ function TopNavBar() {
         </Modal>
       </header >
       <Snackbar
-        open={state.success || state.failed || false}
+        open={state.success || (state.failed && state.message) || false}
         color={state.success ? "success" : state.failed ? "danger" : null}
         variant="solid"
         autoHideDuration={1500}
-        onClose={() => dispatch({ type: ACTION.RESET })}
+        onClose={() => dispatch(resetAction())}
       >
         {state.message}
       </Snackbar >
@@ -123,7 +123,7 @@ function CheckUser({ user, toggleDrawer, }) {
   const sm = useMediaQuery('(min-width: 640px)');
   return (
     <div className="flex gap-3 sm:gap-6 items-center">
-      <Link to={user ? "/carts" : "/login"}>
+      <Link to={"/carts" }>
         <IconButton>
           <Badge color='danger' variant='solid' size='sm' badgeInset="-10%" badgeContent={list.data.total_quantity ?? 0}>
             <MdOutlineLocalGroceryStore className='size-5 sm:size-6 text-gray' />
@@ -132,9 +132,9 @@ function CheckUser({ user, toggleDrawer, }) {
       </Link>
       <Link to={"reservation"}>
         <IconButton >
-          <Badge color='danger' variant='solid' size='sm' badgeInset="-10%">
+          {/* <Badge color='danger' variant='solid' size='sm' badgeInset="-10%"> */}
             <MdOutlineTableBar className={`size-5 sm:size-6 text-gray`} />
-          </Badge>
+          {/* </Badge> */}
         </IconButton>
       </Link>
       {user

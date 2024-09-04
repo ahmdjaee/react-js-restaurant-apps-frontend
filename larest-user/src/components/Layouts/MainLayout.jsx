@@ -1,7 +1,7 @@
 import CartContextProvider, { actionGet, useCartContext } from "@/context/CartContextProvider"
 import useFetchData from "@/hooks/useFetch"
 import { useEffect } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useStateContext } from "../../context/AuthContextProvider"
 import TopProgressBar from "../Elements/Indicator/TopProgressBar"
 import BottomNavBar from "../Fragments/Navigation/BottomNavBar"
@@ -11,7 +11,8 @@ function MainLayout() {
   const { state, dispatch } = useCartContext();
   const { list, refetch } = state;
   const [__, _, user] = useFetchData('/users/current');
-  const { setUser } = useStateContext();
+  const { setUser, getAccessToken } = useStateContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUser(user?.data)
@@ -22,6 +23,12 @@ function MainLayout() {
     actionGet('/carts', dispatch, controller.signal)
     return () => { controller.abort() };
   }, [refetch])
+
+  useEffect(() => {
+    if(!getAccessToken()) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <>

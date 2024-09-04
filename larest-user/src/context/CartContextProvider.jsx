@@ -186,7 +186,7 @@ export const actionAddToCart = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'action'
     })
@@ -213,7 +213,7 @@ export const actionUpdateCart = async (url, data, dispatch, contentType) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'action'
     })
@@ -237,7 +237,7 @@ export const actionDeleteCart = async (url, dispatch) => {
   } catch (error) {
     dispatch({
       type: ACTION.FAILED,
-      error: error.response.data.errors,
+      error: error?.response?.data?.errors,
       message: error?.response?.data?.errors?.message || 'Sorry! Something went wrong. App server error',
       keyState: 'action'
     })
