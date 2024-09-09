@@ -93,8 +93,8 @@ function Category() {
             </tr>
           ) : (
             filteredCategories.map((category, index) => (
-              <tr key={index} className="table-row">
-                <td className="p-3 max-w-64">
+              <tr key={index} className="table-row-body">
+                <td className="max-w-64">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img
@@ -103,12 +103,12 @@ function Category() {
                         alt=""
                       />
                     </div>
-                    <span className="font-medium text-light-inverse text-md/normal">
+                    <span>
                       {category.name}
                     </span>
                   </div>
                 </td>
-                <td className="p-3 text-nowrap text-end">
+                <td className="text-nowrap text-end">
                   <IconButton onClick={() => handleUpdateModal(category)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>

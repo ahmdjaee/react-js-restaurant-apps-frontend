@@ -59,7 +59,7 @@ function Menu() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState({
     categories: null,
-    tags: [],
+    tags: null,
   });
 
   useEffect(() => {
@@ -77,7 +77,9 @@ function Menu() {
   const filteredMenus = list?.data?.filter((menu) => {
     return (
       (!filter.categories || menu.category.name === filter.categories) &&
-      menu?.name?.toLowerCase().includes(search.toLowerCase())
+      menu?.name?.toLowerCase().includes(search.toLowerCase()) &&
+      (!filter.tags ||
+        menu?.tags?.split(",").some((tag) => filter.tags?.includes(tag)))
     );
   });
 
@@ -86,6 +88,11 @@ function Menu() {
   const handleDelete = async (menu) => {
     if (!window.confirm(`Are you sure want to delete menu: ${menu.name}?`)) return;
     await actionDelete(`/admin/menus/${menu.id}`, dispatch);
+  };
+
+  const handleReset = () => {
+    setSearch("");
+    setFilter({ categories: null, tags: null });
   };
 
   const handleUpdateModal = (menu) => {
@@ -102,10 +109,16 @@ function Menu() {
         loading={list.loading}
         actions={
           <>
-            <a className="text-blue-600 font-medium text-sm cursor-pointer me-3">Reset</a>
+            <Button
+              sx={{ marginRight: "12px" }}
+              variant="plain"
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
             <Select
-              // value={filter}
-              // onChange={(_, value) => setFilter(value)}
+              value={filter.tags}
+              onChange={(_, value) => setFilter({ ...filter, tags: value })}
               sx={{ width: 150, marginRight: "12px" }}
               placeholder="Tag"
             >
@@ -144,7 +157,7 @@ function Menu() {
             <th className=" text-start ">TAGS</th>
             <th className=" text-start">PRICE</th>
             <th className=" text-center">STOCK</th>
-            <th className=" text-end ">CATEGORY</th>
+            <th className=" text-start ">CATEGORY</th>
             <th className=" text-end ">ACTIVE</th>
             <th className=" text-end ">ACTIONS</th>
           </tr>
@@ -165,7 +178,7 @@ function Menu() {
           ) : (
             filteredMenus?.map((menu) => (
               <tr key={menu.id} className="table-row-body">
-                <td className=" ">
+                <td className="text-nowrap">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img
@@ -174,57 +187,41 @@ function Menu() {
                         alt=""
                       />
                     </div>
-                    <div className="flex flex-col justify-start overflow-hidden">
+                    <div className="flex flex-col justify-start ">
                       <span>{menu.name}</span>
                     </div>
                   </div>
                 </td>
                 <td className=" max-w-64  text-start">
-                  <span className="line-clamp-2">
-                    {menu.description}
-                  </span>
+                  <span className="line-clamp-2">{menu.description}</span>
                 </td>
                 <td className=" text-start ">
                   <div className="text-nowrap flex items-center gap-2">
-                    {menu.tags ? (
-                      menu.tags.split(",").map((tag, index) =>
-                        index === 0 ? (
-                          <Badge key={index} color={getBadgeColor(tag)}>
-                            {tag}
-                          </Badge>
-                        ) : index === 1 ? (
-                          <p
-                            key={index}
-                            className=" text-zinc-500 font-medium text-sm"
-                          >
-                            +{menu.tags.split(",").length - 1} more
-                          </p>
-                        ) : null
+                    {!menu.tags && <Badge color={getBadgeColor()}>None</Badge>}
+                    {menu.tags?.split(",").map((tag, index) =>
+                      index < 1 ? (
+                        <Badge key={index} color={getBadgeColor(tag)}>
+                          {tag}
+                        </Badge>
+                      ) : (
+                        index === 1 && (
+                          <Chip key={index}>+{menu.tags.split(",").length - 1}</Chip>
+                        )
                       )
-                    ) : (
-                      <Badge color={getBadgeColor()}>N/A</Badge>
                     )}
                   </div>
                 </td>
                 <td className="  text-start">
-                  <span className="line-clamp-2">
-                    {formatCurrency(menu.price)}
-                  </span>
+                  <span className="line-clamp-2">{formatCurrency(menu.price)}</span>
                 </td>
                 <td className="  text-center">
                   <span className="line-clamp-2">{menu.stock}</span>
                 </td>
-                <td className="  text-end">
-                  <span className="line-clamp-2">
-                    {menu.category?.name}
-                  </span>
+                <td className="  text-start">
+                  <span className="line-clamp-2">{menu.category?.name}</span>
                 </td>
                 <td className=" text-end">
-                  <Chip
-                    color={menu.active ? "primary" : "danger"}
-                    onClick={function () {}}
-                    variant="solid"
-                  >
+                  <Chip color={menu.active ? "primary" : "danger"} variant="solid">
                     {menu.active ? "Active" : "Inactive"}
                   </Chip>
                 </td>

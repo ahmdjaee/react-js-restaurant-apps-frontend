@@ -66,9 +66,6 @@ function User() {
               className={"me-3"}
               onChange={(val) => setSearchParams(val)}
             />
-            <Button color="danger" variant="outlined" sx={{ mr: 2 }}>
-              Delete Selected
-            </Button>
             <Button onClick={() => setCreateModal(true)}>Create User</Button>
           </>
         }
@@ -76,11 +73,6 @@ function User() {
       >
         <thead className="align-bottom">
           <tr className="table-row-header">
-            <th className="h-min w-min text-start">
-              <div className="flex flex-col justify-start">
-                <Checkbox />
-              </div>
-            </th>
             <th className="min-w-24 text-start">NAME</th>
             <th className="min-w-24 text-start">EMAIL</th>
             <th className="min-w-24 text-start">ROLE</th>
@@ -109,11 +101,6 @@ function User() {
                 className="table-row-body"
                 onClick={() => handleUpdateModal(user)}
               >
-                <td className=" h-min w-min" onClick={(e) => e.stopPropagation()}>
-                  <div className="flex flex-col justify-start">
-                    <Checkbox />
-                  </div>
-                </td>
                 <td className=" max-w-64 ">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">

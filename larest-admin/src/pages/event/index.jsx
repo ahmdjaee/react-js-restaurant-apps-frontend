@@ -66,6 +66,11 @@ function Event() {
     await actionDelete(`/admin/events/${event.id}`, dispatch);
   };
 
+  const handleReset = () => {
+    setSearch("");
+    setFilterType(null);
+  };
+
   const handleUpdateModal = (event) => {
     dispatch(actionSetData(event));
     setUpdateModal(true);
@@ -79,6 +84,13 @@ function Event() {
         loading={list.loading}
         actions={
           <>
+            <Button
+              sx={{ marginRight: "12px" }}
+              variant="plain"
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
             <Select
               value={filterType}
               onChange={(_, value) => setFilterType(value)}
@@ -146,28 +158,20 @@ function Event() {
                           alt=""
                         />
                       </div>
-                      <span className="">
-                        {event.title}
-                      </span>
+                      <span className="">{event.title}</span>
                     </div>
                   </td>
                   <td className=" text-start">
-                    <span className="">
-                      {event.description}
-                    </span>
+                    <span className="">{event.description}</span>
                   </td>
                   <td className=" text-start">
                     <Badge color={getBadgeColor(event.type)}>{event.type}</Badge>
                   </td>
                   <td className=" text-start">
-                    <span className="">
-                      {formatDate(event.event_start)}
-                    </span>
+                    <span className="">{formatDate(event.event_start)}</span>
                   </td>
                   <td className="text-end">
-                    <span className="">
-                      {formatDate(event.event_end)}
-                    </span>
+                    <span className="">{formatDate(event.event_end)}</span>
                   </td>
                   <td className="text-end">
                     <Chip

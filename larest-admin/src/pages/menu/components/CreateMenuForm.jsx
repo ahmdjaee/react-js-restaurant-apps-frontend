@@ -61,6 +61,7 @@ function CreateMenuForm({ open, onClose, tags, categories }) {
                 <Select
                   required
                   name='active'
+                  defaultValue={true}
                   placeholder="Active status"
                 >
                   <Option value={true}>Active</Option>
@@ -86,7 +87,7 @@ function CreateMenuForm({ open, onClose, tags, categories }) {
                 <Select
                   multiple
                   name='tags'
-                  placeholder="Select tags"
+                  placeholder="None"
                   renderValue={(selected) => (
                     <Box sx={{ display: 'flex', gap: '0.25rem' }}>
                       {selected.map((selectedOption) => (

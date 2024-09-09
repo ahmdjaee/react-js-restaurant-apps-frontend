@@ -44,8 +44,8 @@ function CreateEventForm({ open, onClose }) {
                   <Textarea
                     required
                     placeholder="Type in here…"
-                    minRows={3}
-                    maxRows={3}
+                    minRows={4}
+                    maxRows={4}
                     name='description'
                   />
                   <FormControl>

@@ -20,7 +20,7 @@ function LoginForm() {
       const response = await axiosClient.post("/admin/login", formJson);
       if (response.status === 200) {
         setToken(response.data.data.token);
-        navigate("/users");
+        navigate("/");
         dispatch({ type: ACTION.RESET_ACTION})
       }
     } catch (error) {

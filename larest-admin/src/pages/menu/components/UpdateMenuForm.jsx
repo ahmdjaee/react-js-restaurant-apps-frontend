@@ -118,7 +118,7 @@ function UpdateMenuForm({ open, onClose, tags }) {
                     multiple
                     defaultValue={data?.tags?.split(',')}
                     name='tags'
-                    placeholder="Select tags"
+                    placeholder="None"
                     renderValue={(selected) => (
                       <Box sx={{ display: 'flex', gap: '0.25rem' }}>
                         {selected.map((selectedOption) => (
