@@ -19,7 +19,6 @@ import Payment from "@/pages/payment/index.jsx";
 import Reservation, { loader as reservationLoader } from "@/pages/reservation";
 import Transaction from '@/pages/transactions/index.jsx';
 import Profile from "@/pages/user/profile.jsx";
-import SuccessRegister from "@/pages/auth/components/SuccessRegister";
 import AuthRoute from "./AuthRoute";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -59,7 +58,6 @@ export const router = createBrowserRouter(
         <Route element={<Authentication />}>
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
-          <Route path="register/success" element={<SuccessRegister />} />
         </Route>
       </Route>
 
