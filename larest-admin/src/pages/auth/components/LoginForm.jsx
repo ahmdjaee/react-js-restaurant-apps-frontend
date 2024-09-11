@@ -6,6 +6,7 @@ import InputForm from "@/components/Elements/Input/InputForm";
 import { useStateContext } from "@/context/ContextProvider";
 import axiosClient from "@/service/axios";
 import { ACTION } from "@/utils/action";
+import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ function LoginForm() {
         open={state.success || state.failed}
         color={state.success ? "success" : state.failed && "danger"}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {state?.errors?.message}

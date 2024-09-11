@@ -1,9 +1,3 @@
-import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
-import QRCode from "qrcode.react";
-import { useEffect, useState } from "react";
-import { BsChevronRight, BsPencilFill, BsPrinter } from "react-icons/bs";
-import { MdArrowForwardIos } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import EmptyState from "@/components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "@/components/Elements/Indicator/FloatProgressIndicator";
 import SearchInput from "@/components/Elements/Input/SearchInput";
@@ -18,8 +12,12 @@ import {
 import useDebounced from "@/hooks/useDebounce";
 import { ACTION } from "@/utils/action";
 import { formatCurrency, formatDate } from "@/utils/helper";
-import { SEARCH_TIMEOUT } from "@/utils/settings";
-import UpdateOrderForm from "./components/UpdateOrderForm";
+import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
+import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
+import QRCode from "qrcode.react";
+import { useEffect, useState } from "react";
+import { BsChevronRight, BsPencilFill, BsPrinter } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 function getChipColor(status) {
   switch (status) {
     case "new":
@@ -180,7 +178,7 @@ function Order() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch({ type: ACTION.RESET_ACTION })}
       >
         {action.message}

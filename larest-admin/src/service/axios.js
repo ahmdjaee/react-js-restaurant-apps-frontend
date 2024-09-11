@@ -11,6 +11,7 @@ axiosClient.interceptors.request.use(async (config) => {
     const token = localStorage.getItem("ADMIN-TOKEN");
 
     if (token) {
+        // config.headers.Authorization = token;
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

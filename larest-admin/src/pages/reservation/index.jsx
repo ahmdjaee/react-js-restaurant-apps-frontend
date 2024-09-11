@@ -12,7 +12,7 @@ import {
 } from "@/context/CrudContextProvider";
 import useDebounced from "@/hooks/useDebounce";
 import { formatDate, formatTime } from "@/utils/helper";
-import { SEARCH_TIMEOUT } from "@/utils/settings";
+import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Chip, IconButton, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
@@ -173,7 +173,7 @@ function Reservation() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch(resetAction())}
       >
         {action.message}

@@ -1,15 +1,31 @@
-import { Button, Chip, CircularProgress, IconButton, Snackbar } from '@mui/joy';
-import React, { useEffect, useState } from 'react';
-import { BsFillTrash3Fill, BsPencilFill } from 'react-icons/bs';
-import EmptyState from '../../components/Elements/Indicator/EmptyState';
-import FloatProgressIndicator from '../../components/Elements/Indicator/FloatProgressIndicator';
-import Table from '../../components/Fragments/Table/Table';
-import { actionDelete, actionGet, actionSetData, resetAction, resetState, useCrudContext } from '../../context/CrudContextProvider';
-import useFetchData from '../../hooks/useFetch';
-import { ACTION } from '../../utils/action';
-import CreateTableForm from './components/CreateTableForm';
-import UpdateTableForm from './components/UpdateTableForm';
-import SearchInput from '../../components/Elements/Input/SearchInput';
+import {
+  Button,
+  Chip,
+  CircularProgress,
+  IconButton,
+  Snackbar,
+  Switch,
+} from "@mui/joy";
+import React, { useEffect, useState } from "react";
+import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
+import EmptyState from "../../components/Elements/Indicator/EmptyState";
+import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
+import Table from "../../components/Fragments/Table/Table";
+import {
+  actionDelete,
+  actionGet,
+  actionSetData,
+  actionUpdate,
+  resetAction,
+  resetState,
+  useCrudContext,
+} from "../../context/CrudContextProvider";
+import useFetchData from "../../hooks/useFetch";
+import { ACTION } from "../../utils/action";
+import CreateTableForm from "./components/CreateTableForm";
+import UpdateTableForm from "./components/UpdateTableForm";
+import SearchInput from "../../components/Elements/Input/SearchInput";
+import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 
 function getChipColor(status) {
   switch (status) {
@@ -28,23 +44,22 @@ function Tables() {
   const { list, action, refetch } = state;
   const [createModal, setCreateModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
-    actionGet('/tables', dispatch, controller.signal);
-    return () => { controller.abort() };
-  }, [refetch])
+    actionGet("/tables", dispatch, controller.signal);
+    return () => {
+      controller.abort();
+    };
+  }, [refetch]);
 
   useEffect(() => {
-    return () => dispatch(resetState())
-  }, [])
-
+    return () => dispatch(resetState());
+  }, []);
 
   const filteredTables = list?.data?.filter((table) => {
-    return (
-      table?.no?.toLowerCase().includes(search.toLowerCase())
-    );
+    return table?.no?.toLowerCase().includes(search.toLowerCase());
   });
 
   const handleDelete = async (table) => {
@@ -66,7 +81,11 @@ function Tables() {
         loading={list.loading}
         actions={
           <>
-            <SearchInput className={"me-3"} value={search} onChange={(val) => setSearch(val)} />
+            <SearchInput
+              className={"me-3"}
+              value={search}
+              onChange={(val) => setSearch(val)}
+            />
             <Button onClick={() => setCreateModal(true)}>Create Table</Button>
           </>
         }
@@ -76,56 +95,50 @@ function Tables() {
             <th className="text-start">NUMBER TABLE</th>
             <th className="text-start">CAPACITY</th>
             <th className="text-start">STATUS</th>
+            <th className="text-end">ACTIVE</th>
             <th className="text-end ">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
           {list.error ? ( //NOTE - Add error indicator
             <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
+              <td className="text-xl text-center overflow-hidden" colSpan={7}>
                 <EmptyState text={list.message} />
               </td>
             </tr>
           ) : filteredTables.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
-              <td
-                className="text-xl text-center overflow-hidden"
-                colSpan={7}
-              >
+              <td className="text-xl text-center overflow-hidden" colSpan={7}>
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
           ) : (
             filteredTables.map((table, index) => (
-              <tr
-                key={index}
-                className="table-row-body"
-              >
+              <tr key={index} className="table-row-body">
                 <td className="">
                   <div className="flex flex-col justify-start">
-                    <span >
-                      {table.no}
-                    </span>
+                    <span>{table.no}</span>
                   </div>
                 </td>
                 <td className=" text-start">
-                  <span>
-                    {table.capacity} person
-                  </span>
+                  <span>{table.capacity} person</span>
                 </td>
-                <td className=" text-start">
+                <td className="text-start">
                   <Chip
                     color={getChipColor(table.status)}
-                    onClick={function () { }}
+                    onClick={function () {}}
                     variant="soft"
+                    fullWidth
                   >
                     {table.status}
                   </Chip>
                 </td>
-                <td className=" flex items-center justify-end">
+                <td className="text-end">
+                  <Chip color={table.active ? "primary" : "danger"} variant="solid">
+                    {table.active ? "Active" : "Inactive"}
+                  </Chip>
+                </td>
+                <td className="text-end w-24">
                   <IconButton onClick={() => handleUpdateModal(table)}>
                     <BsPencilFill className="primary-with-hover" />
                   </IconButton>
@@ -142,21 +155,15 @@ function Tables() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed && "danger"}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch(resetAction())}
       >
         {action.message}
-      </Snackbar >
-      <CreateTableForm
-        open={createModal}
-        onClose={() => setCreateModal(false)}
-      />
-      <UpdateTableForm
-        open={updateModal}
-        onClose={() => setUpdateModal(false)}
-      />
+      </Snackbar>
+      <CreateTableForm open={createModal} onClose={() => setCreateModal(false)} />
+      <UpdateTableForm open={updateModal} onClose={() => setUpdateModal(false)} />
     </>
   );
 }
 
-export default Tables
+export default Tables;

@@ -4,7 +4,7 @@ import { Link, useLoaderData } from 'react-router-dom'
 import CustomMainCard from '@/components/Fragments/Card/CustomMainCard'
 import axiosClient from '@/service/axios'
 import QRCode from 'qrcode.react'
-import { formatDate } from '@/utils/helper'
+import { formatCurrency, formatDate } from '@/utils/helper'
 import TextCurrency from '@/components/Elements/Text/TextCurrency'
 import { FaEye } from 'react-icons/fa'
 import { BsEye, BsPencil, BsPlus } from 'react-icons/bs'
@@ -70,11 +70,11 @@ function DetailOrder() {
             <p className="text-gray-600">{order.id}</p>
           </div>
           <div className="flex items-center w-full border-b border-gray-300 pb-2">
-            <p className="w-64 font-semibold text-gray-700">User Name</p>
+            <p className="w-64 font-semibold text-gray-700">Name</p>
             <p className="text-gray-600">{order.user.name}</p>
           </div>
           <div className="flex items-center w-full border-b border-gray-300 pb-2">
-            <p className="w-64 font-semibold text-gray-700">User Email</p>
+            <p className="w-64 font-semibold text-gray-700">Email</p>
             <p className="text-gray-600">{order.user.email}</p>
           </div>
           <div className="flex items-center border-b border-gray-300 pb-2 w-full">
@@ -83,7 +83,7 @@ function DetailOrder() {
           </div>
           <div className="flex items-center w-full border-b border-gray-300 pb-2">
             <p className="w-64 font-semibold text-gray-700">Total Payment</p>
-            <p className="text-gray-600">{order.total_payment}</p>
+            <p className="text-gray-600 font-bold">{formatCurrency(order.total_payment)}</p>
           </div>
           <div className="flex items-center w-full border-b border-gray-300 pb-2">
             <p className="w-64 font-semibold text-gray-700">Ordered At</p>

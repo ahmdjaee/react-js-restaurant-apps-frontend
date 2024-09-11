@@ -1,4 +1,4 @@
-import { Avatar, CircularProgress } from "@mui/joy";
+import { Avatar, CircularProgress, Skeleton } from "@mui/joy";
 import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import {
@@ -143,17 +143,15 @@ function Sidebar() {
           </div> */}
         </nav>
 
-        <div className="flex items-center justify-center px-3 mt-5">
-          {user === null || loading ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <Avatar src={user.photo} sx={{ width: 36, height: 36 }} />
+        <div className="flex items-center justify-center px-3 gap-1 mt-5">
+            <Skeleton loading={loading} variant="circular" height={36} width={36}>
+              <Avatar src={user?.photo} sx={{ width: 36, height: 36 }} />
+            </Skeleton>
+            <Skeleton loading={loading} variant="inline" width={60} level="body-xs">
               <span className="mx-2 text-sm font-medium text-gray-600 dark:text-gray-300">
-                {user.name}
+                {user?.name}
               </span>
-            </>
-          )}
+            </Skeleton>
         </div>
       </div>
     </aside>
