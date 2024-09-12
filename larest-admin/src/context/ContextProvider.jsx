@@ -15,16 +15,16 @@ const StateContext = createContext({
 export default function ContextProvider({ children }) {
 
     const [user, setUser] = useState(null)
-    const [token, _setToken] = useState(localStorage.getItem("ADMIN-TOKEN"))
+    const [token, _setToken] = useState(localStorage.getItem("access-token"))
     const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE)
     const [search, setSearch] = useState("")
 
     const setToken = (token) => {
         if (token) {
             _setToken(token)
-            localStorage.setItem("ADMIN-TOKEN", token)
+            localStorage.setItem("access-token", token)
         } else {
-            localStorage.removeItem("ADMIN-TOKEN")
+            localStorage.removeItem("access-token")
             _setToken(null)
         }
     }

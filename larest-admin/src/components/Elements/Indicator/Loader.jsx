@@ -1,5 +1,3 @@
-import React from "react";
-
 function Loader({ size = "sm" }) {
   if (size === "md") {
     return <MediumLoader />;
@@ -87,7 +85,7 @@ function MediumLoader() {
           }
         }
       `}</style>
-      <div className="loader"/>
+      <div className="loader" />
     </>
   );
 }

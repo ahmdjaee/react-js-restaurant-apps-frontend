@@ -65,6 +65,12 @@ export function crudReducer(state, action) {
         data: action.data
       }
     }
+    case ACTION.RESET_DATA: {
+      return {
+        ...state,
+        data: {}
+      }
+    }
     case ACTION.REFETCH: {
       return {
         ...state,
@@ -135,6 +141,7 @@ export const resetAction = () => ({ type: ACTION.RESET_ACTION, keyState: 'action
 export const resetState = () => ({ type: ACTION.RESET_STATE });
 export const actionSetData = (data) => ({ type: ACTION.SET_DATA, data: data });
 export const resetList = () => ({ type: ACTION.RESET_LIST, keyState: 'list' });
+export const actionResetData = () => ({ type: ACTION.RESET_DATA, keyState: 'data' });
 
 export const actionGet = async (url, dispatch, signal) => {
   dispatch({ type: ACTION.START, keyState: 'list' })

@@ -1,6 +1,6 @@
+import InputForm from "@/components/Elements/Input/InputForm";
 import {
   Button,
-  Chip,
   DialogContent,
   DialogTitle,
   FormControl,
@@ -11,14 +11,12 @@ import {
   Modal,
   ModalDialog,
   Option,
-  Select,
+  Select
 } from "@mui/joy";
 import {
   actionCreate,
-  actionUpdate,
-  useCrudContext,
+  useCrudContext
 } from "../../../context/CrudContextProvider";
-import InputForm from "@/components/Elements/Input/InputForm";
 
 function CreateUserForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();

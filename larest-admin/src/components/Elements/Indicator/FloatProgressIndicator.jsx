@@ -1,4 +1,4 @@
-import { AspectRatio } from "@mui/joy";
+import PropTypes from 'prop-types';
 import Loader from "./Loader";
 
 export default function FloatProgressIndicator({ loading }) {
@@ -13,3 +13,7 @@ export default function FloatProgressIndicator({ loading }) {
     </div>
   );
 }
+
+FloatProgressIndicator.propTypes = {
+  loading: PropTypes.bool.isRequired,
+};

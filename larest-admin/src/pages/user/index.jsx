@@ -14,11 +14,11 @@ import {
 import useDebounced from "@/hooks/useDebounce";
 import { formatDate } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
-import { Avatar, Button, Checkbox, Chip, IconButton, Snackbar } from "@mui/joy";
+import { Avatar, Button, Chip, IconButton, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
-import UpdateUserForm from "./components/UpdateUserForm";
 import CreateUserForm from "./components/CreateUserForm";
+import UpdateUserForm from "./components/UpdateUserForm";
 
 function User() {
   const { state, dispatch } = useCrudContext();
@@ -33,11 +33,11 @@ function User() {
     return () => {
       controller.abort();
     };
-  }, [url, refetch]);
+  }, [url, refetch, dispatch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const handleDelete = async (user) => {
     if (!window.confirm(`Are you sure want to delete users: ${user.name}?`)) return;

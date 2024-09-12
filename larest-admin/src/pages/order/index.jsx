@@ -5,18 +5,18 @@ import Pagination from "@/components/Fragments/Pagination/Pagination";
 import Table from "@/components/Fragments/Table/Table";
 import {
   actionGet,
-  actionSetData,
   resetState,
   useCrudContext,
 } from "@/context/CrudContextProvider";
 import useDebounced from "@/hooks/useDebounce";
 import { ACTION } from "@/utils/action";
-import { formatCurrency, formatDate } from "@/utils/helper";
+import { formatCurrency, formatDate, getCurrentDateTime } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
 import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
-import { BsChevronRight, BsPencilFill, BsPrinter } from "react-icons/bs";
+import CsvDownload from "react-csv-downloader";
+import { BsChevronRight, BsDownload, BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 function getChipColor(status) {
   switch (status) {
@@ -40,7 +40,6 @@ function Order() {
   const { state, dispatch } = useCrudContext();
   const { list, action, refetch } = state;
   const [url, setUrl] = useState(`admin/orders`);
-  const [updateModal, setUpdateModal] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,25 +47,56 @@ function Order() {
     return () => {
       controller.abort();
     };
-  }, [url, refetch]);
+  }, [url, refetch, dispatch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
-
-  const handleDelete = async (event) => {
-    // if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
-    // await actionDelete(`/admin/events/${event.id}`, dispatch);
-  };
-
-  const handleUpdateModal = (order) => {
-    dispatch(actionSetData(order));
-    setUpdateModal(true);
-  };
+  }, [dispatch]);
 
   const debouncedSetUrl = useDebounced((value) => {
     setUrl(`${url}?search=${value}`);
   }, SEARCH_TIMEOUT);
+
+  const columns = [
+    {
+      id: "id",
+      displayName: "ID",
+    },
+    {
+      id: "name",
+      displayName: "NAME",
+    },
+    {
+      id: "email",
+      displayName: "EMAIL",
+    },
+    {
+      id: "reservation_id",
+      displayName: "RESERVATION ID",
+    },
+    {
+      id: "status",
+      displayName: "STATUS",
+    },
+    {
+      id: "total_payment",
+      displayName: "TOTAL PAYMENT",
+    },
+    {
+      id: "created_at",
+      displayName: "CREATED AT",
+    },
+  ];
+
+  const datas = list.data.map((item) => ({
+    id: item.id,
+    name: item.user?.name,
+    email: item.user?.email,
+    reservation_id: item.reservation?.id,
+    status: item.status,
+    total_payment: item.total_payment,
+    created_at: formatDate(item.created_at),
+  }));
 
   return (
     <>
@@ -77,15 +107,19 @@ function Order() {
         loading={list.loading}
         actions={
           <>
-            <Button
-              variant="outlined"
-              color="neutral"
-              sx={{ mr: 1 }}
-              onClick={() => window.print()}
+            <CsvDownload
+              filename={"ORDERS - " + getCurrentDateTime()}
+              extension=".csv"
+              separator=";"
+              columns={columns}
+              datas={datas}
+              text="DOWNLOAD"
             >
-              <BsPrinter className="me-2" />
-              Print
-            </Button>
+              <Button variant="outlined" color="neutral" sx={{ mr: 1 }}>
+                <BsDownload className="me-2" />
+                Download CSV
+              </Button>
+            </CsvDownload>
             <SearchInput className={"me-2"} onChange={debouncedSetUrl} />
             <Button onClick={() => {}}>Create Order</Button>
           </>
@@ -96,7 +130,8 @@ function Order() {
           <tr className="table-row-header">
             <th className="text-nowrap text-start">QR</th>
             <th className="text-nowrap text-start">ORDER ID</th>
-            <th className="text-nowrap text-start">USER</th>
+            <th className="text-nowrap text-start">NAME</th>
+            <th className="text-nowrap text-start">EMAIL</th>
             <th className="text-nowrap text-center">RESERVATION ID</th>
             <th className="text-nowrap text-start">STATUS</th>
             <th className="text-nowrap text-end">TOTAL PAYMENT</th>
@@ -107,13 +142,13 @@ function Order() {
         <tbody>
           {list.error ? ( //NOTE - Add error indicator
             <tr>
-              <td className="text-xl text-center overflow-hidden" colSpan={8}>
+              <td className="text-xl text-center overflow-hidden" colSpan={9}>
                 <EmptyState text={list.message} />
               </td>
             </tr>
           ) : list.data.length === 0 ? ( //NOTE - Add no data indicator
             <tr>
-              <td className="text-xl text-center overflow-hidden" colSpan={8}>
+              <td className="text-xl text-center overflow-hidden" colSpan={9}>
                 <EmptyState text={"No data found"} />
               </td>
             </tr>
@@ -135,8 +170,11 @@ function Order() {
                   <td className="text-start">
                     <span>{order.id}</span>
                   </td>
-                  <td className="text-start">
+                  <td className="text-start text-nowrap">
                     <span>{order.user?.name}</span>
+                  </td>
+                  <td className="text-start">
+                    <span>{order.user?.email}</span>
                   </td>
                   <td className="text-center">
                     <span>{order.reservation?.id}</span>
@@ -158,12 +196,9 @@ function Order() {
                     className="text-nowrap text-end"
                     onClick={(event) => event.stopPropagation()}
                   >
-                    <IconButton onClick={() => handleUpdateModal(order)}>
+                    <IconButton>
                       <BsPencilFill className="primary-with-hover" />
                     </IconButton>
-                    {/* <IconButton onClick={() => handleDelete(order)}>
-                    <BsFillTrash3Fill className="danger-with-hover" />
-                  </IconButton> */}
                     <IconButton onClick={() => navigate(`/orders/${order.id}`)}>
                       <BsChevronRight className="secondary-with-hover" />
                     </IconButton>

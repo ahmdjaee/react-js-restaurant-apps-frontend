@@ -8,10 +8,9 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-    const token = localStorage.getItem("ADMIN-TOKEN");
+    const token = localStorage.getItem("access-token");
 
     if (token) {
-        // config.headers.Authorization = token;
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -21,7 +20,7 @@ axiosClient.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     if (error?.response?.status === 401) {
-        localStorage.removeItem("ADMIN-TOKEN");
+        localStorage.removeItem("access-token");
         window.location.href = "/login";
     }
     return Promise.reject(error);

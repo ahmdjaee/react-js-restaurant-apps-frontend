@@ -12,7 +12,6 @@ import {
   Option,
   Select,
 } from "@mui/joy";
-import FloatCircularProgress from "../../../components/Elements/Indicator/FloatProgressIndicator";
 import { actionCreate, useCrudContext } from "../../../context/CrudContextProvider";
 
 function CreateTableForm({ open, onClose }) {

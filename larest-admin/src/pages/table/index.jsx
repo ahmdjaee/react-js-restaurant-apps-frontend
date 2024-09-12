@@ -1,31 +1,26 @@
+import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 import {
   Button,
   Chip,
-  CircularProgress,
   IconButton,
-  Snackbar,
-  Switch,
+  Snackbar
 } from "@mui/joy";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
+import SearchInput from "../../components/Elements/Input/SearchInput";
 import Table from "../../components/Fragments/Table/Table";
 import {
   actionDelete,
   actionGet,
   actionSetData,
-  actionUpdate,
   resetAction,
   resetState,
-  useCrudContext,
+  useCrudContext
 } from "../../context/CrudContextProvider";
-import useFetchData from "../../hooks/useFetch";
-import { ACTION } from "../../utils/action";
 import CreateTableForm from "./components/CreateTableForm";
 import UpdateTableForm from "./components/UpdateTableForm";
-import SearchInput from "../../components/Elements/Input/SearchInput";
-import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 
 function getChipColor(status) {
   switch (status) {
@@ -52,11 +47,11 @@ function Tables() {
     return () => {
       controller.abort();
     };
-  }, [refetch]);
+  }, [dispatch, refetch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const filteredTables = list?.data?.filter((table) => {
     return table?.no?.toLowerCase().includes(search.toLowerCase());

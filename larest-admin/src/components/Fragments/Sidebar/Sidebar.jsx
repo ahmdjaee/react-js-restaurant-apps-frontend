@@ -1,12 +1,10 @@
-import { Avatar, CircularProgress, Skeleton } from "@mui/joy";
-import React, { useEffect } from "react";
+import { Avatar, Skeleton } from "@mui/joy";
+import { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import {
-  HiOutlineInformationCircle,
-  HiOutlinePresentationChartBar,
-  HiOutlinePresentationChartLine,
+  HiOutlinePresentationChartLine
 } from "react-icons/hi2";
-import { IoFastFoodOutline, IoInformationCircleOutline } from "react-icons/io5";
+import { IoFastFoodOutline } from "react-icons/io5";
 import {
   MdAutorenew,
   MdOutlineCategory,
@@ -14,7 +12,7 @@ import {
   MdOutlineTableBar,
 } from "react-icons/md";
 import { RiReservedLine } from "react-icons/ri";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useStateContext } from "../../../context/ContextProvider";
 import useFetchData from "../../../hooks/useFetch";
 
@@ -39,19 +37,6 @@ const links = [
   },
 ];
 
-// function SidebarLink({ to, icon, text }) {
-//   const location = useLocation();
-
-//   return (
-//     <Link
-//       className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 active: hover:text-gray-700
-//         ${location.pathname.includes(to) && 'text-primary bg-gray-100 dark:bg-gray-800 dark:text-gray-200'}`}
-//       to={to}>
-//       {icon}
-//       <span className="mx-2 text-sm font-medium">{text}</span>
-//     </Link>
-//   )
-// }
 function SidebarLink({ to, icon, text }) {
   return (
     <NavLink
@@ -144,14 +129,14 @@ function Sidebar() {
         </nav>
 
         <div className="flex items-center justify-center px-3 gap-1 mt-5">
-            <Skeleton loading={loading} variant="circular" height={36} width={36}>
-              <Avatar src={user?.photo} sx={{ width: 36, height: 36 }} />
-            </Skeleton>
-            <Skeleton loading={loading} variant="inline" width={60} level="body-xs">
-              <span className="mx-2 text-sm font-medium text-gray-600 dark:text-gray-300">
-                {user?.name}
-              </span>
-            </Skeleton>
+          <Skeleton loading={loading} variant="circular" height={36} width={36}>
+            <Avatar src={user?.photo} sx={{ width: 36, height: 36 }} />
+          </Skeleton>
+          <Skeleton loading={loading} variant="inline" width={60} level="body-xs">
+            <span className="mx-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+              {user?.name}
+            </span>
+          </Skeleton>
         </div>
       </div>
     </aside>

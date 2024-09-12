@@ -1,6 +1,6 @@
-import Loader from './Loader'
+import Loader from "./Loader";
 
-function TableLoadingIndicator({loading}) {
+function TableLoadingIndicator({ loading }) {
   return (
     <>
       {loading && (
@@ -14,7 +14,7 @@ function TableLoadingIndicator({loading}) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default TableLoadingIndicator
+export default TableLoadingIndicator;

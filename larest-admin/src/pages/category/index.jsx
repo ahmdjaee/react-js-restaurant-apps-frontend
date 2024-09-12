@@ -30,11 +30,11 @@ function Category() {
     return () => {
       controller.abort();
     };
-  }, [refetch]);
+  }, [dispatch, refetch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const filteredCategories = list?.data?.filter((category) => {
     return category?.name?.toLowerCase().includes(search.toLowerCase());
@@ -71,7 +71,7 @@ function Category() {
       >
         <thead className="align-bottom">
           <tr className="table-row-header">
-            <th className="text-start" >NAME</th>
+            <th className="text-start">NAME</th>
             <th className="text-end">ACTIVE</th>
             <th className="text-end">ACTION</th>
           </tr>
@@ -92,7 +92,7 @@ function Category() {
           ) : (
             filteredCategories.map((category, index) => (
               <tr key={index} className="table-row-body">
-                <td className="w-full" >
+                <td className="w-full">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img

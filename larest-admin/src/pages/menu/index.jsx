@@ -69,11 +69,11 @@ function Menu() {
     return () => {
       controller.abort();
     };
-  }, [refetch]);
+  }, [dispatch, refetch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const filteredMenus = list?.data?.filter((menu) => {
     return (

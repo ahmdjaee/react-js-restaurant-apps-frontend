@@ -16,8 +16,10 @@ function formatDate(dateString = '') {
 }
 
 function formatTime(timeString = '') {
+    if (!timeString) return ''; // or some default value
+
     // Split the input string to extract hours, minutes, and seconds
-    const [hours, minutes, seconds] = timeString?.split(':').map(part => part.padStart(2, '0'));
+    const [hours, minutes, seconds] = timeString.split(':').map(part => part.padStart(2, '0'));
 
     // Return the formatted time string
     return `${hours}:${minutes}:${seconds}`;
@@ -31,4 +33,12 @@ const formatCurrency = (value) => {
     return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value);
 }
 
-export { formatDate, formatTime , getMinDateTime, formatCurrency} 
+function getCurrentDateTime() {
+    let currentDateTime = new Date();
+    let options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    let formatter = new Intl.DateTimeFormat('id-ID', options);
+    let formatterDateTime = formatter.format(currentDateTime);
+    return formatterDateTime;
+  }
+
+export { formatDate, formatTime , getMinDateTime, formatCurrency, getCurrentDateTime} 
