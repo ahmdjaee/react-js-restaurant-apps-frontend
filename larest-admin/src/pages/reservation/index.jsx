@@ -12,12 +12,12 @@ import {
 } from "@/context/CrudContextProvider";
 import useDebounced from "@/hooks/useDebounce";
 import { formatDate, formatTime } from "@/utils/helper";
-import { SEARCH_TIMEOUT } from "@/utils/settings";
+import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Chip, IconButton, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
-import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
-import UpdateReservationForm from "./components/UpdateReservationForm";
+import { BsPencilFill } from "react-icons/bs";
 import DetailReservation from "./components/DetailReservation";
+import UpdateReservationForm from "./components/UpdateReservationForm";
 
 function getChipColor(status) {
   switch (status) {
@@ -47,11 +47,11 @@ function Reservation() {
     return () => {
       controller.abort();
     };
-  }, [url, refetch]);
+  }, [url, refetch, dispatch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const handleDelete = async (event) => {
     // if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
@@ -85,7 +85,7 @@ function Reservation() {
         <thead className="align-bottom">
           <tr className="table-row-header">
             <th className="text-nowrap text-start">ID</th>
-            <th className="text-nowrap text-start">USER</th>
+            <th className="text-nowrap text-start">NAME</th>
             <th className="text-nowrap text-center">TABLE</th>
             <th className="text-nowrap text-start">DATE</th>
             <th className="text-nowrap text-start">TIME</th>
@@ -173,7 +173,7 @@ function Reservation() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch(resetAction())}
       >
         {action.message}

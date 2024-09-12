@@ -1,6 +1,5 @@
-import React from 'react'
-import CustomMainCard from '../Card/CustomMainCard'
-import TableLoadingIndicator from '@/components/Elements/Indicator/TableLoadingIndicator'
+import TableLoadingIndicator from "@/components/Elements/Indicator/TableLoadingIndicator";
+import CustomMainCard from "../Card/CustomMainCard";
 
 function Table({ children, footer, title, description, actions, loading }) {
   return (
@@ -11,8 +10,7 @@ function Table({ children, footer, title, description, actions, loading }) {
       </table>
       {footer}
     </CustomMainCard>
-  )
+  );
 }
 
-export default Table
-
+export default Table;

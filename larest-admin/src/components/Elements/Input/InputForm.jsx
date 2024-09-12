@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, Typography } from "@mui/joy";
+import { FormControl, FormLabel, Input } from "@mui/joy";
 import propType from "prop-types";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -56,6 +56,11 @@ InputForm.propTypes = {
   onChange: propType.func,
   errorsText: propType.array,
   children: propType.node,
+  onKeyDown: propType.func,
+  name: propType.string,
+  defaultValue: propType.string,
+  required: propType.bool,
+  autoComplete: propType.string,
 };
 
 function EyeIcon({ onClick }) {

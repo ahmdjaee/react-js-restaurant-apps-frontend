@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import CreateEventForm from "./components/CreateEventForm";
 import UpdateEventForm from "./components/UpdateEventForm";
+import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 
 const getBadgeColor = (type) => {
   switch (type) {
@@ -200,7 +201,7 @@ function Event() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed ? "danger" : null}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch(resetAction())}
       >
         {action.message}

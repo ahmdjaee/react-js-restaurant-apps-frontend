@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { Button, FormLabel } from '@mui/joy';
+import { useState } from 'react';
 import { FaCamera } from 'react-icons/fa';
 import { MdOutlineCloudUpload } from 'react-icons/md';
-import { Button, FormLabel } from '@mui/joy';
 import { VisuallyHiddenInput } from '../Input/VisuallyHiddenInput';
+import PropTypes from 'prop-types';
 
 function ImageUploader({ src, name, props, className }) {
   const [image, setImage] = useState(null);
@@ -51,5 +52,12 @@ function ImageUploader({ src, name, props, className }) {
     </div>
   );
 }
+
+ImageUploader.propTypes = {
+  src: PropTypes.string,
+  name: PropTypes.string,
+  props: PropTypes.object,
+  className: PropTypes.string,
+};
 
 export default ImageUploader;

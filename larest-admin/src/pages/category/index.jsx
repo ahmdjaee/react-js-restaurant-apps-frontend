@@ -1,4 +1,4 @@
-import { Button, IconButton, Snackbar } from "@mui/joy";
+import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
@@ -15,6 +15,7 @@ import {
 } from "../../context/CrudContextProvider";
 import CreateCategoryForm from "./components/CreateCategoryForm";
 import UpdateCategoryForm from "./components/UpdateCategoryForm";
+import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 
 function Category() {
   const { state, dispatch } = useCrudContext();
@@ -29,20 +30,18 @@ function Category() {
     return () => {
       controller.abort();
     };
-  }, [refetch]);
+  }, [dispatch, refetch]);
 
   useEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
 
   const filteredCategories = list?.data?.filter((category) => {
     return category?.name?.toLowerCase().includes(search.toLowerCase());
   });
 
   const handleDelete = async (category) => {
-    if (
-      !window.confirm(`Are you sure want to delete category: ${category.name}?`)
-    )
+    if (!window.confirm(`Are you sure want to delete category: ${category.name}?`))
       return;
     await actionDelete(`/admin/categories/${category.id}`, dispatch);
   };
@@ -66,15 +65,14 @@ function Category() {
               value={search}
               onChange={(val) => setSearch(val)}
             />
-            <Button onClick={() => setCreateModal(true)}>
-              Create Category
-            </Button>
+            <Button onClick={() => setCreateModal(true)}>Create Category</Button>
           </>
         }
       >
         <thead className="align-bottom">
           <tr className="table-row-header">
             <th className="text-start">NAME</th>
+            <th className="text-end">ACTIVE</th>
             <th className="text-end">ACTION</th>
           </tr>
         </thead>
@@ -94,7 +92,7 @@ function Category() {
           ) : (
             filteredCategories.map((category, index) => (
               <tr key={index} className="table-row-body">
-                <td className="max-w-64">
+                <td className="w-full">
                   <div className="flex items-center">
                     <div className="relative inline-block shrink-0 rounded-2xl me-3">
                       <img
@@ -103,10 +101,16 @@ function Category() {
                         alt=""
                       />
                     </div>
-                    <span>
-                      {category.name}
-                    </span>
+                    <span>{category.name}</span>
                   </div>
+                </td>
+                <td className=" text-end">
+                  <Chip
+                    color={category.active ? "primary" : "danger"}
+                    variant="solid"
+                  >
+                    {category.active ? "Active" : "Inactive"}
+                  </Chip>
                 </td>
                 <td className="text-nowrap text-end">
                   <IconButton onClick={() => handleUpdateModal(category)}>
@@ -125,19 +129,13 @@ function Category() {
         open={action.success || action.failed}
         color={action.success ? "success" : action.failed && "danger"}
         variant="solid"
-        autoHideDuration={1500}
+        autoHideDuration={SNACKBAR_TIMEOUT}
         onClose={() => dispatch(resetAction())}
       >
         {action.message}
       </Snackbar>
-      <CreateCategoryForm
-        open={createModal}
-        onClose={() => setCreateModal(false)}
-      />
-      <UpdateCategoryForm
-        open={updateModal}
-        onClose={() => setUpdateModal(false)}
-      />
+      <CreateCategoryForm open={createModal} onClose={() => setCreateModal(false)} />
+      <UpdateCategoryForm open={updateModal} onClose={() => setUpdateModal(false)} />
     </>
   );
 }
