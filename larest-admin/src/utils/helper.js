@@ -29,7 +29,7 @@ const getMinDateTime = () => {
     return new Date().toISOString().slice(0, 16);
 };
 
-const formatCurrency = (value) => {
+const formatCurrency = (value = 0) => {
     return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value);
 }
 
