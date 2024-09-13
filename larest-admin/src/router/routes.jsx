@@ -16,6 +16,7 @@ import Reservation from "@/pages/reservation/index.jsx";
 import Tables from "@/pages/table/index.jsx";
 import Transaction from "@/pages/transaction/index.jsx";
 import User from "@/pages/user";
+import CreateOrder from "@/pages/order/components/CreateOrder";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
         <Route path="categories" element={<Category />} />
         <Route path="orders" element={<Order />} />
         <Route path="orders/:id" element={<DetailOrder />} loader={detailOrderLoader} />
+        <Route path="orders/create" element={<CreateOrder />} />
         <Route path="reservations" element={<Reservation />} />
       </Route>
 

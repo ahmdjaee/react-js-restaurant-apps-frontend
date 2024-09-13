@@ -36,12 +36,12 @@ function Dashboard() {
   return (
     <div id="main-content" className=" bg-gray-50 relative overflow-y-auto p-5">
       <main>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
           {/* <!-- Card Item Start --> */}
-          <div class="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
+          <div className="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
             <IoFastFoodOutline className="size-8 primary-with-hover mx-auto" />
-            <div class="flex items-end justify-between mt-4">
-              <span class="text-sm font-medium">Total menu</span>
+            <div className="flex items-end justify-between mt-4">
+              <span className="text-sm font-medium">Total menu</span>
               <Skeleton
                 loading={menuLoading}
                 variant="inline"
@@ -55,10 +55,10 @@ function Dashboard() {
           {/* <!-- Card Item End --> */}
 
           {/* <!-- Card Item Start --> */}
-          <div class="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
+          <div className="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
             <MdAutorenew className="size-8 primary-with-hover mx-auto" />
-            <div class="flex items-end justify-between mt-4">
-              <span class="text-sm font-medium">Total Order</span>
+            <div className="flex items-end justify-between mt-4">
+              <span className="text-sm font-medium">Total Order</span>
               <Skeleton
                 loading={orderLoading}
                 variant="inline"
@@ -74,10 +74,10 @@ function Dashboard() {
           {/* <!-- Card Item End --> */}
 
           {/* <!-- Card Item Start --> */}
-          <div class="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
+          <div className="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
             <MdOutlinePeopleOutline className="size-8 primary-with-hover mx-auto" />
-            <div class="flex items-end justify-between mt-4">
-              <span class="text-sm font-medium">Total User</span>
+            <div className="flex items-end justify-between mt-4">
+              <span className="text-sm font-medium">Total User</span>
               <Skeleton
                 loading={userLoading}
                 variant="inline"
@@ -91,10 +91,10 @@ function Dashboard() {
           {/* <!-- Card Item End --> */}
 
           {/* <!-- Card Item Start --> */}
-          <div class="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
+          <div className="flex flex-col gap-3 justify-between shadow rounded-lg bg-white px-7 py-6 shadow-default dark:border-strokedark dark:bg-gray-500">
             <MdOutlineEventAvailable className="size-8 primary-with-hover mx-auto" />
-            <div class="flex items-end justify-between mt-4">
-              <span class="text-sm font-medium">Total Event</span>
+            <div className="flex items-end justify-between mt-4">
+              <span className="text-sm font-medium">Total Event</span>
               <Skeleton
                 loading={eventLoading}
                 variant="inline"
@@ -250,7 +250,7 @@ function Dashboard() {
                     </div>
                   ) : (
                     userLatestResponse?.data?.map((user) => (
-                      <li className="py-3 sm:py-4">
+                      <li key={user?.id} className="py-3 sm:py-4">
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
                             <Avatar

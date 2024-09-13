@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
-import axiosClient from "../service/axios";
-import { ACTION } from "../utils/action";
+import axiosClient from "@/service/axios";
+import { ACTION } from "@/utils/action";
 
 const INITIAL_KEY_STATE = {
   data: {},

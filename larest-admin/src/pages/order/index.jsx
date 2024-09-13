@@ -121,7 +121,7 @@ function Order() {
               </Button>
             </CsvDownload>
             <SearchInput className={"me-2"} onChange={debouncedSetUrl} />
-            <Button onClick={() => {}}>Create Order</Button>
+            <Button onClick={() => navigate("/orders/create")}>Create Order</Button>
           </>
         }
         footer={<Pagination response={list} setUrl={setUrl} />}
@@ -189,7 +189,7 @@ function Order() {
                   <td className="text-end">
                     <span>{formatCurrency(order.total_payment)}</span>
                   </td>
-                  <td className="text-end">
+                  <td className="text-end text-nowrap">
                     <span>{formatDate(order.created_at)}</span>
                   </td>
                   <td
