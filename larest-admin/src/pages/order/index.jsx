@@ -35,6 +35,37 @@ function getChipColor(status) {
   }
 }
 
+const columns = [
+  {
+    id: "id",
+    displayName: "ID",
+  },
+  {
+    id: "name",
+    displayName: "NAME",
+  },
+  {
+    id: "email",
+    displayName: "EMAIL",
+  },
+  {
+    id: "reservation_id",
+    displayName: "RESERVATION ID",
+  },
+  {
+    id: "status",
+    displayName: "STATUS",
+  },
+  {
+    id: "total_payment",
+    displayName: "TOTAL PAYMENT",
+  },
+  {
+    id: "created_at",
+    displayName: "CREATED AT",
+  },
+];
+
 function Order() {
   const navigate = useNavigate();
   const { state, dispatch } = useCrudContext();
@@ -56,37 +87,6 @@ function Order() {
   const debouncedSetUrl = useDebounced((value) => {
     setUrl(`${url}?search=${value}`);
   }, SEARCH_TIMEOUT);
-
-  const columns = [
-    {
-      id: "id",
-      displayName: "ID",
-    },
-    {
-      id: "name",
-      displayName: "NAME",
-    },
-    {
-      id: "email",
-      displayName: "EMAIL",
-    },
-    {
-      id: "reservation_id",
-      displayName: "RESERVATION ID",
-    },
-    {
-      id: "status",
-      displayName: "STATUS",
-    },
-    {
-      id: "total_payment",
-      displayName: "TOTAL PAYMENT",
-    },
-    {
-      id: "created_at",
-      displayName: "CREATED AT",
-    },
-  ];
 
   const datas = list.data.map((item) => ({
     id: item.id,

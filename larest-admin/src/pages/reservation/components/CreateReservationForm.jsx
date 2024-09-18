@@ -1,9 +1,8 @@
 import OptionWithState from "@/components/Elements/Input/Option";
 import { ListItemTable } from "@/components/Elements/List/ListItem";
 import {
-  actionResetData,
   actionUpdate,
-  useCrudContext,
+  useCrudContext
 } from "@/context/CrudContextProvider";
 import useFetchData from "@/hooks/useFetch";
 import { getMinDateTime } from "@/utils/helper";
@@ -21,10 +20,11 @@ import {
 } from "@mui/joy";
 import Box from "@mui/joy/Box";
 import Drawer from "@mui/joy/Drawer";
+import PropTypes from "prop-types";
 import { MdOutlineClose } from "react-icons/md";
-import PropTypes from 'prop-types';
 
-function UpdateReservationForm({ open, onClose }) {
+function CreateReservationForm({ open, onClose }) {
+  const [userLoading, userError, userResponse] = useFetchData("/admin/users");
   const [loading, error, response] = useFetchData("/tables");
   const { state, dispatch } = useCrudContext();
   const { data } = state;
@@ -43,7 +43,6 @@ function UpdateReservationForm({ open, onClose }) {
   };
 
   const handleOnClose = () => {
-    dispatch(actionResetData());
     onClose();
   };
   return (
@@ -61,17 +60,21 @@ function UpdateReservationForm({ open, onClose }) {
           <Typography level="title-md">Update Reservation</Typography>
         </div>
         <form onSubmit={(e) => handleSubmit(e)} className="mt-3 flex flex-col gap-2">
-          <FormControl required>
-            <FormLabel>Your name</FormLabel>
-            <Input name="name" value={data?.user?.name} readOnly={true} />
+          <FormControl>
+            <FormLabel required>Customer</FormLabel>
+            <Select required name="user_id" placeholder="Select customer">
+              <OptionWithState
+                loading={userLoading}
+                error={userError}
+                data={userResponse?.data}
+              />
+            </Select>
           </FormControl>
           <FormControl required>
             <FormLabel>How many people will you order for?</FormLabel>
             <Select
               placeholder="Select options"
               name="persons"
-              defaultValue={data?.persons}
-              key={data?.persons}
               slotProps={{
                 listbox: {
                   placement: "bottom-start",
@@ -116,13 +119,10 @@ function UpdateReservationForm({ open, onClose }) {
             <Select
               name="table_id"
               placeholder="Select table"
-              defaultValue={data?.table?.id}
-              key={data?.table?.id}
               slotProps={{
                 listbox: {
                   placement: "bottom-start",
                   sx: { minWidth: 160 },
-                  disablePortal: true,
                 },
               }}
             >
@@ -136,13 +136,7 @@ function UpdateReservationForm({ open, onClose }) {
           </FormControl>
           <FormControl required>
             <FormLabel>Status</FormLabel>
-            <Select
-              key={data?.status}
-              defaultValue={data?.status}
-              required
-              name="status"
-              placeholder="Select status"
-            >
+            <Select required name="status" placeholder="Select status">
               <Option value="pending">pending</Option>
               <Option value="confirmed">confirmed</Option>
               <Option value="cancelled">cancelled</Option>
@@ -154,14 +148,12 @@ function UpdateReservationForm({ open, onClose }) {
               <FormControl required>
                 <FormLabel>Date</FormLabel>
                 <Input
-                  defaultValue={data?.date}
-                  key={data?.date}
                   required
                   type="date"
                   name="date"
                   slotProps={{
                     input: {
-                      min: data?.date ? data?.date : getMinDateTime(),
+                      min: getMinDateTime(),
                     },
                   }}
                 />
@@ -171,14 +163,12 @@ function UpdateReservationForm({ open, onClose }) {
               <FormControl required>
                 <FormLabel>Time</FormLabel>
                 <Input
-                  defaultValue={data?.time}
-                  key={data?.time}
                   required
                   type="time"
                   name="time"
                   slotProps={{
                     input: {
-                      min: data?.time ? data?.time : getMinDateTime(),
+                      min: getMinDateTime(),
                     },
                   }}
                 />
@@ -187,12 +177,7 @@ function UpdateReservationForm({ open, onClose }) {
           </div>
           <FormControl required>
             <FormLabel>Leave us your notes</FormLabel>
-            <Textarea
-              defaultValue={data?.notes}
-              minRows={3}
-              placeholder="Notes"
-              name="notes"
-            />
+            <Textarea minRows={3} placeholder="Notes" name="notes" />
           </FormControl>
           <Typography level="title-sm">Restaurant Plan</Typography>
           <p className="mt-3 text-ellipsis text-sm font-serif font-medium bg-gray-100 p-2 rounded ">
@@ -213,9 +198,9 @@ function UpdateReservationForm({ open, onClose }) {
   );
 }
 
-UpdateReservationForm.propTypes = {
+CreateReservationForm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default UpdateReservationForm;
+export default CreateReservationForm;

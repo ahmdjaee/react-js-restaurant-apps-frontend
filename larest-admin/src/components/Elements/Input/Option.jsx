@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const OptionWithState = ({ 
   loading, 
-  error, 
+  error = false, 
   data, 
   errorLabel = "Something went wrong", 
   renderOption, 
@@ -43,4 +43,7 @@ OptionWithState.propTypes = {
   renderOption: PropTypes.func,
 };
 
+
 export default OptionWithState;
+
+
