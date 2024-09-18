@@ -1,9 +1,10 @@
-import OptionWithState from "@/components/Elements/Input/OptionWithState";
+import OptionWithState from "@/components/Elements/Input/Option";
 import CustomMainCard from "@/components/Fragments/Card/CustomMainCard";
-import OrderItemCart from "@/components/Fragments/Card/OrderItemCard";
+import OrderItemCard from "@/components/Fragments/Card/OrderItemCard";
 import useFetchData from "@/hooks/useFetch";
 import {
   Breadcrumbs,
+  Button,
   FormControl,
   FormLabel,
   Option,
@@ -91,8 +92,10 @@ function CreateOrder() {
 
       <FormControl required>
         <FormLabel>Order Items</FormLabel>
-        <OrderItemCart />
+        <OrderItemCard />
       </FormControl>
+
+      <Button sx={{ display: "block", marginLeft: "auto" }}>Create Order</Button>
     </CustomMainCard>
   );
 }

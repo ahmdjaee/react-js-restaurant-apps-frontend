@@ -13,11 +13,12 @@ import {
 import useDebounced from "@/hooks/useDebounce";
 import { formatDate, formatTime } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
-import { Chip, IconButton, Snackbar } from "@mui/joy";
+import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { BsPencilFill } from "react-icons/bs";
 import DetailReservation from "./components/DetailReservation";
 import UpdateReservationForm from "./components/UpdateReservationForm";
+import CreateReservationForm from "./components/CreateReservationForm";
 
 function getChipColor(status) {
   switch (status) {
@@ -40,6 +41,7 @@ function Reservation() {
   const [url, setUrl] = useState(`/admin/reservations`);
   const [updateModal, setUpdateModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
+  const [createModal, setCreateModal] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -53,10 +55,10 @@ function Reservation() {
     return () => dispatch(resetState());
   }, [dispatch]);
 
-  const handleDelete = async (event) => {
-    // if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
-    // await actionDelete(`/admin/events/${event.id}`, dispatch);
-  };
+  // const handleDelete = async (event) => {
+  // if (!window.confirm(`Are you sure want to delete event: ${event.title}?`)) return;
+  // await actionDelete(`/admin/events/${event.id}`, dispatch);
+  // };
 
   const handleUpdateModal = (reservation) => {
     dispatch(actionSetData(reservation));
@@ -79,7 +81,12 @@ function Reservation() {
         title="Reservations"
         description={"List of all reservation"}
         loading={list.loading}
-        actions={<SearchInput onChange={debouncedSetUrl} />}
+        actions={
+          <>
+            <SearchInput onChange={debouncedSetUrl} className="me-3" />
+            <Button onClick={() => setCreateModal(true)}>Create Reservation</Button>
+          </>
+        }
         footer={<Pagination response={list} setUrl={setUrl} />}
       >
         <thead className="align-bottom">
@@ -168,6 +175,10 @@ function Reservation() {
       <UpdateReservationForm
         open={updateModal}
         onClose={() => setUpdateModal(false)}
+      />
+      <CreateReservationForm
+        open={createModal}
+        onClose={() => setCreateModal(false)}
       />
       <Snackbar
         open={action.success || action.failed}
