@@ -21,7 +21,7 @@ const INITIAL_STATE = {
       price: 0,
       quantity: 1,
     },
-  ], // Inisialisasi dengan array kosong
+  ],
 };
 
 export default function OrderItemCard() {
