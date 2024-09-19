@@ -1,9 +1,6 @@
 import OptionWithState from "@/components/Elements/Input/Option";
 import { ListItemTable } from "@/components/Elements/List/ListItem";
-import {
-  actionUpdate,
-  useCrudContext
-} from "@/context/CrudContextProvider";
+import { actionCreate, useCrudContext } from "@/context/CrudContextProvider";
 import useFetchData from "@/hooks/useFetch";
 import { getMinDateTime } from "@/utils/helper";
 import {
@@ -26,16 +23,14 @@ import { MdOutlineClose } from "react-icons/md";
 function CreateReservationForm({ open, onClose }) {
   const [userLoading, userError, userResponse] = useFetchData("/admin/users");
   const [loading, error, response] = useFetchData("/tables");
-  const { state, dispatch } = useCrudContext();
-  const { data } = state;
-
+  const { dispatch } = useCrudContext();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData?.entries());
 
-    const success = await actionUpdate(
-      `/admin/reservations/${data?.id}`,
+    const success = await actionCreate(
+      `/admin/reservations`,
       formJson,
       dispatch
     );
@@ -57,7 +52,7 @@ function CreateReservationForm({ open, onClose }) {
           <IconButton onClick={onClose}>
             <MdOutlineClose className="size-5" />
           </IconButton>
-          <Typography level="title-md">Update Reservation</Typography>
+          <Typography level="title-md">Create Reservation</Typography>
         </div>
         <form onSubmit={(e) => handleSubmit(e)} className="mt-3 flex flex-col gap-2">
           <FormControl>
@@ -190,7 +185,7 @@ function CreateReservationForm({ open, onClose }) {
             alt=""
           />
           <Button disabled={false} type="submit">
-            Update
+            Create
           </Button>
         </form>
       </Box>

@@ -1,5 +1,5 @@
 import { Button, Chip, DialogContent, DialogTitle, FormControl, FormHelperText, FormLabel, IconButton, Input, Modal, ModalDialog, Option, Select } from '@mui/joy';
-import { actionUpdate, useCrudContext } from '../../../context/CrudContextProvider';
+import { actionPost, useCrudContext } from '../../../context/CrudContextProvider';
 
 function UpdateUserForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
@@ -8,7 +8,8 @@ function UpdateUserForm({ open, onClose }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    const success = await actionUpdate(`/admin/tables/${data.id}`, formJson, dispatch)
+    formJson.is_admin = formJson.is_admin === 'true' ? 1 : 0;
+    const success = await actionPost(`/admin/users/${data.id}/update`, formJson, dispatch)
     if (success) onClose()
   }
 
@@ -56,13 +57,13 @@ function UpdateUserForm({ open, onClose }) {
             <FormControl>
               <FormLabel>Role</FormLabel>
               <Select
-                defaultValue={data.Frole}
+                defaultValue={data.is_admin ?? false}
                 required
-                name='role'
+                name='is_admin'
                 placeholder="Select role"
               >
-                <Option value='user'>user</Option>
-                <Option value='admin'>admin</Option>
+                <Option value={false}>User</Option>
+                <Option value={true}>Admin</Option>
               </Select>
             </FormControl>
             <Button type='submit' sx={{ mt: 2, width: '100%' }}>Update</Button>

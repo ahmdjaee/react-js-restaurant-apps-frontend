@@ -11,22 +11,21 @@ import {
   Modal,
   ModalDialog,
   Option,
-  Select
+  Select,
 } from "@mui/joy";
-import {
-  actionCreate,
-  useCrudContext
-} from "../../../context/CrudContextProvider";
+import { actionCreate, useCrudContext } from "../../../context/CrudContextProvider";
 
 function CreateUserForm({ open, onClose }) {
   const { state, dispatch } = useCrudContext();
-  const { data, action } = state;
+  const { action } = state;
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(formData.entries());
-    formJson.is_admin = formJson.is_admin === "true" ? 1 : 0;    
-    await actionCreate(`/admin/users/create`,formJson, dispatch);
+    const formJson = {
+      ...Object.fromEntries(formData),
+      is_admin: formData.get("is_admin") === "true" ? 1 : 0,
+    };
+    await actionCreate(`/admin/users/create`, formJson, dispatch);
   };
 
   return (
@@ -72,8 +71,8 @@ function CreateUserForm({ open, onClose }) {
           <FormControl>
             <FormLabel>Role</FormLabel>
             <Select required name="is_admin" placeholder="Select role">
-              <Option value={false}>user</Option>
-              <Option value={true}>admin</Option>
+              <Option value={false}>User</Option>
+              <Option value={true}>Admin</Option>
             </Select>
           </FormControl>
           <Button type="submit" sx={{ mt: 2, width: "100%" }}>
