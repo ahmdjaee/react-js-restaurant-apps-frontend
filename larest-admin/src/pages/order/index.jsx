@@ -14,7 +14,7 @@ import { formatCurrency, formatDate, getCurrentDateTime } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
 import QRCode from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import CsvDownload from "react-csv-downloader";
 import { BsChevronRight, BsDownload, BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -75,12 +75,10 @@ function Order() {
   useEffect(() => {
     const controller = new AbortController();
     actionGet(url, dispatch, controller.signal);
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, [url, refetch, dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
   }, [dispatch]);
 

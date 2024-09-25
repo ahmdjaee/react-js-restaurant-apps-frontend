@@ -1,6 +1,6 @@
 import { SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
@@ -44,7 +44,7 @@ function Tables() {
     };
   }, [dispatch, refetch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
   }, [dispatch]);
 

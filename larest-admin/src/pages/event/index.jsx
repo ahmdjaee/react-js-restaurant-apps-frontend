@@ -12,7 +12,7 @@ import {
 } from "@/context/CrudContextProvider";
 import { formatDate } from "@/utils/helper";
 import { Button, Chip, IconButton, Option, Select, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import CreateEventForm from "./components/CreateEventForm";
 import UpdateEventForm from "./components/UpdateEventForm";
@@ -50,9 +50,10 @@ function Event() {
     };
   }, [refetch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
-  }, []);
+  }, [dispatch]);
+
 
   const filteredEvents = list?.data?.filter((event) => {
     return (
