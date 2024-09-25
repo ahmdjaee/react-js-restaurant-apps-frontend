@@ -15,7 +15,7 @@ import useDebounced from "@/hooks/useDebounce";
 import { formatDate } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Avatar, Button, Chip, IconButton, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import CreateUserForm from "./components/CreateUserForm";
 import UpdateUserForm from "./components/UpdateUserForm";
@@ -35,7 +35,7 @@ function User() {
     };
   }, [url, refetch, dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
   }, [dispatch]);
 

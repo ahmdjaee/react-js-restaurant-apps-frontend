@@ -14,7 +14,7 @@ import useDebounced from "@/hooks/useDebounce";
 import { formatDate, formatTime } from "@/utils/helper";
 import { SEARCH_TIMEOUT, SNACKBAR_TIMEOUT } from "@/utils/settings";
 import { Button, Chip, IconButton, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BsPencilFill } from "react-icons/bs";
 import DetailReservation from "./components/DetailReservation";
 import UpdateReservationForm from "./components/UpdateReservationForm";
@@ -51,7 +51,7 @@ function Reservation() {
     };
   }, [url, refetch, dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
   }, [dispatch]);
 

@@ -1,7 +1,7 @@
 import Badge from "@/components/Elements/Badge/Badge";
 import { formatCurrency } from "@/utils/helper";
 import { Button, Chip, IconButton, Option, Select, Snackbar } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilFill } from "react-icons/bs";
 import EmptyState from "../../components/Elements/Indicator/EmptyState";
 import FloatProgressIndicator from "../../components/Elements/Indicator/FloatProgressIndicator";
@@ -71,7 +71,7 @@ function Menu() {
     };
   }, [dispatch, refetch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => dispatch(resetState());
   }, [dispatch]);
 
